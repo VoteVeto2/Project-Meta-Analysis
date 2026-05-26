@@ -233,7 +233,41 @@ We deployed six parallel search agents covering distinct topic clusters: multi-a
 Exclusions: classical multi-agent reinforcement learning, position papers without empirical results, studies lacking a single-agent comparator, and simulation-only evaluations. After deduplication (26 removed) and PICOS screening (21 excluded), 106 records remained. Of these, 41 reported extractable accuracy data for both multi-agent and single-agent conditions. The 65 excluded records are catalogued in <a href="#app-d">Appendix D</a>. Screening was performed by the author with AI assistance; no formal inter-rater reliability was computed, which is a limitation.
 </p>
 
-<h3>2.3 Effect size</h3>
+<h3>2.3 Data extraction and verification</h3>
+<p>
+For each of the 41 included studies, an AI extraction agent read the paper (abstract, results tables, or full text via arXiv) and produced a structured row with the following fields:
+</p>
+<table>
+  <caption>Table 0. Extraction table column definitions.</caption>
+  <thead>
+    <tr><th>Column</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>study-id</code></td><td>Unique identifier (S001&ndash;S041)</td></tr>
+    <tr><td><code>citation-key</code></td><td>Short author-year key used throughout the report</td></tr>
+    <tr><td><code>year</code></td><td>Publication year</td></tr>
+    <tr><td><code>backbone-model</code></td><td>LLM(s) used in the experiment</td></tr>
+    <tr><td><code>architecture</code></td><td>Multi-agent orchestration type: debate, cooperation, hierarchy, role-play, verifier-critic, moa, or planner-executor</td></tr>
+    <tr><td><code>n-agents</code></td><td>Number of agents in the multi-agent setup (often defaulted to 3 by the extraction agent; known to be unreliable)</td></tr>
+    <tr><td><code>task-category</code></td><td>Domain classification: code, math, medical, evaluation, general-knowledge, factuality, or other</td></tr>
+    <tr><td><code>benchmark-name</code></td><td>Specific benchmark (e.g., HumanEval, GSM8K, MedQA)</td></tr>
+    <tr><td><code>n-items</code></td><td>Total items in the benchmark. Where the true benchmark size was unknown, the agent normalized percentages to <em>n</em> = 100 as a default &mdash; a known source of error corrected during verification</td></tr>
+    <tr><td><code>n-correct-ma</code></td><td>Count of items the multi-agent system answered correctly</td></tr>
+    <tr><td><code>n-correct-sa</code></td><td>Count of items the single-agent baseline answered correctly</td></tr>
+    <tr><td><code>compute-parity-flag</code></td><td>Whether the study equalized inference compute: yes / no / unclear</td></tr>
+    <tr><td><code>metric-type</code></td><td>Type of outcome metric: accuracy, pass@1, win-rate, or resolve-rate</td></tr>
+    <tr><td><code>n-items-source</code></td><td>Source quality of the denominator: exact (from paper), imputed (from benchmark metadata), or estimated (from reported percentages)</td></tr>
+    <tr><td><code>audit-status</code></td><td>Verification outcome: verified, verified-corrected, unverifiable, or unaudited</td></tr>
+  </tbody>
+</table>
+<p>
+<strong>Verification process.</strong> An independent verification agent audited 12 of 41 rows (29%, selected with seed 42). It located each paper on arXiv, cross-checked the reported numbers against the original tables, and flagged discrepancies. Of the 12 audited rows, 4 were verified without changes, 6 required correction (50% error rate), and 2 could not be independently located. The dominant error pattern was denominator miscoding: three studies (S009, S025, S040) used <em>n</em>-items = 100 as a percentage normalization when the real benchmark had 300 or 805 items. The underlying percentages were correct, so the effect-size direction was preserved, but the precision of the log-OR changed after correction. Other corrections involved agent counts (the extraction agent defaulted to 3) and one compute-parity misclassification. All corrections are documented in <code>data/verified/verification-report.md</code>. The corrected table (<code>data/verified/effect-size-table.csv</code>) is the input to all analyses. Inter-rater reliability on audited rows: binary field kappa = 0.91; count-field ICC &gt; 0.95.
+</p>
+<p>
+<strong>Remaining risk.</strong> The 29 unaudited rows (71%) may contain similar errors. The verified-only sensitivity analysis (k = 10, Section 3.5) provides the most credible anchor for the pooled estimate.
+</p>
+
+<h3>2.4 Effect size</h3>
 <p>
 We computed log odds ratios (log-OR) as the primary effect size. Because item-level paired correctness was unavailable, MA and SA proportions were treated as independent binomial counts. This likely underestimates uncertainty. A 0.5 continuity correction was applied conditionally, only to studies with zero cells (<a href="#ref-sweeting2004">Sweeting et al., 2004</a>); none were present. For each study, we extracted <em>n</em>-items (total benchmark questions), <em>n</em>-correct under multi-agent, and <em>n</em>-correct under single-agent conditions. Where <em>n</em>-items could not be extracted directly, it was estimated from reported percentages and total benchmark sizes. Of the 41 studies, 13 have imputed or estimated denominators (k = 28 exact). The full extraction table is in <a href="#app-a1">Appendix Table A1</a>.
 </p>
@@ -244,7 +278,7 @@ We computed log odds ratios (log-OR) as the primary effect size. Because item-le
 <strong>Metric heterogeneity.</strong> The 41 comparisons include accuracy, pass@1, win rate, executability scores, and resolve rates. We treated all as binomial proportions, but acknowledge this conflation is a simplification. Win-rate benchmarks (e.g., AlpacaEval) operate under different assumptions than item-level accuracy; results should be interpreted with this caveat.
 </p>
 
-<h3>2.4 Statistical model</h3>
+<h3>2.5 Statistical model</h3>
 <p>
 The primary analysis used a restricted maximum-likelihood (REML) random-effects model (<a href="#ref-viechtbauer2005">Viechtbauer, 2005</a>) with a modified Hartung-Knapp-Sidik-Jonkman (HKSJ) adjustment (<a href="#ref-hartung2001">Hartung &amp; Knapp, 2001</a>; <a href="#ref-inthout2014">IntHout et al., 2014</a>). The HKSJ adjustment computes the scale factor s&sup2;<sub>HK</sub> = &Sigma;w<sub>i</sub>(y<sub>i</sub> &minus; &mu;)&sup2;/(k&minus;1) and applies max(1, s&sup2;<sub>HK</sub>) as a variance inflation floor, following the conservative recommendation that HKSJ should never narrow CIs relative to the na&iuml;ve inverse-variance estimate (<a href="#ref-rover2015">R&ouml;ver et al., 2015</a>). CIs use <em>t</em>(k&minus;1) degrees of freedom. Prediction intervals use <em>t</em>(k&minus;2) following <a href="#ref-inthout2016">IntHout et al. (2016)</a>. DerSimonian-Laird estimation served as a sensitivity check. Cochran's Q is computed using fixed-effect weights and the fixed-effect pooled mean, yielding a single Q value identical across variance estimators (<a href="#ref-borenstein2009">Borenstein et al., 2009</a>, Ch. 16).
 </p>
@@ -255,12 +289,12 @@ Subgroup analyses used separate random-effects models per level with Q<sub>betwe
 <strong>Dependency.</strong> Multiple effect sizes sometimes derive from the same paper, benchmark family, or model family. We did not implement robust variance estimation (<a href="#ref-hedges2010">Hedges et al., 2010</a>; <a href="#ref-pustejovsky2022">Pustejovsky &amp; Tipton, 2022</a>) or multilevel meta-analysis (<a href="#ref-vandennoortgate2013">Van den Noortgate et al., 2013</a>) in this version. The non-aggregated sensitivity (k = 36) partially addresses but does not solve this limitation.
 </p>
 
-<h3>2.5 Risk of bias</h3>
+<h3>2.6 Risk of bias</h3>
 <p>
 We conducted an informal risk-of-bias assessment adapted from ROB 2 concepts (<a href="#ref-sterne2019">Sterne et al., 2019</a>), with domains for selection, performance/compute parity, reporting, and attrition. This is not a validated instrument for LLM benchmark studies; it should be understood as a structured quality checklist. Of 41 studies, 25 (61%) were rated high risk of bias, predominantly due to uncontrolled compute: multi-agent systems typically consumed more inference tokens without any single-agent scaling comparison. Of the 41 extracted rows, only 10 are independently verified (4 verified, 6 verified-corrected); 2 are unverifiable (source data could not be located); 29 remain unaudited. Among the 12 rows that were audited, 6 required correction (50% error rate). Because 31 of 41 rows (76%) lack independent verification, the pooled estimate is substantially exposed to extraction error.
 </p>
 
-<h3>2.6 Publication bias</h3>
+<h3>2.7 Publication bias</h3>
 <p>
 Funnel plot inspection, Egger's regression test (<a href="#ref-egger1997">Egger et al., 1997</a>), Begg's rank correlation (<a href="#ref-begg1994">Begg &amp; Mazumdar, 1994</a>), and Duval and Tweedie's trim-and-fill (<a href="#ref-duval2000">Duval &amp; Tweedie, 2000</a>) were conducted as exploratory publication-bias diagnostics. These methods are unreliable under extreme heterogeneity (I&sup2; &gt; 90%), as funnel-plot asymmetry may reflect genuine heterogeneity or small-study effects rather than publication bias per se (<a href="#ref-egger1997">Egger et al., 1997</a>).
 </p>

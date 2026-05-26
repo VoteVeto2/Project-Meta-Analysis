@@ -233,7 +233,41 @@
 排除标准：经典多智能体强化学习、无实证结果的立场论文、缺乏单智能体对照的研究、仅模拟评估。去重（去除26条）和PICOS筛选（排除21条）后，剩余106条记录。其中41条报告了多智能体和单智能体条件下可提取的准确率数据。65条被排除的记录详见<a href="#app-d">附录D</a>。筛选由作者在AI辅助下完成；未计算正式的评估者间一致性，这是一个局限。
 </p>
 
-<h3>2.3 效应量</h3>
+<h3>2.3 数据提取与验证</h3>
+<p>
+对于41项纳入研究中的每一项，AI提取智能体阅读论文（摘要、结果表格或通过arXiv获取全文），生成包含以下字段的结构化行：
+</p>
+<table>
+  <caption>表0. 提取表列定义。</caption>
+  <thead>
+    <tr><th>列名</th><th>说明</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>study-id</code></td><td>唯一标识符（S001&ndash;S041）</td></tr>
+    <tr><td><code>citation-key</code></td><td>报告中使用的简短作者-年份键</td></tr>
+    <tr><td><code>year</code></td><td>发表年份</td></tr>
+    <tr><td><code>backbone-model</code></td><td>实验中使用的LLM</td></tr>
+    <tr><td><code>architecture</code></td><td>多智能体编排类型：辩论、协作、层级、角色扮演、验证-批评、MoA或计划-执行</td></tr>
+    <tr><td><code>n-agents</code></td><td>多智能体设置中的智能体数量（提取智能体常默认为3；已知不可靠）</td></tr>
+    <tr><td><code>task-category</code></td><td>领域分类：代码、数学、医学、评估、通识知识、事实核查或其他</td></tr>
+    <tr><td><code>benchmark-name</code></td><td>具体基准（如HumanEval、GSM8K、MedQA）</td></tr>
+    <tr><td><code>n-items</code></td><td>基准中的总项目数。当实际基准大小未知时，智能体将百分比标准化为 <em>n</em> = 100 作为默认值——这是验证过程中已修正的已知错误来源</td></tr>
+    <tr><td><code>n-correct-ma</code></td><td>多智能体系统正确回答的项目数</td></tr>
+    <tr><td><code>n-correct-sa</code></td><td>单智能体基准线正确回答的项目数</td></tr>
+    <tr><td><code>compute-parity-flag</code></td><td>研究是否均等化了推理计算量：是/否/不明</td></tr>
+    <tr><td><code>metric-type</code></td><td>结果指标类型：准确率、pass@1、胜率或解决率</td></tr>
+    <tr><td><code>n-items-source</code></td><td>分母的来源质量：精确（来自论文）、推算（来自基准元数据）或估计（来自报告的百分比）</td></tr>
+    <tr><td><code>audit-status</code></td><td>验证结果：已验证、已验证并更正、不可验证或未审核</td></tr>
+  </tbody>
+</table>
+<p>
+<strong>验证过程。</strong>一个独立验证智能体审核了41行中的12行（29%，使用种子42选取）。它在arXiv上定位每篇论文，将报告数字与原始表格交叉核对，并标记差异。在12个已审核行中，4个经验证无需更改，6个需要更正（50%错误率），2个无法独立定位。主要错误模式是分母误编码：三项研究（S009、S025、S040）在实际基准有300或805个项目时使用了 <em>n</em>-items = 100 作为百分比标准化。基础百分比是正确的，因此效应量方向得以保留，但更正后log-OR的精度发生了变化。其他更正涉及智能体数量（提取智能体默认为3）和一个计算对等分类错误。所有更正记录在 <code>data/verified/verification-report.md</code> 中。更正后的表格（<code>data/verified/effect-size-table.csv</code>）是所有分析的输入。已审核行的评估者间一致性：二元字段kappa = 0.91；计数字段ICC &gt; 0.95。
+</p>
+<p>
+<strong>剩余风险。</strong>29个未审核行（71%）可能包含类似错误。仅已验证研究的敏感性分析（k = 10，第3.5节）提供了合并估计值最可信的锚点。
+</p>
+
+<h3>2.4 效应量</h3>
 <p>
 我们计算对数优势比（log-OR）作为主要效应量。由于无法获得项目级配对正确性数据，MA和SA的比例被视为独立二项计数。这可能低估了不确定性。仅对存在零单元格的研究有条件地应用0.5连续性校正（<a href="#ref-sweeting2004">Sweeting等, 2004</a>）；本样本中不存在此情况。13项研究的分母为推算或估计值（k = 28为精确值）。完整提取表见<a href="#app-a1">附录表A1</a>。
 </p>
@@ -244,7 +278,7 @@
 <strong>指标异质性。</strong>41项比较包括准确率、pass@1、胜率、可执行性分数和解决率。我们将所有指标视为二项比例，但承认这种合并是一种简化。
 </p>
 
-<h3>2.4 统计模型</h3>
+<h3>2.5 统计模型</h3>
 <p>
 主要分析使用限制最大似然（REML）随机效应模型（<a href="#ref-viechtbauer2005">Viechtbauer, 2005</a>），配合修正的Hartung-Knapp-Sidik-Jonkman（HKSJ）调整（<a href="#ref-hartung2001">Hartung &amp; Knapp, 2001</a>；<a href="#ref-inthout2014">IntHout等, 2014</a>）。HKSJ调整计算缩放因子 s&sup2;<sub>HK</sub> = &Sigma;w<sub>i</sub>(y<sub>i</sub> &minus; &mu;)&sup2;/(k&minus;1)，并应用 max(1, s&sup2;<sub>HK</sub>) 作为方差膨胀下限（<a href="#ref-rover2015">R&ouml;ver等, 2015</a>）。CI使用 <em>t</em>(k&minus;1) 自由度。预测区间使用 <em>t</em>(k&minus;2)（<a href="#ref-inthout2016">IntHout等, 2016</a>）。DerSimonian-Laird估计作为敏感性检验。Cochran's Q使用固定效应权重和固定效应合并均值计算（<a href="#ref-borenstein2009">Borenstein等, 2009</a>，第16章）。
 </p>
@@ -255,12 +289,12 @@
 <strong>依赖性。</strong>多个效应量有时来自同一论文、基准系列或模型系列。本版本未实施稳健方差估计（<a href="#ref-hedges2010">Hedges等, 2010</a>）或多层元分析（<a href="#ref-vandennoortgate2013">Van den Noortgate等, 2013</a>）。非聚合敏感性分析（k = 36）部分解决但未完全消除该局限。
 </p>
 
-<h3>2.5 偏倚风险</h3>
+<h3>2.6 偏倚风险</h3>
 <p>
 我们进行了基于ROB 2概念改编的非正式偏倚风险评估（<a href="#ref-sterne2019">Sterne等, 2019</a>），涵盖选择、性能/计算对等、报告和损耗领域。这不是针对LLM基准研究的经过验证的工具；应理解为结构化质量检查清单。41项研究中25项（61%）被评为高偏倚风险，主要因为未控制计算量。41个提取行中仅10个经过独立验证（4个已验证，6个已验证并更正）；2个不可验证；29个未审核。在12个已审核行中，6个需要更正（50%错误率）。因此31/41行（76%）缺乏独立验证，合并估计值很大程度暴露于提取错误。
 </p>
 
-<h3>2.6 发表偏倚</h3>
+<h3>2.7 发表偏倚</h3>
 <p>
 作为探索性发表偏倚诊断，我们进行了漏斗图检查、Egger回归检验（<a href="#ref-egger1997">Egger等, 1997</a>）、Begg秩相关（<a href="#ref-begg1994">Begg &amp; Mazumdar, 1994</a>）和Duval-Tweedie剪补法（<a href="#ref-duval2000">Duval &amp; Tweedie, 2000</a>）。这些方法在极端异质性（I&sup2; &gt; 90%）下不可靠，漏斗图不对称可能反映真实异质性或小研究效应而非发表偏倚本身（<a href="#ref-egger1997">Egger等, 1997</a>）。
 </p>
