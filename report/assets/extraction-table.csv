@@ -1,0 +1,42 @@
+study-id,citation-key,benchmark-name,task-category,architecture,n-items,n-correct-ma,n-correct-sa,n-items-source,compute-parity-flag,audit-status,rob-overall,yi,vi,h,ma-pct,sa-pct,rd-pct
+S001,Du2023,GSM8K,math,debate,1319,1121,1016,exact,no,unaudited,high,0.524,0.0102,0.204,85.0,77.0,8.0
+S002,Qian2024,SoftwareDev,code,role-play,70,1,1,imputed,no,unaudited,high,0.0,2.029,0.0,1.4,1.4,0.0
+S003,Liang2024,Counter-Intuitive AR,evaluation,cooperation,200,74,56,imputed,no,unaudited,high,0.412,0.0463,0.193,37.0,28.0,9.0
+S004,Huang2024,HumanEval,code,cooperation,164,158,148,exact,no,unaudited,high,1.046,0.2423,0.25,96.3,90.2,6.1
+S005,Xue2025,GPQA-Diamond,other,cooperation,198,172,170,exact,no,verified,high,0.086,0.0859,0.029,86.9,85.9,1.0
+S006,Yang2025,HumanEval,code,cooperation,164,135,125,exact,unclear,unaudited,some,0.373,0.0755,0.151,82.3,76.2,6.1
+S007,Islam2024,HumanEval,code,planner-executor,164,154,145,exact,no,verified-corrected,high,0.702,0.166,0.196,93.9,88.4,5.5
+S008,Hong2024,HumanEval,code,hierarchy,164,141,110,exact,no,unaudited,high,1.102,0.0782,0.455,86.0,67.1,18.9
+S009,Zhang2024b,SWE-bench Lite,code,cooperation,300,103,82,exact,unclear,verified-corrected,some,0.329,0.0316,0.152,34.3,27.3,7.0
+S010,Benkovich2026,SWE-bench 500,code,role-play,500,360,325,exact,yes,unaudited,some,0.325,0.0187,0.151,72.0,65.0,7.0
+S011,Xie2025,HumanEval,code,verifier-critic,164,115,47,exact,no,unaudited,high,1.765,0.0589,0.855,70.1,28.7,41.4
+S012,Doki2024,HumanEval,code,cooperation,164,161,145,exact,no,unaudited,high,1.95,0.3991,0.423,98.2,88.4,9.8
+S013,Chen2026,ClassEval,code,cooperation,100,82,61,imputed,yes,unverifiable,some,1.069,0.1098,0.473,82.0,61.0,21.0
+S014,Kim2024,MedQA,medical,hierarchy,1273,1068,1015,exact,no,verified,high,0.281,0.0107,0.108,83.9,79.7,4.2
+S015,Tang2024,MedQA (avg 9 datasets),medical,debate,1273,1104,1026,exact,no,unaudited,high,0.453,0.0118,0.166,86.7,80.6,6.1
+S016,Li2025,MedXpert-MM,other,verifier-critic,581,198,163,exact,no,unaudited,high,0.282,0.0162,0.13,34.1,28.1,6.0
+S017,MediHive2026,MedQA,medical,debate,1273,1073,980,exact,unclear,unaudited,some,0.473,0.0104,0.186,84.3,77.0,7.3
+S018,MedARC2025,PubMedQA,medical,debate,1000,772,729,exact,no,unaudited,high,0.23,0.0107,0.099,77.2,72.9,4.3
+S019,Charney2026,Clinical tasks (5 tasks),medical,hierarchy,100,91,73,imputed,yes,unaudited,some,1.319,0.1728,0.483,91.0,73.0,18.0
+S020,Ophth2026,Ophthalmology vignettes,medical,debate,200,192,172,imputed,no,verified-corrected,high,1.363,0.1717,0.364,96.0,86.0,10.0
+S021,MedLA2025,MedDDx-Expert,medical,debate,570,239,177,exact,yes,unaudited,some,0.472,0.0154,0.227,41.9,31.1,10.8
+S022,Bao2025,MMLU-Pro-Health,general-knowledge,cooperation,14042,10454,10077,exact,no,unaudited,high,0.137,0.0007,0.061,74.4,71.8,2.6
+S023,Ferber2025,GI oncology (20 cases),other,hierarchy,20,17,6,exact,no,unaudited,high,2.582,0.6303,1.187,85.0,30.0,55.0
+S024,Topologies2026,Rare disease (302 cases),evaluation,hierarchy,302,151,145,exact,yes,unaudited,some,0.08,0.0265,0.04,50.0,48.0,2.0
+S025,Chen2024,SWE-bench Lite,code,hierarchy,300,85,54,exact,no,verified-corrected,high,0.588,0.039,0.246,28.3,18.0,10.3
+S026,Han2025,Weibo21 / FakeNewsDataset,factuality,debate,4488,3680,3321,estimated,no,verified,high,0.47,0.0027,0.194,82.0,74.0,8.0
+S027,Fan2025,GSM8K,math,debate,1319,1119,940,exact,no,unverifiable,high,0.814,0.0096,0.332,84.8,71.3,13.5
+S028,Wu2025,Knight-Knave-Spy (size 4),other,debate,100,69,17,imputed,unclear,unaudited,some,2.386,0.1176,1.111,69.0,17.0,52.0
+S029,Wynn2025,MMLU,general-knowledge,debate,14042,10307,11599,exact,no,unaudited,high,-0.543,0.0009,-0.223,73.4,82.6,-9.2
+S030,Yao2025,CommonsenseQA,other,debate,1221,1062,1050,exact,no,verified,high,0.084,0.014,0.029,87.0,86.0,1.0
+S031,Lin2025,MMLU,general-knowledge,debate,14042,11725,10714,exact,no,unaudited,high,0.452,0.0009,0.18,83.5,76.3,7.2
+S032,Cui2025,8 benchmarks (GSM-Ranges / AIME / MATH500 / StrategyQA),math,debate,5000,3222,2786,imputed,yes,unaudited,some,0.365,0.0017,0.178,64.4,55.7,8.7
+S033,Wang2025,GPQA,other,debate,198,95,85,exact,yes,unaudited,some,0.204,0.0408,0.101,48.0,42.9,5.1
+S034,Tian2026,MATH,math,debate,5000,4010,3890,imputed,unclear,unaudited,some,0.145,0.0024,0.059,80.2,77.8,2.4
+S035,Tran2026,FRAMES,other,debate,824,181,206,estimated,yes,unaudited,some,-0.169,0.0136,-0.072,22.0,25.0,-3.0
+S036,Li2026,13 datasets (Knowledge / Math / Medicine / Science / Reasoning),math,debate,5000,3350,3265,imputed,yes,unaudited,some,0.076,0.0018,0.036,67.0,65.3,1.7
+S037,Hu2025,LLMBar,evaluation,debate,419,344,323,exact,unclear,unaudited,some,0.31,0.0298,0.125,82.1,77.1,5.0
+S038,Liu2026,MATH500 / AMC23 / AIME24 / AIME25 (avg),math,debate,5000,2885,2645,imputed,unclear,unaudited,some,0.194,0.0016,0.097,57.7,52.9,4.8
+S039,Zhou2025,HiddenBench (65 tasks),other,cooperation,65,20,53,exact,no,unaudited,high,-2.296,0.1744,-1.077,30.8,81.5,-50.7
+S040,Wang2024,AlpacaEval 2.0,other,moa,805,524,463,estimated,no,verified-corrected,high,0.32,0.0106,0.156,65.1,57.5,7.6
+S041,Ki2025,NormAd-ETI,other,debate,500,380,355,exact,no,verified-corrected,high,0.257,0.0207,0.113,76.0,71.0,5.0

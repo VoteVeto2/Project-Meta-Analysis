@@ -1,0 +1,100 @@
+# Screening Log
+
+## Summary
+- Raw records: 153
+- After deduplication: 127
+- After PICOS screen: 106
+- With extractable MA+SA data: 41
+- Final effect-size rows: 41
+
+## Excluded at PICOS (21 papers)
+
+- **Chen2025**: InfCode: Adversarial Iterative Refinement of Tests and Patches for Reliable Soft... — *no SA baseline*
+- **SciAgent2025**: SciAgent: A Unified Multi-Agent System for Generalistic Scientific Reasoning... — *no SA baseline*
+- **Zhang2025**: MultiAgentBench: Evaluating the Collaboration and Competition of LLM Agents... — *no SA baseline*
+- **Gibbons2025**: Collaborative Intelligence in AI: Evaluating the Performance of a Council of AIs... — *no SA baseline*
+- **Xia2024**: Agentless: Demystifying LLM-based Software Engineering Agents... — *no SA baseline*
+- **Zhang2024**: AutoCodeRover: Autonomous Program Improvement... — *no SA baseline*
+- **Jain2024**: MASAI: Modular Architecture for Software-engineering AI Agents... — *no SA baseline*
+- **SWECompass2025**: SWE-Compass: Towards Unified Evaluation of Agentic Coding Abilities for Large La... — *single-agent-only benchmark*
+- **Perera2025**: Auto-scaling LLM-based multi-agent systems through dynamic integration of agents... — *no SA baseline*
+- **Anthropic2024**: Raising the bar on SWE-bench Verified with Claude 3.5 Sonnet... — *single-agent-only benchmark*
+- **MindStudio2026**: From 80% to 93.9%: Why the Claude Mythos SWE-Bench Jump Matters... — *single-agent-only benchmark*
+- **Anthropic2025b**: System Card: Claude Opus 4.5... — *single-agent-only benchmark*
+- **Sinha2025**: The Illusion of Diminishing Returns: Measuring Long Horizon Execution in LLMs... — *single-agent-only benchmark*
+- **Anthropic2025a**: Introducing Claude 4 (System Card: Claude Opus 4 & Sonnet 4)... — *single-agent-only benchmark*
+- **Anthropic2026a**: System Card: Claude Opus 4.6... — *single-agent-only benchmark*
+- **Jimenez2024**: SWE-bench: Can Language Models Resolve Real-World GitHub Issues?... — *no SA baseline | single-agent-only benchmark*
+- **APEX2026**: APEX-SWE... — *single-agent-only benchmark*
+- **Yu2026**: SWE-ABS: Adversarial Benchmark Strengthening Exposes Inflated Success Rates on T... — *single-agent-only benchmark*
+- **FeatureBench2026**: FeatureBench: Benchmarking Agentic Coding for Complex Feature Development... — *single-agent-only benchmark*
+- **Li2023**: CAMEL: Communicative Agents for Mind Exploration of Large Language Model Society... — *no SA baseline*
+- **Ghafarollahi2025**: SciAgents: Automating Scientific Discovery Through Bioinspired Multi-Agent Intel... — *no SA baseline*
+
+## Without extractable data (65 papers)
+
+- **Dong2024**: Self-Collaboration Code Generation via ChatGPT... — MA=47.1, SA=baseline
+- **Chen2024b**: ReConcile: Round-Table Conference Improves Reasoning via Consensus among Diverse... — MA=11.4, SA=baseline
+- **Lee2025**: Blueprint2Code: A Multi-Agent Pipeline for Reliable Code Generation via Blueprin... — MA=96.3, SA=NR
+- **Eo2025**: Debate Only When Necessary: Adaptive Multiagent Collaboration for Efficient LLM ... — MA=82.0, SA=NR
+- **Antoniades2025**: SWE-Search: Enhancing Software Agents with Monte Carlo Tree Search and Iterative... — MA=23.0, SA=baseline
+- **Pan2025**: CodeCoR: An LLM-Based Self-Reflective Multi-Agent Framework for Code Generation... — MA=77.8, SA=NR
+- **Liu2024**: DyLAN: A Dynamic LLM-Powered Agent Network for Task-Oriented Agent Collaboration... — MA=13.0, SA=baseline
+- **Schmidgall2024**: AgentClinic: A Multimodal Agent Benchmark to Evaluate AI in Simulated Clinical E... — MA=60.3, SA=NR
+- **MixedVendor2026**: Do Mixed-Vendor Multi-Agent LLMs Improve Clinical Diagnosis?... — MA=49.09, SA=NR
+- **Zhang2025b**: Debate4MATH: Multi-Agent Debate for Fine-Grained Reasoning in Math... — MA=83.4, SA=NR
+- **Li2025**: CodeTree: Agent-guided Tree Search for Code Generation with Large Language Model... — MA=95.1, SA=NR
+- **Islam2025**: CodeSIM: Multi-Agent Code Generation and Problem Solving through Simulation-Driv... — MA=95.1, SA=NR
+- **Xie2026**: From Spark to Fire: Modeling and Mitigating Error Cascades in LLM-Based Multi-Ag... — MA=0.32, SA=NR
+- **Neuro2025**: A Multi-Agent Approach to Neurological Clinical Reasoning... — MA=NR, SA=90.9
+- **Li2025**: DReaMAD: From Belief Entrenchment to Robust Reasoning in LLM Agents... — MA=9.5, SA=baseline
+- **MedCollab2026**: MedCollab: Causal-Driven Multi-Agent Collaboration for Full-Cycle Clinical Diagn... — MA=62.0, SA=NR
+- **Ao2026**: On the Reliability Limits of LLM-Based Multi-Agent Planning... — MA=NR, SA=NR
+- **Zhu2026**: Demystifying Multi-Agent Debate: The Role of Confidence and Diversity... — MA=NR, SA=NR
+- **Eo2025**: Debate Only When Necessary: Adaptive Multiagent Collaboration for Efficient LLM ... — MA=NR, SA=NR
+- **Choi2025b**: When Identity Skews Debate: Anonymization for Bias-Reduced Multi-Agent Reasoning... — MA=NR, SA=NR
+- **Smit2024**: Should we be going MAD? A Look at Multi-Agent Debate Strategies for LLMs... — MA=NR, SA=NR
+- **SiloBench2026**: Silo-Bench: A Scalable Environment for Evaluating Distributed Coordination in Mu... — MA=NR, SA=NR
+- **Zhu2025**: Conformity in Large Language Models... — MA=NR, SA=NR
+- **Li2025**: AgentAsk: Multi-Agent Systems Need to Ask... — MA=NR, SA=NR
+- **Zhu2025b**: Revisiting Multi-Agent Debate as Test-Time Scaling: A Systematic Study of Condit... — MA=NR, SA=NR
+- **Zhu2025c**: MedAgentBoard: Benchmarking Multi-Agent Collaboration with Conventional Methods ... — MA=NR, SA=NR
+- **Maryanskyy2026**: When Agents Disagree: The Selection Bottleneck in Multi-Agent LLM Pipelines... — MA=NR, SA=NR
+- **Shin2026**: The Reasoning Trap: An Information-Theoretic Bound on Closed-System Multi-Step L... — MA=NR, SA=NR
+- **AgentArk2026**: AgentArk: Distilling Multi-Agent Intelligence into a Single LLM Agent... — MA=NR, SA=NR
+- **Zhou2025b**: GUARDIAN: Safeguarding LLM Multi-Agent Collaborations with Temporal Graph Modeli... — MA=NR, SA=NR
+- **MAESTRO2026**: MAESTRO: Multi-Agent Evaluation Suite for Testing Reliability and Observability... — MA=high variance across runs, SA=depends on architecture
+- **Li2024**: Towards a Science of Scaling Agent Systems... — MA=NR, SA=NR
+- **MASEval2026**: MASEval: Extending Multi-Agent Evaluation from Models to Systems... — MA=framework-dependent, SA=model-dependent
+- **Qian2024**: Scaling Large Language Model-based Multi-Agent Collaboration... — MA=+0.9% with majority voting (8 agents), SA=single-agent baseline
+- **Bogavelli2025**: AgentArch: A Comprehensive Benchmark to Evaluate Agent Architectures in Enterpri... — MA=max 35.3% (complex) / 70.8% (simple), SA=varies by architecture
+- **Chen2026**: Single-agent or Multi-agent Systems? Why Not Both?... — MA=1.1-12% improvement via cascading, SA=SAS baseline
+- **Li2026**: Understanding Agent Scaling in LLM-Based Multi-Agent Systems via Diversity... — MA=diminishing (homogeneous); better with diversity, SA=single-agent baseline
+- **Hong2024**: ArgMed-Agents: Explainable Clinical Decision Reasoning with LLM Discussion via A... — MA=NR, SA=NR
+- **Ishibashi2024**: Self-Organized Agents: A LLM Multi-Agent Framework toward Ultra Large-Scale Code... — MA=+5% rel., SA=NR
+- **Zhao2024**: BattleAgentBench: Evaluating Cooperation and Competition Capabilities of Languag... — MA=NR, SA=NR
+- **Abdelnabi2025**: How to Train a Leader: Hierarchical Reasoning in Multi-Agent LLMs... — MA=NR, SA=NR
+- **Wang2025**: Talk Structurally Act Hierarchically: A Collaborative Framework for LLM Multi-Ag... — MA=NR, SA=NR
+- **Zhang2025b**: Stop Overvaluing Multi-Agent Debate -- We Must Rethink Evaluation and Embrace Mo... — MA=NR, SA=NR
+- **Sun2024**: Corex: Pushing the Boundaries of Complex Reasoning through Multi-Model Collabora... — MA=NR, SA=NR
+- **Chen2024a**: AgentVerse: Facilitating Multi-Agent Collaboration and Exploring Emergent Behavi... — MA=NR, SA=NR
+- **Yang2025**: SWE-Debate: Competitive Multi-Agent Debate for Software Issue Resolution... — MA=NR, SA=NR
+- **Choi2025**: Debate or Vote: Which Yields Better Decisions in Multi-Agent Large Language Mode... — MA=NR, SA=NR
+- **Bertalanic2026**: The Cost of Consensus: Isolated Self-Correction Prevails Over Unguided Homogeneo... — MA=NR, SA=NR
+- **Kaesberg2025**: Voting or Consensus? Decision-Making in Multi-Agent Debate... — MA=NR, SA=NR
+- **Oh2025**: From Belief Entrenchment to Robust Reasoning in LLM Agents (DReaMAD)... — MA=NR, SA=NR
+- **Wang2024**: Rethinking the Bounds of LLM Reasoning: Are Multi-Agent Discussions the Key?... — MA=NR, SA=NR
+- **Chan2023**: ChatEval: Towards Better LLM-based Evaluators through Multi-Agent Debate... — MA=NR, SA=NR
+- **Liu2025**: Lessons Learned: A Multi-Agent Framework for Code LLMs to Learn and Improve... — MA=NR, SA=NR
+- **MoMA2025**: MoMA: A Mixture-of-Multimodal-Agents Architecture for Enhancing Clinical Predict... — MA=NR, SA=NR
+- **Becker2025**: Stay Focused: Problem Drift in Multi-Agent Debate... — MA=NR, SA=NR
+- **Cemri2025**: Why Do Multi-Agent LLM Systems Fail?... — MA=NR, SA=NR
+- **Xu2025**: Rethinking the Value of Multi-Agent Workflow: A Strong Single Agent Baseline... — MA=NR, SA=NR
+- **DrugAgent2024**: DrugAgent: Automating AI-aided Drug Discovery Programming through LLM Multi-Agen... — MA=NR, SA=NR
+- **Pramanik2025**: AdaCoder: An Adaptive Planning and Multi-Agent Framework for Function-Level Code... — MA=+27.69% avg, SA=NR
+- **RareAgents2024**: RareAgents: Autonomous Multi-disciplinary Team for Rare Disease Diagnosis and Tr... — MA=NR, SA=NR
+- **You2026**: Improving Clinical Diagnosis with Counterfactual Multi-Agent Reasoning... — MA=NR, SA=NR
+- **ClinicalAgents2026**: ClinicalAgents: Multi-Agent Orchestration for Clinical Decision Making with Dual... — MA=NR, SA=NR
+- **MAM2025**: MAM: Modular Multi-Agent Framework for Multi-Modal Medical Diagnosis via Role-Sp... — MA=NR, SA=NR
+- **Chen2025**: Enhancing Diagnostic Capability with Multi-Agents Conversational Large Language ... — MA=NR, SA=NR
+- **Ashrafi2025**: Enhancing LLM Code Generation: A Systematic Evaluation of Multi-Agent Collaborat... — MA=NR, SA=NR

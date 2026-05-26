@@ -1,0 +1,42 @@
+study-id,citation-key,year,backbone-model,architecture,n-agents,task-category,benchmark-name,n-items,n-correct-ma,n-correct-sa,compute-parity-flag,compute-ratio-ma-to-sa,source-table-or-figure,audit-status,n-items-estimated,metric-type,n-items-source
+S001,Du2023,2023,ChatGPT (GPT-3.5),debate,3,math,GSM8K,1319,1121,1016,no,NR,Table/Fig from Du2023,unaudited,False,accuracy,exact
+S002,Qian2024,2024,GPT-3.5-Turbo,role-play,3,code,SoftwareDev,70,1,1,no,NR,Table/Fig from Qian2024,unaudited,True,accuracy,imputed
+S003,Liang2024,2024,GPT-3.5-Turbo,cooperation,3,evaluation,Counter-Intuitive AR,200,74,56,no,NR,Table/Fig from Liang2024,unaudited,True,accuracy,imputed
+S004,Huang2024,2024,GPT-4,cooperation,3,code,HumanEval,164,158,148,no,NR,Table/Fig from Huang2024,unaudited,False,accuracy,exact
+S005,Xue2025,2025,Gemini 2.5 Pro / GPT-5 / Grok 4 / Claude Sonnet 4,cooperation,3,other,GPQA-Diamond,198,172,170,no,NR,Table/Fig from Xue2025,verified,False,accuracy,exact
+S006,Yang2025,2025,GPT-3.5-Turbo,cooperation,3,code,HumanEval,164,135,125,unclear,NR,Table/Fig from Yang2025,unaudited,False,accuracy,exact
+S007,Islam2024,2024,GPT-4,planner-executor,4,code,HumanEval,164,154,145,no,NR,Table/Fig from Islam2024,verified-corrected,False,accuracy,exact
+S008,Hong2024,2024,GPT-4,hierarchy,3,code,HumanEval,164,141,110,no,NR,Table/Fig from Hong2024,unaudited,False,accuracy,exact
+S009,Zhang2024b,2024,mixed,cooperation,3,code,SWE-bench Lite,300,103,82,unclear,NR,Table/Fig from Zhang2024b,verified-corrected,False,resolve-rate,exact
+S010,Benkovich2026,2026,GPT-5,role-play,5,code,SWE-bench 500,500,360,325,yes,NR,Table/Fig from Benkovich2026,unaudited,False,resolve-rate,exact
+S011,Xie2025,2026,Pangu-1B,verifier-critic,3,code,HumanEval,164,115,47,no,NR,Table/Fig from Xie2025,unaudited,False,accuracy,exact
+S012,Doki2024,2024,GPT-4,cooperation,3,code,HumanEval,164,161,145,no,NR,Table/Fig from Doki2024,unaudited,False,accuracy,exact
+S013,Chen2026,2026,Gemini-2.5-Flash,cooperation,3,code,ClassEval,100,82,61,yes,NR,Table/Fig from Chen2026,unverifiable,True,accuracy,imputed
+S014,Kim2024,2024,GPT-4,hierarchy,3,medical,MedQA,1273,1068,1015,no,NR,Table/Fig from Kim2024,verified,False,accuracy,exact
+S015,Tang2024,2024,GPT-4,debate,3,medical,MedQA (avg 9 datasets),1273,1104,1026,no,NR,Table/Fig from Tang2024,unaudited,False,accuracy,exact
+S016,Li2025,2025,GPT-4o,verifier-critic,3,other,MedXpert-MM,581,198,163,no,NR,Table/Fig from Li2025,unaudited,False,accuracy,exact
+S017,MediHive2026,2026,NR,debate,3,medical,MedQA,1273,1073,980,unclear,NR,Table/Fig from MediHive2026,unaudited,False,accuracy,exact
+S018,MedARC2025,2025,DeepSeek-V3,debate,3,medical,PubMedQA,1000,772,729,no,NR,Table/Fig from MedARC2025,unaudited,False,accuracy,exact
+S019,Charney2026,2026,GPT-4,hierarchy,3,medical,Clinical tasks (5 tasks),100,91,73,yes,NR,Table/Fig from Charney2026,unaudited,True,accuracy,imputed
+S020,Ophth2026,2026,Proprietary fast LLMs,debate,4,medical,Ophthalmology vignettes,200,192,172,no,NR,Table/Fig from Ophth2026,verified-corrected,True,accuracy,imputed
+S021,MedLA2025,2026,LLaMA-3.1-8B,debate,3,medical,MedDDx-Expert,570,239,177,yes,NR,Table/Fig from MedLA2025,unaudited,False,accuracy,exact
+S022,Bao2025,2025,GPT-4-0613,cooperation,3,general-knowledge,MMLU-Pro-Health,14042,10454,10077,no,NR,Table/Fig from Bao2025,unaudited,True,accuracy,exact
+S023,Ferber2025,2025,GPT-4,hierarchy,3,other,GI oncology (20 cases),20,17,6,no,NR,Table/Fig from Ferber2025,unaudited,True,accuracy,exact
+S024,Topologies2026,2026,NR,hierarchy,3,evaluation,Rare disease (302 cases),302,151,145,yes,NR,Table/Fig from Topologies2026,unaudited,True,accuracy,exact
+S025,Chen2024,2024,GPT-4,hierarchy,5,code,SWE-bench Lite,300,85,54,no,NR,Table/Fig from Chen2024,verified-corrected,False,resolve-rate,exact
+S026,Han2025,2025,GPT-4o,debate,3,factuality,Weibo21 / FakeNewsDataset,4488,3680,3321,no,NR,Table/Fig from Han2025,verified,False,accuracy,estimated
+S027,Fan2025,2025,Gemini 2.0 Flash,debate,3,math,GSM8K,1319,1119,940,no,NR,Table/Fig from Fan2025,unverifiable,False,accuracy,exact
+S028,Wu2025,2025,GPT-5-nano / Gemini-2.5-flash,debate,3,other,Knight-Knave-Spy (size 4),100,69,17,unclear,NR,Table/Fig from Wu2025,unaudited,True,accuracy,imputed
+S029,Wynn2025,2025,GPT-4o-mini / LLaMA-3.1-8B / Mistral-7B,debate,3,general-knowledge,MMLU,14042,10307,11599,no,NR,Table/Fig from Wynn2025,unaudited,True,accuracy,exact
+S030,Yao2025,2025,Qwen3-32B / LLaMA-3.3-70B,debate,3,other,CommonsenseQA,1221,1062,1050,no,NR,Table/Fig from Yao2025,verified,False,accuracy,exact
+S031,Lin2025,2025,GPT-4o-mini + LLaMA-3.1-70B,debate,3,general-knowledge,MMLU,14042,11725,10714,no,NR,Table/Fig from Lin2025,unaudited,True,accuracy,exact
+S032,Cui2025,2025,Qwen1.5-7B / DeepSeek-V3,debate,3,math,8 benchmarks (GSM-Ranges / AIME / MATH500 / StrategyQA),5000,3222,2786,yes,NR,Table/Fig from Cui2025,unaudited,True,accuracy,imputed
+S033,Wang2025,2025,GPT-4o-mini,debate,3,other,GPQA,198,95,85,yes,NR,Table/Fig from Wang2025,unaudited,False,accuracy,exact
+S034,Tian2026,2026,Qwen2.5-Math-7B-Instruct,debate,3,math,MATH,5000,4010,3890,unclear,NR,Table/Fig from Tian2026,unaudited,True,accuracy,imputed
+S035,Tran2026,2026,Qwen3-30B,debate,3,other,FRAMES,824,181,206,yes,NR,Table/Fig from Tran2026,unaudited,True,accuracy,estimated
+S036,Li2026,2026,Qwen2.5-14B / LLaMA3.1-8B,debate,3,math,13 datasets (Knowledge / Math / Medicine / Science / Reasoning),5000,3350,3265,yes,NR,Table/Fig from Li2026,unaudited,True,accuracy,imputed
+S037,Hu2025,2025,Gemini-2.0-Flash,debate,3,evaluation,LLMBar,419,344,323,unclear,NR,Table/Fig from Hu2025,unaudited,False,accuracy,exact
+S038,Liu2026,2026,Qwen3-4B-Base,debate,3,math,MATH500 / AMC23 / AIME24 / AIME25 (avg),5000,2885,2645,unclear,NR,Table/Fig from Liu2026,unaudited,True,accuracy,imputed
+S039,Zhou2025,2026,15 frontier LLMs,cooperation,3,other,HiddenBench (65 tasks),65,20,53,no,NR,Table/Fig from Zhou2025,unaudited,True,accuracy,exact
+S040,Wang2024,2024,GPT-4o + open-source LLMs,moa,3,other,AlpacaEval 2.0,805,524,463,no,NR,Table/Fig from Wang2024,verified-corrected,True,win-rate,estimated
+S041,Ki2025,2025,7 open-weight 7-9B LLMs (LLaMA-3 / Gemma-2 / Yi-1.5 etc.),debate,2,other,NormAd-ETI,500,380,355,no,NR,Table/Fig from Ki2025,verified-corrected,False,accuracy,exact

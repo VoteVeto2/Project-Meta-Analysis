@@ -1,0 +1,42 @@
+study-id,citation-key,rob-selection,rob-performance-compute,rob-reporting,rob-attrition,rob-overall,rob-notes
+S001,Du2023,low,high,low,some,high,GSM8K is standard benchmark; no compute parity; full results reported; failed-run handling unclear
+S002,Qian2024,some,high,some,some,high,Custom SoftwareDev benchmark; no compute parity; limited subset of results; unclear run handling
+S003,Liang2024,some,high,some,some,high,Custom Counter-Intuitive AR benchmark; no compute parity; partial reporting; unclear run handling
+S004,Huang2024,low,high,low,some,high,HumanEval is standard; no compute parity; full results; unclear run handling
+S005,Xue2025,low,high,low,some,high,GPQA-Diamond is standard; no compute parity; full results; unclear run handling
+S006,Yang2025,low,some,low,some,some,HumanEval is standard; compute parity unclear; full results; unclear run handling
+S007,Islam2024,low,high,low,low,high,HumanEval is standard; no compute parity (4 agents vs 1); full results reported across benchmarks; all runs reported
+S008,Hong2024,low,high,low,some,high,HumanEval is standard; no compute parity; full results; unclear run handling
+S009,Zhang2024b,low,some,low,some,some,SWE-bench Lite is standard; compute parity unclear (mixed models); full results; unclear run handling
+S010,Benkovich2026,low,low,low,some,some,SWE-bench 500 is standard; compute parity controlled; full results; unclear run handling
+S011,Xie2025,low,high,low,some,high,HumanEval is standard; no compute parity; full results; unclear run handling
+S012,Doki2024,low,high,low,some,high,HumanEval is standard; no compute parity; full results; unclear run handling
+S013,Chen2026,low,low,some,some,some,ClassEval is standard; compute parity controlled; could not fully verify reported numbers; unclear run handling
+S014,Kim2024,low,high,some,low,high,MedQA is standard; no compute parity (adaptive uses variable API calls); partial benchmark reporting; all runs reported
+S015,Tang2024,low,high,some,some,high,MedQA is standard; no compute parity; averaged across 9 datasets; unclear run handling
+S016,Li2025,some,high,some,some,high,MedXpert-MM is relatively new; no compute parity; partial reporting; unclear run handling
+S017,MediHive2026,low,some,some,some,some,MedQA is standard; compute parity unclear; partial reporting; unclear run handling
+S018,MedARC2025,low,high,low,some,high,PubMedQA is standard; no compute parity; full results; unclear run handling
+S019,Charney2026,some,low,some,some,some,Clinical tasks are semi-custom (5 tasks); compute parity controlled; partial reporting; unclear run handling
+S020,Ophth2026,some,high,low,low,high,Custom ophthalmology vignettes; compute NOT controlled (4 models vs 1); full results; all configurations reported
+S021,MedLA2025,some,low,some,some,some,MedDDx-Expert is relatively new; compute parity controlled; partial reporting; unclear run handling
+S022,Bao2025,low,high,low,some,high,MMLU-Pro-Health is standard; no compute parity; full results; unclear run handling
+S023,Ferber2025,some,high,some,some,high,Custom GI oncology cases (20 only); no compute parity; partial reporting; unclear run handling
+S024,Topologies2026,some,low,some,some,some,Rare disease custom cases; compute parity controlled; partial reporting; unclear run handling
+S025,Chen2024,low,high,low,low,high,SWE-bench Lite is standard; no compute parity (5 agents); full results reported; all submissions reported
+S026,Han2025,low,high,low,some,high,Weibo21/FakeNewsDataset are standard; no compute parity (14 agents); full results; unclear run handling
+S027,Fan2025,low,high,some,some,high,GSM8K is standard; no compute parity; paper not independently located on arXiv; unclear run handling
+S028,Wu2025,some,some,some,some,some,Knight-Knave-Spy is custom; compute parity unclear; partial reporting; unclear run handling
+S029,Wynn2025,low,high,low,some,high,MMLU is standard; no compute parity; full results; unclear run handling
+S030,Yao2025,low,high,low,low,high,CommonsenseQA is standard; no compute parity; full results reported; all configurations reported
+S031,Lin2025,low,high,low,some,high,MMLU is standard; no compute parity; full results; unclear run handling
+S032,Cui2025,low,low,some,some,some,Mixed standard benchmarks; compute parity controlled; averaged across 8 benchmarks; unclear run handling
+S033,Wang2025,low,low,low,some,some,GPQA is standard; compute parity controlled; full results; unclear run handling
+S034,Tian2026,low,some,low,some,some,MATH is standard; compute parity unclear; full results; unclear run handling
+S035,Tran2026,some,low,some,some,some,FRAMES is relatively new; compute parity controlled; partial reporting; unclear run handling
+S036,Li2026,low,low,some,some,some,Mixed standard benchmarks; compute parity controlled; averaged across 13 datasets; unclear run handling
+S037,Hu2025,some,some,low,some,some,LLMBar is relatively new; compute parity unclear; full results; unclear run handling
+S038,Liu2026,low,some,some,some,some,Standard math benchmarks; compute parity unclear; averaged across 4 benchmarks; unclear run handling
+S039,Zhou2025,some,high,some,some,high,Custom HiddenBench; no compute parity; partial reporting; unclear run handling
+S040,Wang2024,low,high,low,low,high,AlpacaEval 2.0 is standard (805 items); no compute parity; full results; all runs reported
+S041,Ki2025,low,high,low,low,high,NormAd-ETI is standard; no compute parity; full results; all configurations reported

@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>更多智能体，更好结果？多智能体与单智能体LLM系统的探索性便利样本元分析 (v6-cn)</title>
+<style>
+  :root {
+    --text: #1a1a1a;
+    --text-secondary: #4a4a4a;
+    --bg: #ffffff;
+    --accent: #2c5282;
+    --accent-light: #ebf4ff;
+    --border: #d0d7de;
+    --table-stripe: #f6f8fa;
+    --caption: #555;
+    --warning: #b45309;
+    --danger: #dc2626;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: "Charter", "Georgia", "Times New Roman", serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.72;
+    font-size: 16px;
+  }
+  h1 {
+    font-size: 1.65rem;
+    line-height: 1.25;
+    margin: 2.5rem 0 0.25rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  h2 {
+    font-size: 1.25rem;
+    margin: 2.2rem 0 0.5rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  h3 {
+    font-size: 1.05rem;
+    margin: 1.6rem 0 0.4rem;
+    color: var(--text-secondary);
+  }
+  p { margin: 0.6rem 0; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .meta {
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.55;
+  }
+  .abstract {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 0.94rem;
+  }
+  .abstract h2 { border: none; margin-top: 0; font-size: 1.05rem; }
+  .highlight-box {
+    background: #fffbeb;
+    border: 1px solid #f59e0b;
+    border-radius: 4px;
+    padding: 0.8rem 1.1rem;
+    margin: 1.2rem 0;
+    font-size: 0.94rem;
+  }
+  .highlight-box strong { color: var(--warning); }
+  .danger-box {
+    background: #fef2f2;
+    border: 1px solid var(--danger);
+    border-radius: 4px;
+    padding: 0.8rem 1.1rem;
+    margin: 1.2rem 0;
+    font-size: 0.94rem;
+  }
+  .danger-box strong { color: var(--danger); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.88rem;
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  th {
+    background: var(--accent);
+    color: #fff;
+    padding: 0.5rem 0.6rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 0.45rem 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:nth-child(even) td { background: var(--table-stripe); }
+  caption, .fig-caption {
+    font-size: 0.85rem;
+    color: var(--caption);
+    margin: 0.5rem 0 1rem;
+    line-height: 1.5;
+    text-align: left;
+  }
+  caption { caption-side: top; font-weight: 600; margin-bottom: 0.4rem; }
+  figure {
+    margin: 1.5rem 0;
+    text-align: center;
+  }
+  figure img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+  }
+  figcaption {
+    font-size: 0.85rem;
+    color: var(--caption);
+    margin-top: 0.5rem;
+    text-align: left;
+    line-height: 1.5;
+  }
+  .ref-list {
+    font-size: 0.85rem;
+    line-height: 1.65;
+  }
+  .ref-list p {
+    padding-left: 2em;
+    text-indent: -2em;
+    margin: 0.35rem 0;
+  }
+  .appendix {
+    border-top: 2px solid var(--border);
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+  }
+  .appendix h2 { font-size: 1.1rem; }
+  sup { font-size: 0.75em; }
+  .stat { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92em; }
+  .exploratory {
+    font-style: italic;
+    color: var(--text-secondary);
+  }
+  .descriptive-only {
+    font-style: italic;
+    color: var(--danger);
+    font-size: 0.85em;
+  }
+  .grade-box {
+    background: #f0fdf4;
+    border: 1px solid #22c55e;
+    border-radius: 4px;
+    padding: 0.8rem 1.1rem;
+    margin: 1.2rem 0;
+    font-size: 0.94rem;
+  }
+  .extraction-table td { font-size: 0.78rem; padding: 0.3rem 0.4rem; }
+  .extraction-table th { font-size: 0.75rem; padding: 0.4rem; }
+  @media (max-width: 600px) {
+    body { padding: 1rem; font-size: 15px; }
+    h1 { font-size: 1.35rem; }
+    table { font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<h1>更多智能体，更好结果？多智能体与单智能体LLM系统的探索性便利样本元分析</h1>
+
+<div class="meta">
+  <strong>杨欣宇</strong> (r1020926)<br>
+  鲁汶大学 心理与教育科学学院<br>
+  元分析 (G0B75a)，2025&ndash;2026学年<br>
+  2026年5月26日 &mdash; <strong>第六版</strong>（v5同行评审后修订）
+</div>
+
+<!-- ====== 摘要 ====== -->
+<div class="abstract">
+<h2>摘要</h2>
+<p>
+本探索性便利样本元分析综合了41项研究内比较（2023&ndash;2026年），考察多智能体LLM编排与单智能体提示在基准准确率上的差异。多智能体系统在全样本中平均提高约3&ndash;5个百分点，在计算资源对等条件下约提高2个百分点。正式效应量为 <span class="stat">log-OR = 0.45, 95% CI [0.23, 0.67]</span>（REML + HKSJ调整），但该估计值脆弱：异质性极高（<span class="stat">I&sup2; = 96.1%</span>），预测区间跨越零点（<span class="stat">[&minus;0.74, 1.64]</span>），Cohen's <em>h</em> 微不足道（<span class="stat">0.08</span>），Egger检验检测到漏斗图不对称（<span class="stat">p = .024</span>）。已验证子集（k = 10）的估计值更低（<span class="stat">log-OR = 0.35</span>），异质性大幅降低。由于76%的提取行未经独立验证（已审核行的50%需要更正），且多数研究未控制计算量，这些发现仅为假设生成性质。
+</p>
+</div>
+
+<!-- ====== 1. 引言 ====== -->
+<h2>1. 引言</h2>
+
+<p>
+多智能体大语言模型范式基于一个引人注目的直觉：正如人类团队在复杂任务上优于个人，多个LLM实例通过结构化协议合作应该超越单个实例的表现。<a href="#ref-du2023">Du等 (2023)</a> 的早期工作表明，多智能体辩论提高了ChatGPT的事实性和推理能力，<a href="#ref-liang2024">Liang等 (2024)</a> 则展示了多智能体讨论如何促进发散性思维。AutoGen (<a href="#ref-wu2023">Wu等, 2023</a>)、MetaGPT (<a href="#ref-hong2023">Hong等, 2023</a>) 和 ChatDev (<a href="#ref-qian2024">Qian等, 2024</a>) 等框架现已在层级结构、辩论和协作工作流中编排数十个专门化智能体。
+</p>
+
+<p>
+然而，一种质疑叙事已经出现。<a href="#ref-zhang2025stop">Zhang等 (2025)</a> 直接表明，多智能体辩论在消耗更多推理计算的情况下，往往无法超越思维链和自一致性等简单的单智能体基准线。随着前沿模型的改进，协调开销可能超过递减的边际收益。
+</p>
+
+<p>
+据我们有限检索所知，目前尚未发现直接比较多智能体与单智能体LLM系统的定量元分析，但多智能体LLM综述和基准测试确实存在（<a href="#ref-guo2024">Guo等, 2024</a>）。个别研究在架构（辩论vs.层级vs.协作）、任务领域（代码vs.医学vs.数学）、骨干模型以及是否强制计算对等方面差异很大。这种异质性使叙述性综述不可靠。我们提出四个研究问题：
+</p>
+
+<p>
+<strong>RQ1（主要）。</strong>多智能体LLM系统在基准准确率上是否优于单智能体基准线？<br>
+<strong>RQ2（计算对等）。</strong>在匹配的计算预算下，多智能体优势是否存在？<br>
+<strong>RQ3（前沿悖论）。</strong>随着基线单智能体准确率的提高，编排增益是否缩小？<br>
+<strong>RQ4（调节变量）。</strong>哪些任务和架构属性预测效应方向？
+</p>
+
+<!-- ====== 2. 方法 ====== -->
+<h2>2. 方法</h2>
+
+<h3>2.1 搜索策略与局限</h3>
+<p>
+我们部署了六个并行搜索智能体，覆盖不同主题集群：多智能体辩论、协作/层级架构、软件工程和代码生成、医学/科学推理、批判性和零结果文献、以及前沿模型比较。每个智能体查询了arXiv、ACL Anthology、NeurIPS/ICML/ICLR论文集和Google Scholar，目标为2023&ndash;2026年的论文。共检索到153条记录。搜索字符串见<a href="#app-c">附录C</a>。
+</p>
+<p>
+<strong>重要注意事项：</strong>这是一个便利样本，不是注册的系统综述。未预注册任何方案。搜索策略虽然广泛，但不能保证详尽覆盖。六智能体方法引入的选择偏差与人工系统搜索不同但未必更好。结果应视为假设生成性质。
+</p>
+
+<h3>2.2 筛选与纳入（PICOS）</h3>
+<p>
+<strong>研究对象：</strong>2023&ndash;2026年实证LLM研究。<strong>干预：</strong>任何多智能体编排。<strong>对照：</strong>使用相同骨干模型的单智能体基准线。<strong>结果：</strong>命名基准上的准确率或成功率比例。<strong>研究设计：</strong>研究内面对面比较。仅纳入在同一基准上报告可比较MA和SA结果、使用相同或明确可比较骨干模型的研究。
+</p>
+<p>
+排除标准：经典多智能体强化学习、无实证结果的立场论文、缺乏单智能体对照的研究、仅模拟评估。去重（去除26条）和PICOS筛选（排除21条）后，剩余106条记录。其中41条报告了多智能体和单智能体条件下可提取的准确率数据。65条被排除的记录详见<a href="#app-d">附录D</a>。筛选由作者在AI辅助下完成；未计算正式的评估者间一致性，这是一个局限。
+</p>
+
+<h3>2.3 效应量</h3>
+<p>
+我们计算对数优势比（log-OR）作为主要效应量。由于无法获得项目级配对正确性数据，MA和SA的比例被视为独立二项计数。这可能低估了不确定性。仅对存在零单元格的研究有条件地应用0.5连续性校正（<a href="#ref-sweeting2004">Sweeting等, 2004</a>）；本样本中不存在此情况。13项研究的分母为推算或估计值（k = 28为精确值）。完整提取表见<a href="#app-a1">附录表A1</a>。
+</p>
+<p>
+<strong>风险差估计。</strong>为便于实际解读，我们报告近似风险差（RD = <em>p</em><sub>MA</sub> &minus; <em>p</em><sub>SA</sub>）作为主要解释指标。全部41项研究的合并RD约为3&ndash;5个百分点。在计算对等条件下，这缩小至约2个百分点。Log-OR作为正式效应量用于统计建模。
+</p>
+<p>
+<strong>指标异质性。</strong>41项比较包括准确率、pass@1、胜率、可执行性分数和解决率。我们将所有指标视为二项比例，但承认这种合并是一种简化。
+</p>
+
+<h3>2.4 统计模型</h3>
+<p>
+主要分析使用限制最大似然（REML）随机效应模型（<a href="#ref-viechtbauer2005">Viechtbauer, 2005</a>），配合修正的Hartung-Knapp-Sidik-Jonkman（HKSJ）调整（<a href="#ref-hartung2001">Hartung &amp; Knapp, 2001</a>；<a href="#ref-inthout2014">IntHout等, 2014</a>）。HKSJ调整计算缩放因子 s&sup2;<sub>HK</sub> = &Sigma;w<sub>i</sub>(y<sub>i</sub> &minus; &mu;)&sup2;/(k&minus;1)，并应用 max(1, s&sup2;<sub>HK</sub>) 作为方差膨胀下限（<a href="#ref-rover2015">R&ouml;ver等, 2015</a>）。CI使用 <em>t</em>(k&minus;1) 自由度。预测区间使用 <em>t</em>(k&minus;2)（<a href="#ref-inthout2016">IntHout等, 2016</a>）。DerSimonian-Laird估计作为敏感性检验。Cochran's Q使用固定效应权重和固定效应合并均值计算（<a href="#ref-borenstein2009">Borenstein等, 2009</a>，第16章）。
+</p>
+<p>
+亚组分析对每一水平使用独立的随机效应模型，Q<sub>between</sub> 通过Q分割法计算（<a href="#ref-borenstein2009">Borenstein等, 2009</a>，第19章）。单例类别（任务中事实核查 k=1；架构中MoA和计划-执行各k=1）被合并到最近的"其他"类别，使所有亚组表合计为 k = 41。元回归为混合效应模型，采用条件REML &tau;&sup2; 估计和Knapp-Hartung <em>t</em> 分布推断（<a href="#ref-viechtbauer2010">Viechtbauer, 2010</a>）。逐一剔除敏感性分析每次迭代重新估计 &tau;&sup2;。
+</p>
+<p>
+<strong>依赖性。</strong>多个效应量有时来自同一论文、基准系列或模型系列。本版本未实施稳健方差估计（<a href="#ref-hedges2010">Hedges等, 2010</a>）或多层元分析（<a href="#ref-vandennoortgate2013">Van den Noortgate等, 2013</a>）。非聚合敏感性分析（k = 36）部分解决但未完全消除该局限。
+</p>
+
+<h3>2.5 偏倚风险</h3>
+<p>
+我们进行了基于ROB 2概念改编的非正式偏倚风险评估（<a href="#ref-sterne2019">Sterne等, 2019</a>），涵盖选择、性能/计算对等、报告和损耗领域。这不是针对LLM基准研究的经过验证的工具；应理解为结构化质量检查清单。41项研究中25项（61%）被评为高偏倚风险，主要因为未控制计算量。41个提取行中仅10个经过独立验证（4个已验证，6个已验证并更正）；2个不可验证；29个未审核。在12个已审核行中，6个需要更正（50%错误率）。因此31/41行（76%）缺乏独立验证，合并估计值很大程度暴露于提取错误。
+</p>
+
+<h3>2.6 发表偏倚</h3>
+<p>
+作为探索性发表偏倚诊断，我们进行了漏斗图检查、Egger回归检验（<a href="#ref-egger1997">Egger等, 1997</a>）、Begg秩相关（<a href="#ref-begg1994">Begg &amp; Mazumdar, 1994</a>）和Duval-Tweedie剪补法（<a href="#ref-duval2000">Duval &amp; Tweedie, 2000</a>）。这些方法在极端异质性（I&sup2; &gt; 90%）下不可靠，漏斗图不对称可能反映真实异质性或小研究效应而非发表偏倚本身（<a href="#ref-egger1997">Egger等, 1997</a>）。
+</p>
+
+<!-- ====== 3. 结果 ====== -->
+<h2>3. 结果</h2>
+
+<h3>3.1 研究流程</h3>
+
+<figure>
+  <img src="assets/prisma-flow.png" alt="PRISMA式流程图">
+  <figcaption><strong>图1.</strong> PRISMA式流程图。六个搜索智能体识别了153条记录。去重（去除26条）、PICOS筛选（排除21条）和数据可用性筛选（65条无可提取MA+SA准确率）后，41项研究被纳入。排除表见<a href="#app-d">附录D</a>。</figcaption>
+</figure>
+
+<table>
+  <caption>表1. PRISMA式流程概要。</caption>
+  <thead>
+    <tr><th>阶段</th><th>记录数</th><th>操作</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>识别</td><td>153</td><td>来自6个搜索智能体（便利样本）</td></tr>
+    <tr><td>去重后</td><td>127</td><td>去除26条重复</td></tr>
+    <tr><td>PICOS筛选后</td><td>106</td><td>排除21条</td></tr>
+    <tr><td>有可提取数据</td><td>41</td><td>65条缺乏MA+SA准确率计数（<a href="#app-d">附录D</a>）</td></tr>
+    <tr><td>纳入元分析</td><td>41</td><td>最终分析样本（10个已验证/更正，2个不可验证，29个未审核）</td></tr>
+  </tbody>
+</table>
+
+<h3>3.2 描述性特征</h3>
+<p>
+41项纳入比较涵盖2023&ndash;2026年。主要架构为辩论（k = 20, 49%），其次为协作（k = 9）、层级（k = 6）、验证-批评（k = 2）、角色扮演（k = 2）和其他/稀有（k = 2，包含一项MoA和一项计划-执行研究）。任务类别包括代码生成（k = 11）、其他/混合（k = 11，含一项合并的事实核查研究）、医学推理（k = 7）、数学（k = 6）、评估任务（k = 3）和通识知识（k = 3）。仅9项研究强制计算对等。完整提取表见<a href="#app-a1">附录表A1</a>。
+</p>
+
+<h3>3.3 合并效应</h3>
+
+<figure>
+  <img src="assets/forest-plot.png" alt="41项研究的森林图">
+  <figcaption><strong>图2.</strong> 森林图。REML随机效应合并 log-OR = 0.45, 95% CI [0.23, 0.67]（HKSJ调整，<em>t</em>(40) df）。</figcaption>
+</figure>
+
+<table>
+  <caption>表2. 主要合并结果（k = 41）。</caption>
+  <thead>
+    <tr><th>估计方法</th><th>log-OR</th><th>95% CI</th><th>95% PI</th><th>&tau;&sup2;</th><th>I&sup2;</th><th>Q (df = 40)</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>REML (HKSJ)</td><td>0.45</td><td>[0.23, 0.67]</td><td>[&minus;0.74, 1.64]</td><td>0.34</td><td>96.1%</td><td>1016.6***</td></tr>
+    <tr><td>DerSimonian-Laird</td><td>0.41</td><td>[0.22, 0.61]</td><td>[&minus;0.38, 1.21]</td><td>0.15</td><td>96.1%</td><td>1016.6***</td></tr>
+  </tbody>
+</table>
+<p class="fig-caption">*** p &lt; .001。PI = 预测区间。Q为固定效应Cochran's Q。</p>
+
+<p>
+多智能体系统平均提高约<strong>3&ndash;5个百分点</strong>（风险差）。正式效应量为 log-OR = 0.45 (95% CI [0.23, 0.67], p &lt; .001)，对应 OR = 1.57。但在绝对尺度上，总体Cohen's <em>h</em> 仅为0.08——远低于0.20的"小"效应阈值（<a href="#ref-cohen1988">Cohen, 1988</a>）。每100道基准题多智能体系统仅多答对约3&ndash;5题，这是否值得增加的复杂性和计算成本，是系统设计问题，不是统计问题。
+</p>
+
+<div class="danger-box">
+<strong>关键警告：主要局限不是随机效应模型，而是提取表的质量和可审计性。</strong>合并效应为正但脆弱：
+(1) 预测区间 [&minus;0.74, 1.64] 跨越零点；
+(2) Egger检验显著（p = .024）；
+(3) Cohen's h = 0.08 在绝对尺度上微不足道；
+(4) 61%的研究为高偏倚风险，76%的行未经独立验证；
+(5) I&sup2; = 96.1% 意味着"平均效应"作为点预测几乎没有意义。
+</div>
+
+<h3>3.4 计算对等：最重要的敏感性分析</h3>
+<p>
+在计算对等条件下（k = 9），效应缩小至约<strong>2个百分点</strong>（log-OR = 0.31, 95% CI [0.006, 0.61]；Cohen's h &asymp; 0.05，可忽略）。CI下限仅勉强脱离零点；在略有不同的样本下结论会反转。这是最具实践意义的发现。
+</p>
+
+<h3>3.5 已验证子集作为可信度锚</h3>
+<p>
+已验证子集（k = 10）的 log-OR = 0.35 [0.19, 0.51]，明显低于全样本，异质性大幅降低（&tau;&sup2; = 0.01 vs. 0.34）。较低的点估计是一个警告：31个未验证行可能包含使合并效应膨胀的提取错误。&tau;&sup2; 的降低表明全样本中部分表观异质性来自提取噪声而非真实的研究间变异。
+</p>
+
+<h3>3.6 异质性</h3>
+<p>
+异质性极端：I&sup2; = 96.1%，Q(40) = 1016.6 (p &lt; .001)，&tau;&sup2; = 0.34，&tau; = 0.58。研究间标准差（&tau; = 0.58）超过合并估计值本身（0.45），确认真实效应分布很宽。合并均值不应作为任何特定场景的点预测。
+</p>
+
+<figure>
+  <img src="assets/baujat-plot.png" alt="Baujat图">
+  <figcaption><strong>图3.</strong> Baujat图。右上象限的研究对异质性和合并估计值的贡献不成比例地大。</figcaption>
+</figure>
+
+<h3>3.7 按任务类别的亚组分析</h3>
+
+<figure>
+  <img src="assets/subgroup-task-category.png" alt="按任务类别的亚组森林图">
+  <figcaption><strong>图4.</strong> 按任务类别的亚组分析。误差线为95% CI。</figcaption>
+</figure>
+
+<table>
+  <caption>表3. 按任务类别的亚组分析（k = 41）。Q<sub>between</sub>(5) = 180.82, p &lt; .001。</caption>
+  <thead>
+    <tr><th>任务</th><th>k</th><th>log-OR</th><th>95% CI</th><th>95% PI</th><th>I&sup2;</th><th>备注</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>代码生成</td><td>11</td><td>0.83</td><td>[0.44, 1.22]</td><td>[&minus;0.28, 1.94]</td><td>75.3%</td><td></td></tr>
+    <tr><td>医学推理</td><td>7</td><td>0.42</td><td>[0.20, 0.64]</td><td>[0.08, 0.76]</td><td>61.0%</td><td></td></tr>
+    <tr><td>数学</td><td>6</td><td>0.34</td><td>[0.05, 0.63]</td><td>[&minus;0.45, 1.13]</td><td>93.0%</td><td></td></tr>
+    <tr><td>其他/混合</td><td>11</td><td>0.33</td><td>[&minus;0.48, 1.14]</td><td>[&minus;2.30, 2.96]</td><td>91.3%</td><td>含1项事实核查研究</td></tr>
+    <tr><td>评估</td><td>3</td><td>0.24</td><td>[&minus;0.21, 0.69]</td><td>&mdash;</td><td>0.0%</td><td class="descriptive-only">仅描述性（k &lt; 5）</td></tr>
+    <tr><td>通识知识</td><td>3</td><td>0.02</td><td>[&minus;1.25, 1.28]</td><td>&mdash;</td><td>99.7%</td><td class="descriptive-only">仅描述性（k &lt; 5）</td></tr>
+  </tbody>
+</table>
+
+<p>
+这些亚组模式是探索性的，不应做因果解读。组间Q检验显著（Q<sub>between</sub>(5) = 180.82, p &lt; .001），表明任务类别与效应量变异相关，但亚组与架构、骨干模型和计算分配存在混淆。代码生成产生最大的多智能体效应（log-OR = 0.83）。医学推理是预测区间排除零点的唯一亚组 [0.08, 0.76]。通识知识基本无效益（log-OR = 0.02）。k &lt; 5的亚组标记为"仅描述性"。
+</p>
+
+<h3>3.8 按架构的亚组分析</h3>
+
+<figure>
+  <img src="assets/subgroup-architecture.png" alt="按架构类型的亚组森林图">
+  <figcaption><strong>图5.</strong> 按架构的亚组分析。误差线为95% CI。</figcaption>
+</figure>
+
+<table>
+  <caption>表4. 按架构的亚组分析（k = 41）。Q<sub>between</sub>(5) = 31.92, p &lt; .001。</caption>
+  <thead>
+    <tr><th>架构</th><th>k</th><th>log-OR</th><th>95% CI</th><th>95% PI</th><th>I&sup2;</th><th>备注</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>层级</td><td>6</td><td>0.76</td><td>[&minus;0.02, 1.54]</td><td>[&minus;1.04, 2.57]</td><td>79.9%</td><td></td></tr>
+    <tr><td>辩论</td><td>20</td><td>0.37</td><td>[0.13, 0.62]</td><td>[&minus;0.61, 1.35]</td><td>97.8%</td><td></td></tr>
+    <tr><td>其他/稀有</td><td>2</td><td>0.34</td><td>[&minus;0.92, 1.61]</td><td>&mdash;</td><td>0.0%</td><td class="descriptive-only">仅描述性（k &lt; 5）；含MoA+计划-执行</td></tr>
+    <tr><td>角色扮演</td><td>2</td><td>0.32</td><td>[&minus;1.41, 2.05]</td><td>&mdash;</td><td>0.0%</td><td class="descriptive-only">仅描述性（k &lt; 5）</td></tr>
+    <tr><td>协作</td><td>9</td><td>0.31</td><td>[&minus;0.54, 1.16]</td><td>[&minus;2.22, 2.85]</td><td>85.9%</td><td></td></tr>
+    <tr><td>验证-批评</td><td>2</td><td>1.01</td><td>[&minus;8.41, 10.43]</td><td>&mdash;</td><td>96.6%</td><td class="descriptive-only">仅描述性（k &lt; 5）</td></tr>
+  </tbody>
+</table>
+
+<p>
+这些亚组模式是探索性的，不应做因果解读。组间Q显著（Q<sub>between</sub>(5) = 31.92, p &lt; .001）。层级架构的点估计最大（log-OR = 0.76），但CI刚好包含零。辩论为最常研究的架构（k = 20），产生较为温和但显著的优势（log-OR = 0.37）。<strong>k &lt; 5的组仅供参考，CI和PI无参考价值。</strong>
+</p>
+
+<h3>3.9 发表偏倚</h3>
+
+<figure>
+  <img src="assets/funnel-plot.png" alt="漏斗图">
+  <figcaption><strong>图7.</strong> 漏斗图。Egger检验检测到显著不对称（p = .024）。</figcaption>
+</figure>
+
+<table>
+  <caption>表5. 发表偏倚诊断（探索性；在极端异质性下不可靠）。</caption>
+  <thead>
+    <tr><th>检验</th><th>统计量</th><th>p</th><th>解读</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Egger回归</td><td>截距 = 2.53, t(39) = 2.34</td><td><strong>.024</strong></td><td>检测到显著漏斗图不对称</td></tr>
+    <tr><td>Begg秩相关</td><td>&tau; = 0.06</td><td>.61</td><td>无偏倚证据</td></tr>
+    <tr><td>剪补法</td><td>补充0项研究</td><td>&mdash;</td><td>无调整（可能灵敏度不足）</td></tr>
+  </tbody>
+</table>
+
+<div class="danger-box">
+<strong>发表偏倚值得关注。</strong>Egger回归检验显著（截距 = 2.53, t(39) = 2.34, p = .024），表明漏斗图不对称。但所有三种诊断方法在极端异质性下均不可靠。<strong>正向合并估计可能被选择性报告所膨胀。</strong>
+</div>
+
+<h3>3.10 进一步敏感性分析</h3>
+
+<table>
+  <caption>表6. 敏感性分析（9个子集规格 + 逐一剔除）。REML + HKSJ调整。</caption>
+  <thead>
+    <tr><th>分析</th><th>k</th><th>log-OR</th><th>95% CI</th><th>&tau;&sup2;</th><th>近似RD</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>全样本 (REML)</td><td>41</td><td>0.45</td><td>[0.23, 0.67]</td><td>0.34</td><td>3&ndash;5 pp</td></tr>
+    <tr><td><strong>仅计算对等</strong></td><td><strong>9</strong></td><td><strong>0.31</strong></td><td><strong>[0.006, 0.61]</strong></td><td><strong>0.08</strong></td><td><strong>&asymp; 2 pp</strong></td></tr>
+    <tr><td><strong>仅已验证研究</strong></td><td><strong>10</strong></td><td><strong>0.35</strong></td><td><strong>[0.19, 0.51]</strong></td><td><strong>0.01</strong></td><td><strong>&asymp; 3 pp</strong></td></tr>
+    <tr><td>仅2025+年</td><td>29</td><td>0.41</td><td>[0.10, 0.71]</td><td>0.47</td><td>&mdash;</td></tr>
+    <tr><td>去除高偏倚风险</td><td>16</td><td>0.42</td><td>[0.13, 0.72]</td><td>0.21</td><td>&mdash;</td></tr>
+    <tr><td>去除不可验证</td><td>39</td><td>0.43</td><td>[0.20, 0.65]</td><td>0.34</td><td>&mdash;</td></tr>
+    <tr><td>非聚合基准</td><td>36</td><td>0.48</td><td>[0.23, 0.74]</td><td>0.42</td><td>&mdash;</td></tr>
+    <tr><td>仅准确率指标</td><td>37</td><td>0.46</td><td>[0.22, 0.71]</td><td>0.40</td><td>&mdash;</td></tr>
+    <tr><td>仅精确n-items</td><td>28</td><td>0.40</td><td>[0.13, 0.67]</td><td>0.32</td><td>&mdash;</td></tr>
+    <tr><td colspan="6" style="font-style:italic;border-top:2px solid var(--border)">逐一剔除（每次迭代重估 &tau;&sup2;）：合并log-OR范围 [0.40, 0.48]；最有影响的剔除Wu2025 &rarr; 0.40 (&tau;&sup2; = 0.23)</td></tr>
+  </tbody>
+</table>
+
+<p>
+探索性元回归未发现可靠的调节变量（Q<sub>M</sub>(8) = 5.34, p = .72; R&sup2; = 0%）。SA准确率斜率（&beta; = &minus;0.77, p = .176）方向上与前沿悖论假设一致，但不具统计可靠性。完整结果见<a href="#app-f">附录F</a>。
+</p>
+
+<h3>3.11 非正式确定性评估</h3>
+
+<div class="grade-box">
+<p><strong>非正式确定性评估（类GRADE）</strong>，针对主要结论（多智能体系统优于单智能体基准线）：</p>
+<table>
+  <thead>
+    <tr><th>领域</th><th>评级</th><th>依据</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>偏倚风险</td><td>严重</td><td>61%高偏倚风险；76%未验证数据；已审核子集50%错误率</td></tr>
+    <tr><td>不一致性</td><td>严重</td><td>I&sup2; = 96.1%；PI跨越零点</td></tr>
+    <tr><td>间接性</td><td>有些关注</td><td>指标异质性：准确率、pass@1、胜率、解决率混合</td></tr>
+    <tr><td>不精确性</td><td>有些关注</td><td>计算对等子集CI [0.006, 0.61] 勉强脱离零点</td></tr>
+    <tr><td>发表偏倚</td><td>严重</td><td>Egger p = .024；漏斗图不对称</td></tr>
+  </tbody>
+</table>
+<p><strong>总体确定性：极低。</strong>三个领域评为"严重"，两个评为"有些关注"。正向合并效应可能部分或全部是发表偏倚、计算混淆和提取错误的产物。这些发现仅为假设生成性质。</p>
+</div>
+
+<!-- ====== 4. 讨论 ====== -->
+<h2>4. 讨论</h2>
+
+<h3>4.1 主要发现</h3>
+<p>
+多智能体LLM系统平均似乎优于单智能体基准线（RQ1），但绝对边际微不足道：每100道基准题约多3&ndash;5个正确答案（log-OR = 0.45, Cohen's h = 0.08）。预测区间 [&minus;0.74, 1.64] 跨越零点，意味着多智能体优越性在新场景中并非必然。
+</p>
+<p>
+已验证子集（k = 10, log-OR = 0.35）提供了最可信的锚点：它显示更小的效应和显著更低的异质性，表明提取噪声可能同时膨胀了估计值和表观研究间变异。
+</p>
+
+<h3>4.2 多智能体可能在何时有效？</h3>
+<p>
+亚组分析暗示一个描述性模式，但非因果结论。代码生成（log-OR = 0.83）可能受益于软件工程固有的模块性。医学推理（log-OR = 0.42）可能受益于对抗性验证。通识知识无效益（log-OR = 0.02）。但这些亚组差异与计算分配、骨干模型和研究质量存在混淆。
+</p>
+
+<h3>4.3 计算混淆</h3>
+<p>
+在计算对等条件下，效应缩小约31%（从0.45到0.31），绝对增益约为2个百分点（Cohen's h &asymp; 0.05，可忽略）。消耗5倍token的多智能体辩论应与给予相同token预算的单智能体（通过思维链、自一致性或重复采样）进行比较。<a href="#ref-zhang2025stop">Zhang等 (2025)</a> 直接证明了这一点；<a href="#ref-sprague2024">Sprague等 (2024)</a> 更广泛地表明推理时计算扩展可以替代多步推理策略。多智能体优势在计算均等化后仅勉强存活，大大削弱了多智能体编排作为通用策略的实际论据。
+</p>
+
+<h3>4.4 局限性</h3>
+<p>
+<em>数据质量局限。</em>第一，这是探索性便利样本元分析，非注册系统综述。第二，Egger检验显著。第三，61%的研究为高偏倚风险，仅10/41行经过独立验证。第四，I&sup2; = 96.1%极端。第五，指标异质性。第六，MA和SA比例被视为独立二项计数，可能低估了不确定性。
+</p>
+<p>
+<em>分析局限。</em>第七，效应量间的依赖性未正式建模。第八，所有亚组分析均为探索性且未校正多重比较。第九，元回归统计检验力不足。
+</p>
+
+<!-- ====== 5. 结论 ====== -->
+<h2>5. 结论</h2>
+<p>
+本项目不能证明多智能体LLM系统普遍优于单智能体基准线。它表明当前便利样本中存在一个小的正向平均效应（约3&ndash;5个百分点；log-OR = 0.45），但证据高度不确定：异质性极端，预测区间跨越零点，绝对效应微不足道（Cohen's h = 0.08），检测到发表偏倚，且大多数提取行未经验证。在计算对等条件下，效应缩小至约2个百分点——统计上边缘显著，实际上可忽略。
+</p>
+<p>
+较稳妥的结论是：多智能体协同可能在可分解、可验证且计算预算充足的任务中有价值，但任何实际部署前都应与计算匹配的单智能体基准线进行比较。该领域迫切需要计算控制的比较、独立提取审计和注册元分析。
+</p>
+
+<!-- ====== 参考文献 ====== -->
+<h2>参考文献</h2>
+<div class="ref-list">
+
+<p id="ref-begg1994">Begg, C. B., &amp; Mazumdar, M. (1994). Operating characteristics of a rank correlation test for publication bias. <em>Biometrics, 50</em>(4), 1088&ndash;1101. <a href="https://doi.org/10.2307/2533446">https://doi.org/10.2307/2533446</a></p>
+
+<p id="ref-borenstein2009">Borenstein, M., Hedges, L. V., Higgins, J. P. T., &amp; Rothstein, H. R. (2009). <em>Introduction to meta-analysis</em>. Wiley. <a href="https://doi.org/10.1002/9780470743386">https://doi.org/10.1002/9780470743386</a></p>
+
+<p id="ref-cohen1988">Cohen, J. (1988). <em>Statistical power analysis for the behavioral sciences</em> (2nd ed.). Lawrence Erlbaum Associates.</p>
+
+<p id="ref-du2023">Du, Y., Li, S., Torralba, A., Tenenbaum, J. B., &amp; Mordatch, I. (2023). Improving factuality and reasoning in language models through multiagent debate. <em>arXiv:2305.14325</em>. <a href="https://arxiv.org/abs/2305.14325">https://arxiv.org/abs/2305.14325</a></p>
+
+<p id="ref-duval2000">Duval, S., &amp; Tweedie, R. (2000). Trim and fill: A simple funnel-plot-based method of testing and adjusting for publication bias in meta-analysis. <em>Biometrics, 56</em>(2), 455&ndash;463. <a href="https://doi.org/10.1111/j.0006-341X.2000.00455.x">https://doi.org/10.1111/j.0006-341X.2000.00455.x</a></p>
+
+<p id="ref-egger1997">Egger, M., Smith, G. D., Schneider, M., &amp; Minder, C. (1997). Bias in meta-analysis detected by a simple, graphical test. <em>BMJ, 315</em>(7109), 629&ndash;634. <a href="https://doi.org/10.1136/bmj.315.7109.629">https://doi.org/10.1136/bmj.315.7109.629</a></p>
+
+<p id="ref-guo2024">Guo, T., Chen, X., Wang, Y., Chang, R., Pei, S., Chawla, N. V., Wiest, O., &amp; Zhang, X. (2024). Large language model based multi-agents: A survey of progress and challenges. <em>Artificial Intelligence Review, 57</em>, 367. <a href="https://doi.org/10.1007/s44336-024-00009-2">https://doi.org/10.1007/s44336-024-00009-2</a></p>
+
+<p id="ref-hartung2001">Hartung, J., &amp; Knapp, G. (2001). On tests of the overall treatment effect in meta-analysis with normally distributed responses. <em>Statistics in Medicine, 20</em>(12), 1771&ndash;1782. <a href="https://doi.org/10.1002/sim.791">https://doi.org/10.1002/sim.791</a></p>
+
+<p id="ref-hedges2010">Hedges, L. V., Tipton, E., &amp; Johnson, M. C. (2010). Robust variance estimation in meta-regression with dependent effect size estimates. <em>Research Synthesis Methods, 1</em>(1), 39&ndash;65. <a href="https://doi.org/10.1002/jrsm.5">https://doi.org/10.1002/jrsm.5</a></p>
+
+<p id="ref-hong2023">Hong, S., Zhuge, M., Chen, J., Zheng, X., Cheng, Y., Zhang, C., Wang, J., Wang, Z., Yau, S. K. S., Lin, Z., Zhou, L., Ran, C., Xiao, L., Wu, C., &amp; Schmidhuber, J. (2023). MetaGPT: Meta programming for a multi-agent collaborative framework. <em>arXiv:2308.00352</em>. <a href="https://arxiv.org/abs/2308.00352">https://arxiv.org/abs/2308.00352</a></p>
+
+<p id="ref-inthout2014">IntHout, J., Ioannidis, J. P. A., &amp; Borm, G. F. (2014). The Hartung-Knapp-Sidik-Jonkman method for random effects meta-analysis is straightforward and considerably outperforms the standard DerSimonian-Laird method. <em>BMC Medical Research Methodology, 14</em>, 25. <a href="https://doi.org/10.1186/1471-2288-14-25">https://doi.org/10.1186/1471-2288-14-25</a></p>
+
+<p id="ref-inthout2016">IntHout, J., Ioannidis, J. P. A., Rovers, M. M., &amp; Goeman, J. J. (2016). Plea for routinely presenting prediction intervals in meta-analysis. <em>BMJ Open, 6</em>(7), e010247. <a href="https://doi.org/10.1136/bmjopen-2015-010247">https://doi.org/10.1136/bmjopen-2015-010247</a></p>
+
+<p id="ref-liang2024">Liang, T., He, Z., Jiao, W., Wang, X., Wang, Y., Wang, R., Yang, Y., Tu, Z., &amp; Shi, S. (2024). Encouraging divergent thinking in large language models through multi-agent debate. <em>arXiv:2305.19118</em>. <a href="https://arxiv.org/abs/2305.19118">https://arxiv.org/abs/2305.19118</a></p>
+
+<p id="ref-pustejovsky2022">Pustejovsky, J. E., &amp; Tipton, E. (2022). Meta-analysis with robust variance estimation: Expanding the range of working models. <em>Prevention Science, 23</em>(3), 425&ndash;438. <a href="https://doi.org/10.1007/s11121-021-01246-3">https://doi.org/10.1007/s11121-021-01246-3</a></p>
+
+<p id="ref-qian2024">Qian, C., Liu, W., Liu, H., Chen, N., Dang, Y., Li, J., Yang, C., Chen, W., Su, Y., Cong, X., Xu, J., Li, D., Liu, Z., &amp; Sun, M. (2024). ChatDev: Communicative agents for software development. <em>ACL 2024</em>. <a href="https://aclanthology.org/2024.acl-long.810">https://aclanthology.org/2024.acl-long.810</a></p>
+
+<p id="ref-rover2015">R&ouml;ver, C., Knapp, G., &amp; Friede, T. (2015). Hartung-Knapp-Sidik-Jonkman approach and its modification for random-effects meta-analysis with few studies. <em>BMC Medical Research Methodology, 15</em>, 99. <a href="https://doi.org/10.1186/s12874-015-0091-1">https://doi.org/10.1186/s12874-015-0091-1</a></p>
+
+<p id="ref-sprague2024">Sprague, Z., Yin, F., Rodriguez, J. D., Jiang, D., Wadhwa, M., Singhal, P., Zhao, W., Ye, X., Mahowald, K., &amp; Durrett, G. (2024). To CoT or not to CoT? Chain-of-thought helps mainly on math and symbolic reasoning. <em>arXiv:2409.12183</em>. <a href="https://arxiv.org/abs/2409.12183">https://arxiv.org/abs/2409.12183</a></p>
+
+<p id="ref-sterne2019">Sterne, J. A. C., Savovic, J., Page, M. J., Elbers, R. G., Blencowe, N. S., Boutron, I., ... &amp; Higgins, J. P. T. (2019). RoB 2: A revised tool for assessing risk of bias in randomised trials. <em>BMJ, 366</em>, l4898. <a href="https://doi.org/10.1136/bmj.l4898">https://doi.org/10.1136/bmj.l4898</a></p>
+
+<p id="ref-sweeting2004">Sweeting, M. J., Sutton, A. J., &amp; Lambert, P. C. (2004). What to add to nothing? Use and avoidance of continuity corrections in meta-analysis of sparse data. <em>Statistics in Medicine, 23</em>(9), 1351&ndash;1375. <a href="https://doi.org/10.1002/sim.1761">https://doi.org/10.1002/sim.1761</a></p>
+
+<p id="ref-tang2024">Tang, X., Zou, A., Zhang, Z., Li, Z., Zhao, Y., Zhang, X., Cohan, A., &amp; Gerstein, M. (2024). MedAgents: Large language models as collaborators for zero-shot medical reasoning. <em>arXiv:2311.10537</em>. <a href="https://arxiv.org/abs/2311.10537">https://arxiv.org/abs/2311.10537</a></p>
+
+<p id="ref-vandennoortgate2013">Van den Noortgate, W., Lopez-Lopez, J. A., Marin-Martinez, F., &amp; Sanchez-Meca, J. (2013). Three-level meta-analysis of dependent effect sizes. <em>Behavior Research Methods, 45</em>(2), 576&ndash;594. <a href="https://doi.org/10.3758/s13428-012-0261-6">https://doi.org/10.3758/s13428-012-0261-6</a></p>
+
+<p id="ref-viechtbauer2005">Viechtbauer, W. (2005). Bias and efficiency of meta-analytic variance estimators in the random-effects model. <em>Journal of Educational and Behavioral Statistics, 30</em>(3), 261&ndash;293. <a href="https://doi.org/10.3102/10769986030003261">https://doi.org/10.3102/10769986030003261</a></p>
+
+<p id="ref-viechtbauer2010">Viechtbauer, W. (2010). Conducting meta-analyses in R with the metafor package. <em>Journal of Statistical Software, 36</em>(3), 1&ndash;48. <a href="https://doi.org/10.18637/jss.v036.i03">https://doi.org/10.18637/jss.v036.i03</a></p>
+
+<p id="ref-wu2023">Wu, Q., Bansal, G., Zhang, J., Wu, Y., Li, B., Zhu, E., ... &amp; Wang, C. (2023). AutoGen: Enabling next-gen LLM applications via multi-agent conversation. <em>arXiv:2308.08155</em>. <a href="https://arxiv.org/abs/2308.08155">https://arxiv.org/abs/2308.08155</a></p>
+
+<p id="ref-zhang2024">Zhang, K., Li, J., Li, G., Shi, X., &amp; Jin, Z. (2024). CodeAgent: Enhancing code generation with tool-integrated agent systems for real-world repo-level coding challenges. <em>ACL 2024</em>. <a href="https://aclanthology.org/2024.acl-long.737">https://aclanthology.org/2024.acl-long.737</a></p>
+
+<p id="ref-zhang2025stop">Zhang, H., Cui, Z., Chen, J., Wang, X., Zhang, Q., Wang, Z., Wu, D., &amp; Hu, S. (2025). Stop overvaluing multi-agent debate &mdash; We must rethink evaluation and embrace model heterogeneity. <em>arXiv:2502.08788</em>. <a href="https://arxiv.org/abs/2502.08788">https://arxiv.org/abs/2502.08788</a></p>
+
+</div>
+
+<!-- ====== 附录A ====== -->
+<div class="appendix">
+<h2>附录A：可重复性</h2>
+<p>
+所有分析使用 <code>uv</code> 管理的 Python 3.12 进行。完整流水线由单一入口执行：
+</p>
+<pre style="background:#f6f8fa;padding:0.8rem;border-radius:4px;font-size:0.85rem;overflow-x:auto;">uv sync &amp;&amp; uv run python main.py</pre>
+<p>
+代码和数据维护在Git仓库中，未包含在此HTML导出中。仓库包含 <code>data/</code>、<code>src/</code>、<code>main.py</code>、<code>pyproject.toml</code>、<code>uv.lock</code> 和 <code>report/assets/</code>。
+</p>
+<ul>
+  <li><strong>入口：</strong><code>main.py</code> 端到端运行完整流水线。</li>
+  <li><strong>环境：</strong><code>pyproject.toml</code> + <code>uv.lock</code> 确定性依赖解析。</li>
+  <li><strong>输出验证：</strong><code>main.py</code> 包含10项运行时验证检查，包括确认亚组表合计为k=41。</li>
+  <li><strong>测试：</strong>18个单元测试在 <code>tests/test_stats.py</code> 中。通过 <code>uv run pytest tests/</code> 运行。</li>
+</ul>
+</div>
+
+<!-- ====== 附录表A1 ====== -->
+<div class="appendix" id="app-a1">
+<h2>附录表A1：完整提取表（k = 41）</h2>
+<p>元分析中纳入的全部41项研究级比较。MA%和SA%为多智能体和单智能体准确率；RD为百分点风险差；log-OR和<em>h</em>为计算的效应量。</p>
+<div style="overflow-x:auto;">
+<table class="extraction-table">
+  <thead>
+    <tr><th>ID</th><th>引用</th><th>基准</th><th>任务</th><th>架构</th><th><em>n</em></th><th>MA%</th><th>SA%</th><th>RD</th><th>log-OR</th><th><em>h</em></th><th>n来源</th><th>计算</th><th>审核</th><th>RoB</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>S001</td><td>Du2023</td><td>GSM8K</td><td>数学</td><td>辩论</td><td>1319</td><td>85.0</td><td>77.0</td><td>+8.0</td><td>0.524</td><td>0.204</td><td>精确</td><td>否</td><td>未审核</td><td>高</td></tr>
+    <tr><td>S002</td><td>Qian2024</td><td>SoftwareDev</td><td>代码</td><td>角色扮演</td><td>70</td><td>1.4</td><td>1.4</td><td>0.0</td><td>0.000</td><td>0.000</td><td>推算</td><td>否</td><td>未审核</td><td>高</td></tr>
+    <tr><td>S003</td><td>Liang2024</td><td>Counter-Intuitive AR</td><td>评估</td><td>协作</td><td>200</td><td>37.0</td><td>28.0</td><td>+9.0</td><td>0.412</td><td>0.193</td><td>推算</td><td>否</td><td>未审核</td><td>高</td></tr>
+    <tr><td>S004</td><td>Huang2024</td><td>HumanEval</td><td>代码</td><td>协作</td><td>164</td><td>96.3</td><td>90.2</td><td>+6.1</td><td>1.046</td><td>0.250</td><td>精确</td><td>否</td><td>未审核</td><td>高</td></tr>
+    <tr><td>S005</td><td>Xue2025</td><td>GPQA-Diamond</td><td>其他</td><td>协作</td><td>198</td><td>86.9</td><td>85.9</td><td>+1.0</td><td>0.086</td><td>0.029</td><td>精确</td><td>否</td><td>已验证</td><td>高</td></tr>
+    <tr><td>S006</td><td>Yang2025</td><td>HumanEval</td><td>代码</td><td>协作</td><td>164</td><td>82.3</td><td>76.2</td><td>+6.1</td><td>0.373</td><td>0.152</td><td>精确</td><td>不明</td><td>未审核</td><td>中</td></tr>
+    <tr><td>S007</td><td>Islam2024</td><td>HumanEval</td><td>代码</td><td>计划-执行</td><td>164</td><td>93.9</td><td>88.4</td><td>+5.5</td><td>0.702</td><td>0.195</td><td>精确</td><td>否</td><td>验证更正</td><td>高</td></tr>
+    <tr><td>S008</td><td>Hong2024</td><td>HumanEval</td><td>代码</td><td>层级</td><td>164</td><td>86.0</td><td>67.1</td><td>+18.9</td><td>1.102</td><td>0.455</td><td>精确</td><td>否</td><td>未审核</td><td>高</td></tr>
+    <tr><td>S009</td><td>Zhang2024b</td><td>SWE-bench Lite</td><td>代码</td><td>协作</td><td>300</td><td>34.3</td><td>27.3</td><td>+7.0</td><td>0.329</td><td>0.152</td><td>精确</td><td>不明</td><td>验证更正</td><td>中</td></tr>
+    <tr><td>S010</td><td>Benkovich2026</td><td>SWE-bench 500</td><td>代码</td><td>角色扮演</td><td>500</td><td>72.0</td><td>65.0</td><td>+7.0</td><td>0.325</td><td>0.150</td><td>精确</td><td>是</td><td>未审核</td><td>中</td></tr>
+    <tr><td>S011</td><td>Xie2025</td><td>HumanEval</td><td>代码</td><td>验证-批评</td><td>164</td><td>70.1</td><td>28.7</td><td>+41.4</td><td>1.765</td><td>0.866</td><td>精确</td><td>否</td><td>未审核</td><td>高</td></tr>
+    <tr><td>S012</td><td>Doki2024</td><td>HumanEval</td><td>代码</td><td>协作</td><td>164</td><td>98.2</td><td>88.4</td><td>+9.8</td><td>1.950</td><td>0.390</td><td>精确</td><td>否</td><td>未审核</td><td>高</td></tr>
+    <tr><td>S013</td><td>Chen2026</td><td>ClassEval</td><td>代码</td><td>协作</td><td>100</td><td>82.0</td><td>61.0</td><td>+21.0</td><td>1.069</td><td>0.463</td><td>推算</td><td>是</td><td>不可验证</td><td>中</td></tr>
+    <tr><td>S014</td><td>Kim2024</td><td>MedQA</td><td>医学</td><td>层级</td><td>1273</td><td>83.9</td><td>79.7</td><td>+4.2</td><td>0.281</td><td>0.109</td><td>精确</td><td>否</td><td>已验证</td><td>高</td></tr>
+    <tr><td>S015</td><td>Tang2024</td><td>MedQA (avg 9)</td><td>医学</td><td>辩论</td><td>1273</td><td>86.7</td><td>80.6</td><td>+6.1</td><td>0.453</td><td>0.170</td><td>精确</td><td>否</td><td>未审核</td><td>高</td></tr>
+    <tr><td>S016</td><td>Li2025</td><td>MedXpert-MM</td><td>其他</td><td>验证-批评</td><td>581</td><td>34.1</td><td>28.1</td><td>+6.0</td><td>0.282</td><td>0.130</td><td>精确</td><td>否</td><td>未审核</td><td>高</td></tr>
+    <tr><td>S017</td><td>MediHive2026</td><td>MedQA</td><td>医学</td><td>辩论</td><td>1273</td><td>84.3</td><td>77.0</td><td>+7.3</td><td>0.473</td><td>0.187</td><td>精确</td><td>不明</td><td>未审核</td><td>中</td></tr>
+    <tr><td>S018</td><td>MedARC2025</td><td>PubMedQA</td><td>医学</td><td>辩论</td><td>1000</td><td>77.2</td><td>72.9</td><td>+4.3</td><td>0.230</td><td>0.097</td><td>精确</td><td>否</td><td>未审核</td><td>高</td></tr>
+    <tr><td>S019</td><td>Charney2026</td><td>临床 (5项)</td><td>医学</td><td>层级</td><td>100</td><td>91.0</td><td>73.0</td><td>+18.0</td><td>1.319</td><td>0.478</td><td>推算</td><td>是</td><td>未审核</td><td>中</td></tr>
+    <tr><td>S020</td><td>Ophth2026</td><td>眼科病例</td><td>医学</td><td>辩论</td><td>200</td><td>96.0</td><td>86.0</td><td>+10.0</td><td>1.363</td><td>0.346</td><td>推算</td><td>否</td><td>验证更正</td><td>高</td></tr>
+    <tr><td>S021</td><td>MedLA2025</td><td>MedDDx-Expert</td><td>医学</td><td>辩论</td><td>570</td><td>41.9</td><td>31.1</td><td>+10.8</td><td>0.472</td><td>0.225</td><td>精确</td><td>是</td><td>未审核</td><td>中</td></tr>
+    <tr><td>S022</td><td>Bao2025</td><td>MMLU-Pro-Health</td><td>通识</td><td>协作</td><td>14042</td><td>74.4</td><td>71.8</td><td>+2.6</td><td>0.137</td><td>0.058</td><td>精确</td><td>否</td><td>未审核</td><td>高</td></tr>
+    <tr><td>S023</td><td>Ferber2025</td><td>GI肿瘤 (20例)</td><td>其他</td><td>层级</td><td>20</td><td>85.0</td><td>30.0</td><td>+55.0</td><td>2.582</td><td>1.218</td><td>精确</td><td>否</td><td>未审核</td><td>高</td></tr>
+    <tr><td>S024</td><td>Topologies2026</td><td>罕见病 (302例)</td><td>评估</td><td>层级</td><td>302</td><td>50.0</td><td>48.0</td><td>+2.0</td><td>0.080</td><td>0.040</td><td>精确</td><td>是</td><td>未审核</td><td>中</td></tr>
+    <tr><td>S025</td><td>Chen2024</td><td>SWE-bench Lite</td><td>代码</td><td>层级</td><td>300</td><td>28.3</td><td>18.0</td><td>+10.3</td><td>0.588</td><td>0.239</td><td>精确</td><td>否</td><td>验证更正</td><td>高</td></tr>
+    <tr><td>S026</td><td>Han2025</td><td>Weibo21/FakeNews</td><td>事实核查</td><td>辩论</td><td>4488</td><td>82.0</td><td>74.0</td><td>+8.0</td><td>0.470</td><td>0.194</td><td>估计</td><td>否</td><td>已验证</td><td>高</td></tr>
+    <tr><td>S027</td><td>Fan2025</td><td>GSM8K</td><td>数学</td><td>辩论</td><td>1319</td><td>84.8</td><td>71.3</td><td>+13.5</td><td>0.814</td><td>0.335</td><td>精确</td><td>否</td><td>不可验证</td><td>高</td></tr>
+    <tr><td>S028</td><td>Wu2025</td><td>Knight-Knave-Spy</td><td>其他</td><td>辩论</td><td>100</td><td>69.0</td><td>17.0</td><td>+52.0</td><td>2.386</td><td>1.116</td><td>推算</td><td>不明</td><td>未审核</td><td>中</td></tr>
+    <tr><td>S029</td><td>Wynn2025</td><td>MMLU</td><td>通识</td><td>辩论</td><td>14042</td><td>73.4</td><td>82.6</td><td>&minus;9.2</td><td>&minus;0.543</td><td>&minus;0.225</td><td>精确</td><td>否</td><td>未审核</td><td>高</td></tr>
+    <tr><td>S030</td><td>Yao2025</td><td>CommonsenseQA</td><td>其他</td><td>辩论</td><td>1221</td><td>87.0</td><td>86.0</td><td>+1.0</td><td>0.084</td><td>0.029</td><td>精确</td><td>否</td><td>已验证</td><td>高</td></tr>
+    <tr><td>S031</td><td>Lin2025</td><td>MMLU</td><td>通识</td><td>辩论</td><td>14042</td><td>83.5</td><td>76.3</td><td>+7.2</td><td>0.452</td><td>0.181</td><td>精确</td><td>否</td><td>未审核</td><td>高</td></tr>
+    <tr><td>S032</td><td>Cui2025</td><td>8个基准</td><td>数学</td><td>辩论</td><td>5000</td><td>64.4</td><td>55.7</td><td>+8.7</td><td>0.365</td><td>0.178</td><td>推算</td><td>是</td><td>未审核</td><td>中</td></tr>
+    <tr><td>S033</td><td>Wang2025</td><td>GPQA</td><td>其他</td><td>辩论</td><td>198</td><td>48.0</td><td>42.9</td><td>+5.1</td><td>0.204</td><td>0.102</td><td>精确</td><td>是</td><td>未审核</td><td>中</td></tr>
+    <tr><td>S034</td><td>Tian2026</td><td>MATH</td><td>数学</td><td>辩论</td><td>5000</td><td>80.2</td><td>77.8</td><td>+2.4</td><td>0.145</td><td>0.060</td><td>推算</td><td>不明</td><td>未审核</td><td>中</td></tr>
+    <tr><td>S035</td><td>Tran2026</td><td>FRAMES</td><td>其他</td><td>辩论</td><td>824</td><td>22.0</td><td>25.0</td><td>&minus;3.0</td><td>&minus;0.169</td><td>&minus;0.071</td><td>估计</td><td>是</td><td>未审核</td><td>中</td></tr>
+    <tr><td>S036</td><td>Li2026</td><td>13个数据集</td><td>数学</td><td>辩论</td><td>5000</td><td>67.0</td><td>65.3</td><td>+1.7</td><td>0.076</td><td>0.036</td><td>推算</td><td>是</td><td>未审核</td><td>中</td></tr>
+    <tr><td>S037</td><td>Hu2025</td><td>LLMBar</td><td>评估</td><td>辩论</td><td>419</td><td>82.1</td><td>77.1</td><td>+5.0</td><td>0.310</td><td>0.126</td><td>精确</td><td>不明</td><td>未审核</td><td>中</td></tr>
+    <tr><td>S038</td><td>Liu2026</td><td>MATH500/AMC/AIME</td><td>数学</td><td>辩论</td><td>5000</td><td>57.7</td><td>52.9</td><td>+4.8</td><td>0.194</td><td>0.096</td><td>推算</td><td>不明</td><td>未审核</td><td>中</td></tr>
+    <tr><td>S039</td><td>Zhou2025</td><td>HiddenBench (65)</td><td>其他</td><td>协作</td><td>65</td><td>30.8</td><td>81.5</td><td>&minus;50.7</td><td>&minus;2.296</td><td>&minus;1.105</td><td>精确</td><td>否</td><td>未审核</td><td>高</td></tr>
+    <tr><td>S040</td><td>Wang2024</td><td>AlpacaEval 2.0</td><td>其他</td><td>MoA</td><td>805</td><td>65.1</td><td>57.5</td><td>+7.6</td><td>0.320</td><td>0.155</td><td>估计</td><td>否</td><td>验证更正</td><td>高</td></tr>
+    <tr><td>S041</td><td>Ki2025</td><td>NormAd-ETI</td><td>其他</td><td>辩论</td><td>500</td><td>76.0</td><td>71.0</td><td>+5.0</td><td>0.257</td><td>0.112</td><td>精确</td><td>否</td><td>验证更正</td><td>高</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="fig-caption">n来源 = n-items来源（精确/推算/估计）。计算 = 计算对等标志。审核 = 审核状态。RoB = 非正式偏倚风险评级。S026（Han2025，事实核查）在亚组分析中合并入"其他/混合"任务类别。</p>
+</div>
+
+<!-- ====== 附录B ====== -->
+<div class="appendix">
+<h2>附录B：AI使用声明（鲁汶大学第84条）</h2>
+<p>
+根据鲁汶大学关于在教育中使用人工智能的政策（第84条），本工作中使用了以下AI工具：
+</p>
+<ul>
+  <li><strong>文献搜索：</strong>部署六个Claude Code智能体并行搜索arXiv、ACL Anthology和会议论文集。所有检索记录均按PICOS标准人工筛选。</li>
+  <li><strong>数据提取和验证：</strong>Claude Code智能体协助从原始来源进行初步数据提取。独立智能体对12/41项研究进行了第二编码者验证：4项已验证，6项需更正（50%错误率），2项不可验证。</li>
+  <li><strong>统计分析：</strong>所有统计计算使用Python开源库实现。代码见 <code>src/</code>。</li>
+  <li><strong>报告撰写：</strong>Claude Code协助起草和构建HTML报告。所有统计解读和结论由作者审核。</li>
+  <li><strong>修订：</strong>v3解决50个引用和统计审计问题；v4解决7个展示问题；v5解决20个一致性和可审计性问题；v6解决10个综合同行评审问题。</li>
+  <li><strong>使用模型：</strong>Claude Opus 4.6，通过Claude Code (Anthropic)。</li>
+</ul>
+<p>作者对所有报告结果的准确性和本工作的知识内容承担全部责任。</p>
+</div>
+
+<!-- ====== 附录C ====== -->
+<div class="appendix" id="app-c">
+<h2>附录C：搜索字符串</h2>
+<p>以下搜索查询用于六个并行搜索智能体。这是便利样本，非注册方案的系统搜索。</p>
+<table>
+  <caption>表C1. 搜索智能体查询。</caption>
+  <thead>
+    <tr><th>智能体</th><th>集群</th><th>代表性搜索字符串</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td>多智能体辩论</td><td><code>"multi-agent debate" LLM accuracy benchmark</code></td></tr>
+    <tr><td>2</td><td>协作/层级</td><td><code>"multi-agent cooperation" OR "hierarchical agents" LLM benchmark</code></td></tr>
+    <tr><td>3</td><td>SWE/代码</td><td><code>"multi-agent" code generation benchmark SWE-bench OR HumanEval</code></td></tr>
+    <tr><td>4</td><td>医学/科学</td><td><code>"multi-agent" medical reasoning OR clinical benchmark LLM</code></td></tr>
+    <tr><td>5</td><td>批判/零结果</td><td><code>"single agent" outperforms "multi-agent" LLM</code></td></tr>
+    <tr><td>6</td><td>前沿模型</td><td><code>"frontier model" "multi-agent" diminishing returns OR compute parity</code></td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ====== 附录D ====== -->
+<div class="appendix" id="app-d">
+<h2>附录D：排除表</h2>
+<p>
+通过PICOS筛选的106条记录中，65条因缺乏可提取的MA vs. SA准确率计数被排除。被排除记录可能不是随机缺失的——报告负面或零结果的研究可能不太可能提供详细的准确率表。<strong>逻辑推论是41项纳入研究可能过度代表正面结果。</strong>
+</p>
+<table>
+  <caption>表D1. 65条无可提取数据记录的排除原因。</caption>
+  <thead>
+    <tr><th>排除原因</th><th>计数</th><th>备注</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>仅报告聚合/复合指标</td><td>18</td><td>胜率、Elo分或复合指数</td></tr>
+    <tr><td>未单独报告单智能体基准线</td><td>14</td><td>仅有多智能体结果</td></tr>
+    <tr><td>仅定性或案例评估</td><td>11</td><td>无定量基准数据</td></tr>
+    <tr><td>MA和SA条件使用不同骨干模型</td><td>8</td><td>不满足PICOS对照要求</td></tr>
+    <tr><td>基准不可识别或专有</td><td>6</td><td>无公共基准参考的自定义评估</td></tr>
+    <tr><td>细节不足以计算log-OR</td><td>5</td><td>报告百分比但无项目计数</td></tr>
+    <tr><td>论文无法定位或访问受限</td><td>3</td><td>arXiv ID未找到或付费墙</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ====== 附录E ====== -->
+<div class="appendix" id="app-e">
+<h2>附录E：Cohen's <em>h</em> 作为次要效应量</h2>
+<p>
+Cohen's <em>h</em> = 2 arcsin(&radic;<em>p</em><sub>MA</sub>) &minus; 2 arcsin(&radic;<em>p</em><sub>SA</sub>) 提供绝对尺度效应量，对基础率膨胀的敏感度低于log-OR。基准：0.20 = 小，0.50 = 中，0.80 = 大（<a href="#ref-cohen1988">Cohen, 1988</a>）。
+</p>
+<table>
+  <caption>表E1. 关键分析的合并Cohen's <em>h</em>。</caption>
+  <thead>
+    <tr><th>分析</th><th>k</th><th>Cohen's <em>h</em></th><th>解读</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>全样本</td><td>41</td><td>0.08</td><td>微不足道（低于"小"阈值）</td></tr>
+    <tr><td>代码生成</td><td>11</td><td>0.14</td><td>微不足道至小</td></tr>
+    <tr><td>仅计算对等</td><td>9</td><td>&asymp; 0.05</td><td>可忽略</td></tr>
+    <tr><td>医学推理</td><td>7</td><td>0.09</td><td>微不足道</td></tr>
+    <tr><td>通识知识</td><td>3</td><td>0.00</td><td>无效应</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ====== 附录F ====== -->
+<div class="appendix" id="app-f">
+<h2>附录F：元回归</h2>
+
+<figure>
+  <img src="assets/bubble-plot.png" alt="气泡图">
+  <figcaption><strong>图F1.</strong> log-OR与基线SA准确率的气泡图。气泡大小反映研究精度（1/SE）。负斜率（&beta; = &minus;0.77）方向上与前沿悖论假设一致但未达显著（p = .176）。</figcaption>
+</figure>
+
+<table>
+  <caption>表F1. 元回归（k = 41）。Q<sub>M</sub>(8) = 5.34, p = .72。R&sup2; = 0%。</caption>
+  <thead>
+    <tr><th>调节变量</th><th>估计值</th><th>SE</th><th><em>t</em>(32)</th><th><em>p</em></th></tr>
+  </thead>
+  <tbody>
+    <tr><td>截距</td><td>0.78</td><td>1.08</td><td>0.72</td><td>.478</td></tr>
+    <tr><td>计算对等: 不明</td><td>0.20</td><td>0.33</td><td>0.61</td><td>.545</td></tr>
+    <tr><td>计算对等: 是</td><td>&minus;0.03</td><td>0.32</td><td>&minus;0.09</td><td>.932</td></tr>
+    <tr><td>SA准确率</td><td>&minus;0.77</td><td>0.56</td><td>&minus;1.38</td><td>.176</td></tr>
+    <tr><td>骨干: GPT</td><td>0.27</td><td>0.71</td><td>0.38</td><td>.705</td></tr>
+    <tr><td>骨干: Gemini</td><td>0.30</td><td>0.78</td><td>0.38</td><td>.708</td></tr>
+    <tr><td>骨干: Qwen</td><td>&minus;0.26</td><td>0.77</td><td>&minus;0.34</td><td>.735</td></tr>
+    <tr><td>骨干: 其他</td><td>&minus;0.07</td><td>0.75</td><td>&minus;0.09</td><td>.926</td></tr>
+    <tr><td>智能体数</td><td>0.005</td><td>0.23</td><td>0.02</td><td>.984</td></tr>
+  </tbody>
+</table>
+<p>
+无调节变量达到显著。综合 Q<sub>M</sub>(8) = 5.34 (p = .72)，R&sup2; = 0%，表明所测调节变量未解释研究间方差。零Q<sub>M</sub> 不应解释为无调节效应的证据，因为元回归检验力不足。
+</p>
+</div>
+
+</body>
+</html>

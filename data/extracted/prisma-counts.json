@@ -1,0 +1,25 @@
+{
+  "identification": {
+    "records-from-agents": 153,
+    "agent-counts": {
+      "agent-1": 25,
+      "agent-2": 24,
+      "agent-3": 25,
+      "agent-4": 26,
+      "agent-5": 27,
+      "agent-6": 26
+    }
+  },
+  "screening": {
+    "after-dedup": 127,
+    "duplicates-removed": 26,
+    "picos-included": 106,
+    "picos-excluded": 21,
+    "with-extractable-data": 41,
+    "without-extractable-data": 65
+  },
+  "included": {
+    "effect-size-rows": 41,
+    "unique-studies": 41
+  }
+}

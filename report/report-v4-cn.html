@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>多智能体是否带来更好的结果？多智能体与单智能体大语言模型系统的元分析 (v4)</title>
+<style>
+  :root {
+    --text: #1a1a1a;
+    --text-secondary: #4a4a4a;
+    --bg: #ffffff;
+    --accent: #2c5282;
+    --accent-light: #ebf4ff;
+    --border: #d0d7de;
+    --table-stripe: #f6f8fa;
+    --caption: #555;
+    --warning: #b45309;
+    --danger: #dc2626;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: "Charter", "Georgia", "Times New Roman", serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.72;
+    font-size: 16px;
+  }
+  h1 {
+    font-size: 1.65rem;
+    line-height: 1.25;
+    margin: 2.5rem 0 0.25rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  h2 {
+    font-size: 1.25rem;
+    margin: 2.2rem 0 0.5rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  h3 {
+    font-size: 1.05rem;
+    margin: 1.6rem 0 0.4rem;
+    color: var(--text-secondary);
+  }
+  p { margin: 0.6rem 0; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .meta {
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.55;
+  }
+  .abstract {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 0.94rem;
+  }
+  .abstract h2 { border: none; margin-top: 0; font-size: 1.05rem; }
+  .highlight-box {
+    background: #fffbeb;
+    border: 1px solid #f59e0b;
+    border-radius: 4px;
+    padding: 0.8rem 1.1rem;
+    margin: 1.2rem 0;
+    font-size: 0.94rem;
+  }
+  .highlight-box strong { color: var(--warning); }
+  .danger-box {
+    background: #fef2f2;
+    border: 1px solid var(--danger);
+    border-radius: 4px;
+    padding: 0.8rem 1.1rem;
+    margin: 1.2rem 0;
+    font-size: 0.94rem;
+  }
+  .danger-box strong { color: var(--danger); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.88rem;
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  th {
+    background: var(--accent);
+    color: #fff;
+    padding: 0.5rem 0.6rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 0.45rem 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:nth-child(even) td { background: var(--table-stripe); }
+  caption, .fig-caption {
+    font-size: 0.85rem;
+    color: var(--caption);
+    margin: 0.5rem 0 1rem;
+    line-height: 1.5;
+    text-align: left;
+  }
+  caption { caption-side: top; font-weight: 600; margin-bottom: 0.4rem; }
+  figure {
+    margin: 1.5rem 0;
+    text-align: center;
+  }
+  figure img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+  }
+  figcaption {
+    font-size: 0.85rem;
+    color: var(--caption);
+    margin-top: 0.5rem;
+    text-align: left;
+    line-height: 1.5;
+  }
+  .ref-list {
+    font-size: 0.85rem;
+    line-height: 1.65;
+  }
+  .ref-list p {
+    padding-left: 2em;
+    text-indent: -2em;
+    margin: 0.35rem 0;
+  }
+  .appendix {
+    border-top: 2px solid var(--border);
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+  }
+  .appendix h2 { font-size: 1.1rem; }
+  sup { font-size: 0.75em; }
+  .stat { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92em; }
+  .exploratory {
+    font-style: italic;
+    color: var(--text-secondary);
+  }
+  .descriptive-only {
+    font-style: italic;
+    color: var(--danger);
+    font-size: 0.85em;
+  }
+  .grade-box {
+    background: #f0fdf4;
+    border: 1px solid #22c55e;
+    border-radius: 4px;
+    padding: 0.8rem 1.1rem;
+    margin: 1.2rem 0;
+    font-size: 0.94rem;
+  }
+  @media (max-width: 600px) {
+    body { padding: 1rem; font-size: 15px; }
+    h1 { font-size: 1.35rem; }
+    table { font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<h1>多智能体是否带来更好的结果？多智能体与单智能体大语言模型系统的元分析</h1>
+
+<div class="meta">
+  <strong>Xinyu Yang</strong> (r1020926)<br>
+  KU Leuven，心理与教育科学学院<br>
+  元分析（G0B75a），2025&ndash;2026学年<br>
+  2026年5月22日 &mdash; <strong>第4版</strong>（终稿，小修后定稿）
+</div>
+
+<!-- ====== ABSTRACT ====== -->
+<div class="abstract">
+<h2>摘要</h2>
+<p>
+本探索性便利样本元分析综合了41项研究内比较（2023&ndash;2026），考察多智能体大语言模型 (LLM) 协作与单智能体提示在基准准确率上的差异。在采用REML随机效应模型并进行完整的Hartung-Knapp-Sidik-Jonkman调整后，合并对数优势比 (log-OR) 为<span class="stat">0.45，95% 置信区间 [0.23, 0.67]，p &lt; .001</span>（OR = 1.57；近似风险差 &asymp; 3&ndash;5个百分点）。然而，该估计值并不稳健。异质性极高（<span class="stat">I&sup2; = 96.1%，Q(40) = 1016.6</span>），95%预测区间跨越零值（<span class="stat">[&minus;0.74, 1.64]</span>），Egger检验检测到显著的漏斗图不对称（<span class="stat">p = .024</span>），且总体Cohen's <em>h</em>极小（<span class="stat">h = 0.08</span>）。在计算平等条件下（k = 9），效应减弱至<span class="stat">log-OR = 0.31</span>（h &asymp; 0.05，可忽略不计）。元回归中无调节变量达到显著水平（<span class="stat">Q<sub>M</sub>(8) = 5.34, p = .72; R&sup2; = 0%</span>）。亚组分析表明效应可能集中于代码生成任务和层级架构，但组间检验（任务类别：<span class="stat">Q<sub>between</sub>(5) = 197.56, p &lt; .001</span>；架构类型：<span class="stat">Q<sub>between</sub>(4) = 32.75, p &lt; .001</span>）因未控制的混杂因素应谨慎解读。鉴于61%的研究被评为高偏倚风险、71%的提取数据未经审核，且存在发表偏倚证据，这些发现具有临时性和假设生成性质。多智能体协作在可分解任务和充裕计算预算下可能有所助益，但当前证据基础污染程度过高，不足以支持强因果断言。
+</p>
+</div>
+
+<!-- ====== 1. INTRODUCTION ====== -->
+<h2>1. 引言</h2>
+
+<p>
+大语言模型的多智能体范式基于一个直观的类比：正如人类团队在复杂任务上优于个体，多个LLM实例通过结构化协议进行协作，理应超越单一实例的表现。AutoGen（<a href="#ref-wu2023">Wu et al., 2023</a>）、MetaGPT（<a href="#ref-hong2023">Hong et al., 2023</a>）和ChatDev（<a href="#ref-qian2024">Qian et al., 2024</a>）等框架现已能够在层级结构、辩论机制和协作工作流中协调数十个专业化智能体。
+</p>
+
+<p>
+然而，一种持怀疑态度的反叙事已经出现。<a href="#ref-sprague2024">Sprague et al. (2024)</a>指出，一旦计算资源被均等化，多智能体的优势大部分会消失——多智能体系统消耗更多的推理token，而扩展单智能体的采样预算可能就能匹配多智能体的性能。<a href="#ref-zhang2025stop">Zhang et al. (2025)</a>直接证明，在等量token预算下，单智能体基线往往能够匹配甚至超越多智能体辩论。随着前沿模型的不断改进，协调开销可能会超过递减的边际收益。
+</p>
+
+<p>
+迄今尚无元分析对这些相互矛盾的发现进行综合。各研究在架构（辩论 vs. 层级 vs. 协作）、任务领域（代码 vs. 医学 vs. 数学）、骨干模型以及是否实施计算平等方面存在差异。这种异质性使得叙述性综述不可靠。我们提出四个研究问题：
+</p>
+
+<p>
+<strong>研究问题1（主要）。</strong>多智能体LLM系统在基准准确率上是否优于单智能体基线？<br>
+<strong>研究问题2（计算平等）。</strong>在匹配计算预算条件下，多智能体优势是否仍然存在？<br>
+<strong>研究问题3（前沿悖论）。</strong>随着单智能体基线准确率的提高，协作增益是否缩小？<br>
+<strong>研究问题4（调节变量）。</strong>哪些任务和架构特性预测效应方向？
+</p>
+
+<!-- ====== 2. METHODS ====== -->
+<h2>2. 方法</h2>
+
+<h3>2.1 检索策略与局限</h3>
+<p>
+我们部署了六个并行检索智能体，分别覆盖不同的主题群组：多智能体辩论、协作/层级架构、软件工程与代码生成、医学/科学推理、批判性与零结果文献，以及前沿模型比较。每个智能体检索了arXiv、ACL Anthology、NeurIPS/ICML/ICLR会议论文集和Google Scholar，目标文献发表于2023&ndash;2026年。初步检索获得153条记录。检索词详见<a href="#app-c">附录C</a>。
+</p>
+<p>
+<strong>重要说明：</strong>本研究为便利样本，非预注册的系统综述。未预注册任何方案。检索策略虽然广泛，但无法保证穷尽覆盖。六智能体检索方法引入了与手工系统检索不同（但未必更优）的选择偏倚。结果应视为假设生成性质。
+</p>
+
+<h3>2.2 筛选与纳入标准（PICOS）</h3>
+<p>
+<strong>研究对象：</strong>2023&ndash;2026年的LLM实证研究。<strong>干预：</strong>任何多智能体协作（辩论、协作、层级、角色扮演、验证-批评、混合智能体、规划-执行）。<strong>对照：</strong>使用相同骨干模型的单智能体基线。<strong>结局：</strong>基于命名基准的准确率或成功率比例。<strong>研究设计：</strong>研究内直接对比。
+</p>
+<p>
+排除标准：经典多智能体强化学习、无实证结果的立场论文、缺乏单智能体对照的研究，以及仅含仿真评估的研究。去重（去除26条）和PICOS筛选（排除21条）后，剩余106条记录。其中41条报告了可提取的多智能体和单智能体条件下的准确率数据。被排除的65条记录编录于<a href="#app-d">附录D</a>。筛选由作者在AI辅助下完成，未计算正式的评审者间信度，这是一项局限。
+</p>
+
+<h3>2.3 效应量</h3>
+<p>
+我们以对数优势比 (log-OR) 作为主要效应量。仅对含零单元格的研究有条件地应用0.5连续性校正（<a href="#ref-sweeting2004">Sweeting et al., 2004</a>）；本分析中无此类情况。对于每项研究，我们提取了<em>n</em>-items（基准测试总题数）、多智能体条件下的正确数和单智能体条件下的正确数。当<em>n</em>-items无法直接提取时，根据报告的百分比和基准总量进行估算；41项研究中有18项被标记为估算值。Cohen's <em>h</em>作为辅助效应量以提供绝对量表的参照（详见<a href="#app-e">附录E</a>）。
+</p>
+<p>
+<strong>风险差近似值。</strong>为便于实际解读，我们在报告log-OR的同时报告了近似风险差（RD = <em>p</em><sub>MA</sub> &minus; <em>p</em><sub>SA</sub>）。全部41项研究的合并RD约为3&ndash;5个百分点，即多智能体系统平均每100题多解答约3&ndash;5题。在计算平等条件下，该差值缩小至约2个百分点。
+</p>
+<p>
+<strong>指标异质性。</strong>41项比较包括准确率、pass@1、胜率、可执行性评分和解决率。我们将所有指标视为二项比例处理，但承认这一合并是一种简化。基于胜率的基准（如AlpacaEval）与项目级准确率的假设不同；解读结果时应注意此局限。
+</p>
+
+<h3>2.4 统计模型</h3>
+<p>
+主要分析采用限制性最大似然（REML）随机效应模型（<a href="#ref-viechtbauer2005">Viechtbauer, 2005</a>），并进行完整的Hartung-Knapp-Sidik-Jonkman（HKSJ）调整（<a href="#ref-hartung2001">Hartung &amp; Knapp, 2001</a>；<a href="#ref-inthout2014">IntHout et al., 2014</a>）。HKSJ调整对合并方差估计应用缩放因子，并使用<em>t</em>(k&minus;1)自由度计算合并估计的置信区间。预测区间依据<a href="#ref-inthout2016">IntHout et al. (2016)</a>使用<em>t</em>(k&minus;2)。DerSimonian-Laird估计作为敏感性检验。Cochran's Q使用固定效应权重和固定效应合并均值计算，产生在不同方差估计量间一致的Q值（<a href="#ref-borenstein2009">Borenstein et al., 2009</a>，第16章）。
+</p>
+<p>
+亚组分析对每个水平使用独立的随机效应模型，Q<sub>between</sub>通过Q分解法计算（Q<sub>between</sub> = Q<sub>total</sub> &minus; &Sigma;Q<sub>within</sub>；<a href="#ref-borenstein2009">Borenstein et al., 2009</a>，第19章）。元回归采用混合效应模型，使用条件REML &tau;&sup2;估计和Knapp-Hartung <em>t</em>分布推断，报告综合Q<sub>M</sub>检验（<a href="#ref-viechtbauer2010">Viechtbauer, 2010</a>）。逐一剔除法敏感性分析在每次迭代中重新估计&tau;&sup2;。
+</p>
+<p>
+<strong>依赖性。</strong>多个效应量有时来源于同一篇论文、同一基准族或同一模型族。本版本中我们未实施稳健方差估计（<a href="#ref-hedges2010">Hedges et al., 2010</a>；<a href="#ref-pustejovsky2022">Pustejovsky &amp; Tipton, 2022</a>）或多层元分析（<a href="#ref-vandennoortgate2013">Van den Noortgate et al., 2013</a>）。非聚合敏感性分析（k = 36）部分缓解但未根本解决此局限。
+</p>
+
+<h3>2.5 偏倚风险</h3>
+<p>
+我们改编了ROB 2.0框架（<a href="#ref-sterne2019">Sterne et al., 2019</a>），评估领域包括选择偏倚、执行/计算平等偏倚、报告偏倚和失访偏倚。41项研究中有25项（61%）被评为高偏倚风险，主要原因是计算资源未受控制：多智能体系统通常消耗更多推理token，却未进行任何单智能体扩展对比。此外，41项研究中有29项（71%）的数据提取准确性尚未审核，尽管已审核的12行中有50%的纠错率。
+</p>
+
+<h3>2.6 发表偏倚</h3>
+<p>
+使用k = 41进行了漏斗图检查、Egger回归检验（<a href="#ref-egger1997">Egger et al., 1997</a>）、Begg秩相关（<a href="#ref-begg1994">Begg &amp; Mazumdar, 1994</a>）、Duval和Tweedie的剪补法（<a href="#ref-duval2000">Duval &amp; Tweedie, 2000</a>）以及p-curve分析（<a href="#ref-simonsohn2014">Simonsohn et al., 2014</a>）。
+</p>
+
+<!-- ====== 3. RESULTS ====== -->
+<h2>3. 结果</h2>
+
+<h3>3.1 研究流程</h3>
+
+<figure>
+  <img src="assets/prisma-flow.png" alt="PRISMA流程图，显示检索到153条记录，去重后127条，PICOS筛选后106条，最终41项纳入元分析。">
+  <figcaption><strong>图1。</strong>PRISMA流程图。六个检索智能体识别了153条记录。去重（去除26条）、PICOS筛选（排除21条）和数据可用性筛选（65条无可提取的MA + SA准确率数据）后，41项研究被纳入。排除表详见<a href="#app-d">附录D</a>。</figcaption>
+</figure>
+
+<table>
+  <caption>表1. PRISMA流程汇总。</caption>
+  <thead>
+    <tr><th>阶段</th><th>记录数</th><th>操作</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>检索</td><td>153</td><td>来自6个检索智能体（便利样本）</td></tr>
+    <tr><td>去重后</td><td>127</td><td>去除26条重复记录</td></tr>
+    <tr><td>PICOS筛选后</td><td>106</td><td>排除21条（无单智能体对照、仅含仿真等）</td></tr>
+    <tr><td>含可提取数据</td><td>41</td><td>65条缺乏MA + SA准确率计数（<a href="#app-d">附录D</a>）</td></tr>
+    <tr><td>纳入元分析</td><td>41</td><td>最终分析样本（12项已审核，29项未审核）</td></tr>
+  </tbody>
+</table>
+
+<h3>3.2 描述性特征</h3>
+<p>
+纳入的41项比较涵盖2023&ndash;2026年。占主导地位的架构类型为辩论（k = 20，49%），其次为协作（k = 9）、层级（k = 6）、验证-批评（k = 2）和角色扮演（k = 2），另有一项混合智能体研究和一项规划-执行研究。任务类别包括代码生成（k = 11）、"其他"混合基准（k = 10）、医学推理（k = 7）、数学（k = 6）、评估任务（k = 3）、通用知识（k = 3）和事实性（k = 1）。骨干模型涵盖GPT-4系列、Claude、Gemini、Qwen及开源模型。41项研究中有18项的<em>n</em>-items为估算值（非直接提取）。仅9项研究在多智能体和单智能体条件之间实施了计算平等。
+</p>
+
+<h3>3.3 合并效应</h3>
+
+<figure>
+  <img src="assets/forest-plot.png" alt="41项研究的森林图，显示合并对数优势比为0.45，95%置信区间[0.23, 0.67]。">
+  <figcaption><strong>图2。</strong>森林图。REML随机效应合并log-OR = 0.45，95%置信区间 [0.23, 0.67]（HKSJ调整，<em>t</em>(40)自由度）。菱形代表合并估计值。各研究权重反映逆方差加权。</figcaption>
+</figure>
+
+<table>
+  <caption>表2. 主要合并结果（k = 41）。</caption>
+  <thead>
+    <tr><th>估计量</th><th>log-OR</th><th>95% 置信区间</th><th>95% 预测区间</th><th>&tau;&sup2;</th><th>I&sup2;</th><th>Q (df = 40)</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>REML (HKSJ)</td><td>0.45</td><td>[0.23, 0.67]</td><td>[&minus;0.74, 1.64]</td><td>0.34</td><td>96.1%</td><td>1016.6***</td></tr>
+    <tr><td>DerSimonian-Laird</td><td>0.41</td><td>[0.22, 0.61]</td><td>[&minus;0.38, 1.21]</td><td>0.15</td><td>96.1%</td><td>1016.6***</td></tr>
+  </tbody>
+</table>
+<p class="fig-caption">*** p &lt; .001。PI = 预测区间。Q为固定效应Cochran's Q，在不同方差估计量间一致。REML的置信区间使用完整HKSJ缩放因子和<em>t</em>(40)临界值；预测区间使用<em>t</em>(k&minus;2) = <em>t</em>(39)。<strong>Cohen's <em>h</em> = 0.08（绝对量表上属微不足道）。</strong>近似风险差：3&ndash;5个百分点。</p>
+
+<p>
+REML模型得到合并log-OR为0.45（95%置信区间 [0.23, 0.67]，p &lt; .001），对应OR = 1.57。然而在绝对量表上，总体Cohen's <em>h</em>为0.08——远低于"小"效应的0.20阈值（<a href="#ref-cohen1988">Cohen, 1988</a>）。近似风险差为3&ndash;5个百分点，意味着多智能体系统在每100道基准题目中大约多解答3&ndash;5题。这是否足以证明增加的复杂性和计算成本合理，是一个系统设计问题，而非统计问题。
+</p>
+
+<div class="danger-box">
+<strong>关键警示：多重威胁削弱了该估计。</strong>合并效应为正但脆弱：
+（1）预测区间 [&minus;0.74, 1.64] 跨越零值，因此新研究完全可能发现单智能体更优。
+（2）Egger检验显著（p = .024），表明漏斗图不对称及可能的发表偏倚或小样本效应。
+（3）Cohen's h = 0.08在绝对量表上属微不足道。
+（4）61%的研究为高偏倚风险，71%的数据未经审核。
+（5）I&sup2; = 96.1%意味着"平均效应"作为点预测几乎毫无意义。
+诚实的解读是：这是一个正向但临时性的信号，而非稳健的发现。
+</div>
+
+<h3>3.4 异质性</h3>
+<p>
+异质性极高：I&sup2; = 96.1%，Q(40) = 1016.6（p &lt; .001），&tau;&sup2; = 0.34，&tau; = 0.58。研究间标准差（&tau; = 0.58）超过了合并估计值本身（0.45），证实真实效应的分布范围很广。合并均值不应作为任何特定情境下的点预测。
+</p>
+
+<figure>
+  <img src="assets/baujat-plot.png" alt="Baujat图，显示每项研究对总体异质性的贡献与对合并结果的影响。">
+  <figcaption><strong>图3。</strong>Baujat图。位于右上象限的研究对异质性和合并估计值的贡献均不成比例地大。</figcaption>
+</figure>
+
+<h3>3.5 按任务类别的亚组分析</h3>
+
+<figure>
+  <img src="assets/subgroup-task-category.png" alt="按任务类别的亚组森林图。">
+  <figcaption><strong>图4。</strong>按任务类别的亚组分析。误差线为95%置信区间。</figcaption>
+</figure>
+
+<table>
+  <caption>表3. 按任务类别的亚组分析。Q<sub>between</sub>(5) = 197.56, p &lt; .001。</caption>
+  <thead>
+    <tr><th>任务</th><th>k</th><th>log-OR</th><th>95% 置信区间</th><th>I&sup2;</th><th>备注</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>代码生成</td><td>11</td><td>0.83</td><td>[0.44, 1.22]</td><td>75.3%</td><td></td></tr>
+    <tr><td>医学推理</td><td>7</td><td>0.42</td><td>[0.20, 0.64]</td><td>61.0%</td><td></td></tr>
+    <tr><td>数学</td><td>6</td><td>0.34</td><td>[0.05, 0.63]</td><td>93.0%</td><td></td></tr>
+    <tr><td>其他（混合）</td><td>10</td><td>0.32</td><td>[&minus;0.60, 1.24]</td><td>90.8%</td><td></td></tr>
+    <tr><td>评估</td><td>3</td><td>0.24</td><td>[&minus;0.21, 0.69]</td><td>0.0%</td><td class="descriptive-only">仅描述性（k &lt; 5）</td></tr>
+    <tr><td>通用知识</td><td>3</td><td>0.02</td><td>[&minus;1.25, 1.28]</td><td>99.7%</td><td class="descriptive-only">仅描述性（k &lt; 5）</td></tr>
+  </tbody>
+</table>
+
+<p>
+组间Q检验高度显著（Q<sub>between</sub>(5) = 197.56, p &lt; .001），表明任务类别与效应量变异相关。Q分解法假设各亚组间具有共同的&tau;&sup2;；鉴于组内I&sup2;从0%到99.7%不等，该假设可能被违反。代码生成产生了最大的多智能体效应（log-OR = 0.83），这与模块化、可分解任务有利于智能体专业化的直觉一致（<a href="#ref-hong2023">Hong et al., 2023</a>；<a href="#ref-zhang2024">Zhang et al., 2024</a>）。医学推理呈现中等效应（log-OR = 0.42），可能反映了对抗性验证的价值——第二个智能体质疑第一个的诊断（<a href="#ref-tang2024">Tang et al., 2024</a>）。通用知识几乎没有获益（log-OR = 0.02），表明对于简单的事实检索，协调只会增加噪声。然而，这些亚组估计与计算资源分配、骨干模型和研究质量存在混杂；表面上的任务梯度可能部分反映了这些相关因素。k &lt; 3的亚组标记为"仅描述性"——其&tau;&sup2;估计不具参考价值（<a href="#ref-borenstein2009">Borenstein et al., 2009</a>，第17章）。
+</p>
+
+<h3>3.6 按架构类型的亚组分析</h3>
+
+<figure>
+  <img src="assets/subgroup-architecture.png" alt="按架构类型的亚组森林图。">
+  <figcaption><strong>图5。</strong>按架构类型的亚组分析。误差线为95%置信区间。</figcaption>
+</figure>
+
+<table>
+  <caption>表4. 按架构类型的亚组分析。Q<sub>between</sub>(4) = 32.75, p &lt; .001。</caption>
+  <thead>
+    <tr><th>架构</th><th>k</th><th>log-OR</th><th>95% 置信区间</th><th>I&sup2;</th><th>备注</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>层级</td><td>6</td><td>0.76</td><td>[&minus;0.02, 1.54]</td><td>79.9%</td><td></td></tr>
+    <tr><td>辩论</td><td>20</td><td>0.37</td><td>[0.13, 0.62]</td><td>97.8%</td><td></td></tr>
+    <tr><td>协作</td><td>9</td><td>0.31</td><td>[&minus;0.54, 1.16]</td><td>85.9%</td><td></td></tr>
+    <tr><td>角色扮演</td><td>2</td><td>0.32</td><td>[0.06, 0.59]</td><td>0.0%</td><td class="descriptive-only">仅描述性（k = 2）</td></tr>
+    <tr><td>验证-批评</td><td>2</td><td>1.01</td><td>[&minus;8.41, 10.43]</td><td>96.6%</td><td class="descriptive-only">仅描述性（k = 2）</td></tr>
+  </tbody>
+</table>
+
+<p>
+组间Q显著（Q<sub>between</sub>(4) = 32.75, p &lt; .001）。层级架构显示最大的点估计（log-OR = 0.76），但置信区间勉强包含零值。辩论作为研究最多的架构（k = 20），呈现更为温和但显著的优势（log-OR = 0.37）。协作的置信区间广泛跨越零值（log-OR = 0.31，[&minus;0.54, 1.16]）。<strong>角色扮演（k = 2）和验证-批评（k = 2）仅为完整性而报告，属于仅描述性</strong>——仅有两项研究时，&tau;&sup2;、I&sup2;和置信区间本质上不具参考价值。验证-批评的置信区间宽度约19个log-OR单位，充分说明了这种不稳定性。
+</p>
+
+<h3>3.7 元回归</h3>
+
+<figure>
+  <img src="assets/bubble-plot.png" alt="效应量与基线单智能体准确率的气泡图，气泡大小反映研究精度。">
+  <figcaption><strong>图6。</strong>log-OR与基线SA准确率的气泡图。气泡大小反映研究精度（1/SE）。负斜率（&beta; = &minus;0.77）在方向上与前沿悖论假说一致，但未达到显著性（p = .176）。</figcaption>
+</figure>
+
+<table>
+  <caption>表5. 元回归（k = 41）。模型：log-OR ~ compute-parity + sa-accuracy + backbone-family + n-agents。条件REML &tau;&sup2;，HKSJ推断。Q<sub>M</sub>(8) = 5.34, p = .72。R&sup2; = 0%。</caption>
+  <thead>
+    <tr><th>调节变量</th><th>估计值</th><th>SE</th><th><em>t</em>(32)</th><th><em>p</em></th></tr>
+  </thead>
+  <tbody>
+    <tr><td>截距</td><td>0.78</td><td>1.08</td><td>0.72</td><td>.478</td></tr>
+    <tr><td>计算平等：不明</td><td>0.20</td><td>0.33</td><td>0.61</td><td>.545</td></tr>
+    <tr><td>计算平等：是</td><td>&minus;0.03</td><td>0.32</td><td>&minus;0.09</td><td>.932</td></tr>
+    <tr><td>SA准确率</td><td>&minus;0.77</td><td>0.56</td><td>&minus;1.38</td><td>.176</td></tr>
+    <tr><td>骨干模型：GPT</td><td>0.27</td><td>0.71</td><td>0.38</td><td>.705</td></tr>
+    <tr><td>骨干模型：Gemini</td><td>0.30</td><td>0.78</td><td>0.38</td><td>.708</td></tr>
+    <tr><td>骨干模型：Qwen</td><td>&minus;0.26</td><td>0.77</td><td>&minus;0.34</td><td>.735</td></tr>
+    <tr><td>骨干模型：其他</td><td>&minus;0.07</td><td>0.75</td><td>&minus;0.09</td><td>.926</td></tr>
+    <tr><td>智能体数量</td><td>0.005</td><td>0.23</td><td>0.02</td><td>.984</td></tr>
+  </tbody>
+</table>
+
+<p>
+无调节变量达到显著水平。综合Q<sub>M</sub>(8) = 5.34（p = .72）及R&sup2; = 0%表明，所检验的调节变量共同未能解释任何研究间方差。SA准确率斜率（&beta; = &minus;0.77, p = .176）在实质意义上最为有趣——其方向与前沿悖论假说（研究问题3）一致——但在当前样本量下不具统计可靠性。Q<sub>M</sub>为非显著不应被解读为不存在调节作用的证据；该元回归统计效力不足以检测合理幅度的调节效应。
+</p>
+
+<h3>3.8 发表偏倚</h3>
+
+<figure>
+  <img src="assets/funnel-plot.png" alt="漏斗图，显示各研究围绕合并估计值的分布。">
+  <figcaption><strong>图7。</strong>漏斗图。Egger检验检测到显著不对称（p = .024），提示存在小样本效应或发表偏倚。</figcaption>
+</figure>
+
+<table>
+  <caption>表6. 发表偏倚诊断。</caption>
+  <thead>
+    <tr><th>检验</th><th>统计量</th><th>p</th><th>解读</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Egger回归</td><td>截距 = 2.53, t(39) = 2.34</td><td><strong>.024</strong></td><td>检测到显著漏斗图不对称</td></tr>
+    <tr><td>Begg秩相关</td><td>&tau; = 0.06</td><td>.61</td><td>无偏倚证据</td></tr>
+    <tr><td>剪补法</td><td>填补0项研究</td><td>&mdash;</td><td>无调整（可能缺乏灵敏度）</td></tr>
+    <tr><td>P-curve</td><td>89%右偏（25/28项显著）</td><td>&lt; .001</td><td>提示存在证据价值，但输入异质且部分依赖</td></tr>
+  </tbody>
+</table>
+
+<div class="danger-box">
+<strong>发表偏倚现已成为一项关注。</strong>Egger回归检验（对截距进行检验）显著（截距 = 2.53, t(39) = 2.34, p = .024）。这表明漏斗图不对称与小样本效应一致——样本中较小的研究倾向于显示更大的正效应。这种模式是发表偏倚的典型特征（小规模正结果研究被发表，而小规模零结果研究未被发表），或与研究规模相关的真正异质性。Begg检验和剪补法未达显著，但这些方法对连续结局的灵敏度低于Egger检验。P-curve显示右偏（25/28项显著结果），但p-curve假设独立、同质的假设检验——此处仅近似满足这些条件。<strong>总体而言，正向的合并估计可能因选择性报告而被夸大，这实质性地削弱了主要发现。</strong>
+</div>
+
+<h3>3.9 敏感性分析</h3>
+
+<table>
+  <caption>表7. 敏感性分析（8种规格）。REML及HKSJ调整。置信区间使用<em>t</em>(k&minus;1)；逐一剔除法分析在每次迭代中重新估计&tau;&sup2;。</caption>
+  <thead>
+    <tr><th>分析</th><th>k</th><th>log-OR</th><th>95% 置信区间</th><th>&tau;&sup2;</th><th>Cohen's <em>h</em></th></tr>
+  </thead>
+  <tbody>
+    <tr><td>全样本（REML）</td><td>41</td><td>0.45</td><td>[0.23, 0.67]</td><td>0.34</td><td>0.08</td></tr>
+    <tr><td>仅计算平等</td><td>9</td><td>0.31</td><td>[0.004, 0.57]</td><td>0.08</td><td>&asymp; 0.05</td></tr>
+    <tr><td>仅2025年后发表</td><td>29</td><td>0.41</td><td>[0.10, 0.68]</td><td>0.47</td><td>&mdash;</td></tr>
+    <tr><td>去除高偏倚风险</td><td>16</td><td>0.42</td><td>[0.13, 0.69]</td><td>0.21</td><td>&mdash;</td></tr>
+    <tr><td>仅已验证研究</td><td>10</td><td>0.35</td><td>[0.19, 0.51]</td><td>0.01</td><td>&mdash;</td></tr>
+    <tr><td>非聚合基准</td><td>36</td><td>0.48</td><td>[0.23, 0.73]</td><td>0.42</td><td>&mdash;</td></tr>
+    <tr><td>仅准确率指标</td><td>37</td><td>0.46</td><td>[0.22, 0.71]</td><td>0.40</td><td>&mdash;</td></tr>
+    <tr><td>仅精确n-items</td><td>28</td><td>0.40</td><td>[0.13, 0.67]</td><td>0.32</td><td>&mdash;</td></tr>
+  </tbody>
+</table>
+
+<p>
+最具实质意义的敏感性分析是<strong>计算平等</strong>（k = 9）：仅纳入均等化推理token的研究后，合并log-OR从0.45降至0.31（衰减约31%）。置信区间下限勉强超过零值（未四舍五入值：[0.004, 0.57]），对应的Cohen's h约为0.05——按常规标准可忽略不计。这意味着在公平计算比较条件下，多智能体系统每100道基准题目大约多答对2题，该效应在统计上处于临界水平，在实际意义上微不足道。
+</p>
+<p>
+<strong>仅已验证</strong>子集（k = 10）的估计明显低于全样本：log-OR = 0.35 [0.19, 0.51]，异质性大幅降低（&tau;&sup2; = 0.01 vs. 0.34）。较低的点估计值是一个警示：29项未审核的研究可能包含提取错误，从而夸大了合并效应。&tau;&sup2;的降低表明，全样本中部分表观异质性源于提取噪声。仅审核了12行且纠错率高达50%，"令人放心"一词过于乐观。仅已验证的结果更为可信，但鉴于k值较小，也不应过度解读。
+</p>
+<p>
+<strong>精确n-items</strong>子集（k = 28）排除了13项使用估算分母的研究，得到log-OR = 0.40 [0.13, 0.67]——较全样本有所衰减。<strong>仅准确率</strong>子集（k = 37）排除了非准确率指标（胜率、可执行性评分），得到0.46 [0.22, 0.71]，与全样本相近。
+</p>
+
+<h3>3.10 证据质量评价</h3>
+
+<div class="grade-box">
+<p><strong>主要结论的类GRADE（证据质量评价）评估</strong>（多智能体系统优于单智能体基线）：</p>
+<table>
+  <thead>
+    <tr><th>领域</th><th>评级</th><th>理由</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>偏倚风险</td><td>严重</td><td>61%为高偏倚风险（计算资源未控制）；71%数据未审核；已审核子集中纠错率50%</td></tr>
+    <tr><td>不一致性</td><td>严重</td><td>I&sup2; = 96.1%；预测区间跨越零值；效应范围从&minus;2.25到+3.14</td></tr>
+    <tr><td>间接性</td><td>存在顾虑</td><td>指标异质性：准确率、pass@1、胜率、解决率被统一作为二项结局处理</td></tr>
+    <tr><td>不精确性</td><td>不严重</td><td>合并估计的置信区间不包含零值；计算平等子集处于临界水平（虽然计算平等子集的置信区间 [0.004, 0.57] 几乎包含零值）</td></tr>
+    <tr><td>发表偏倚</td><td>严重</td><td>Egger p = .024；显著的漏斗图不对称；检测到小样本效应</td></tr>
+  </tbody>
+</table>
+<p><strong>总体确定性：极低。</strong>三个领域评为"严重"，在v2的基础上因修正后的Egger检验（现已显著）以及认识到指标异质性引入间接性而从"低"上调。正向的合并效应可能部分或全部是发表偏倚、计算混杂和提取错误的产物。这些发现仅具假设生成性质。</p>
+</div>
+
+<!-- ====== 4. DISCUSSION ====== -->
+<h2>4. 讨论</h2>
+
+<h3>4.1 主要发现</h3>
+<p>
+多智能体LLM系统在平均水平上似乎优于单智能体基线（研究问题1：log-OR = 0.45），但这一陈述需要大量限定。预测区间 [&minus;0.74, 1.64] 可以说是更为重要的结果：它跨越零值，意味着对于任何新情境，多智能体的优势并非确定无疑。Cohen's h为0.08提供了关键背景——在绝对量表上，这种"优势"相当于每100道基准题目多答对约3&ndash;5题。对于许多应用场景，这可能不足以证明增加的基础设施复杂性和推理成本合理。
+</p>
+<p>
+Egger检验（p = .024）表明该估计很可能被小样本效应或发表偏倚所夸大。显示多智能体系统正面结果的小规模研究，比显示零结果的小规模研究更可能出现在我们的样本中。这种不对称性是元分析中的标准威胁，结合其他弱点，意味着真实的平均效应可能小于0.45——甚至可能大幅缩小。
+</p>
+
+<h3>4.2 多智能体在何种情况下可能有效？</h3>
+<p>
+亚组分析提示了一种模式，但并非因果结论。代码生成（log-OR = 0.83）可能获益更多，因为软件工程本质上是模块化的：代码生成、测试编写、审查和调试可以映射到不同的智能体角色（<a href="#ref-hong2023">Hong et al., 2023</a>；<a href="#ref-zhang2024">Zhang et al., 2024</a>）。医学推理（log-OR = 0.42）可能受益于对抗性验证，即第二个智能体质疑第一个的诊断（<a href="#ref-tang2024">Tang et al., 2024</a>）。通用知识未显示获益（log-OR = 0.02）。然而，这些亚组差异与计算资源分配、骨干模型和研究质量混杂。显著的Q<sub>between</sub>值（任务：197.56；架构：32.75）表明亚组间存在异质性，但不能证明任务类型或架构类型因果性地调节了效应。
+</p>
+
+<h3>4.3 计算混杂</h3>
+<p>
+在计算平等条件下，效应缩小约31%（从0.45降至0.31），Cohen's h变为可忽略不计（约0.05）。这是最具实践意义的发现。消耗5倍token的多智能体辩论应与同等token预算下采用思维链、自一致性或重复采样的单智能体进行比较（<a href="#ref-sprague2024">Sprague et al., 2024</a>；<a href="#ref-zhang2025stop">Zhang et al., 2025</a>）。多智能体优势在计算均等化后仅勉强存活——置信区间几乎触及零值（[0.004, 0.57]）且绝对效应量微不足道——这实质性地削弱了将多智能体协作作为通用策略的实际论据。它可能仍适用于特定的可分解任务，在这些任务中结构化的智能体间通信能够提供超越单纯计算扩展的真正信息价值。
+</p>
+
+<h3>4.4 局限性</h3>
+<p>
+<em>数据质量局限。</em>第一，这是一项探索性便利样本元分析，而非预注册的系统综述。65条无可提取数据的排除记录可能并非随机缺失（<a href="#app-d">附录D</a>）。第二，Egger检验显著（p = .024），表明发表偏倚或小样本效应可能夸大了合并估计。第三，61%的研究为高偏倚风险（主要因计算资源未控制），71%的数据尚未审核，尽管已审核行的纠错率高达50%。第四，I&sup2; = 96.1%为极端异质性；合并均值作为点预测几乎毫无意义。第五，指标异质性（准确率、pass@1、胜率、解决率）意味着log-OR模型假设了比实际数据更高的同质性。
+</p>
+<p>
+<em>分析方法局限。</em>第六，效应量间的依赖性未正式建模；稳健方差估计（<a href="#ref-hedges2010">Hedges et al., 2010</a>）或多层建模（<a href="#ref-vandennoortgate2013">Van den Noortgate et al., 2013</a>）是严格推断所必需的。第七，所有亚组分析均为探索性，未对多重比较进行校正。第八，元回归中无调节变量显著，但回归统计效力不足。第九，多智能体和单智能体条件之间的实际计算比率很少被报告，限制了我们精确量化混杂程度的能力。
+</p>
+
+<!-- ====== 5. CONCLUSION ====== -->
+<h2>5. 结论</h2>
+<p>
+本探索性元分析发现了一个正向但脆弱的信号，表明多智能体LLM协作可能优于单智能体基线（合并log-OR = 0.45，95%置信区间 [0.23, 0.67]；Cohen's h = 0.08；近似RD = 3&ndash;5个百分点）。然而，该证据受到以下因素的实质性削弱：（1）显著的发表偏倚（Egger p = .024），（2）极端异质性（I&sup2; = 96.1%，预测区间跨越零值），（3）微不足道的绝对效应量，（4）普遍的计算混杂，以及（5）薄弱的数据来源（71%未审核，已审核行中50%的纠错率）。
+</p>
+<p>
+最诚实的解读是，多智能体协作<em>可能</em>对可分解、可验证的任务（代码生成、医学推理）在充裕计算预算下有所助益，但当前证据基础因发表偏倚、计算混杂和数据质量问题而严重受损，不足以做出强因果断言。在计算平等条件下，效应在统计上处于临界显著，在绝对量上可忽略不计（h &asymp; 0.05）。该领域亟需：（a）计算受控的比较（41项中仅9项实施了平等），（b）独立的提取审核，（c）预注册的元分析并预设调节变量。在此之前，实践者在假设协作能增加价值之前，应将任何多智能体系统与适当扩展的单智能体基线进行基准比较。
+</p>
+
+<!-- ====== REFERENCES ====== -->
+<h2>参考文献</h2>
+<div class="ref-list">
+
+<p id="ref-begg1994">Begg, C. B., &amp; Mazumdar, M. (1994). Operating characteristics of a rank correlation test for publication bias. <em>Biometrics, 50</em>(4), 1088&ndash;1101. <a href="https://doi.org/10.2307/2533446">https://doi.org/10.2307/2533446</a></p>
+
+<p id="ref-borenstein2009">Borenstein, M., Hedges, L. V., Higgins, J. P. T., &amp; Rothstein, H. R. (2009). <em>Introduction to meta-analysis</em>. Wiley. <a href="https://doi.org/10.1002/9780470743386">https://doi.org/10.1002/9780470743386</a></p>
+
+<p id="ref-cohen1988">Cohen, J. (1988). <em>Statistical power analysis for the behavioral sciences</em> (2nd ed.). Lawrence Erlbaum Associates.</p>
+
+<p id="ref-du2023">Du, Y., Li, S., Torralba, A., Tenenbaum, J. B., &amp; Mordatch, I. (2023). Improving factuality and reasoning in language models through multiagent debate. <em>arXiv:2305.14325</em>. <a href="https://arxiv.org/abs/2305.14325">https://arxiv.org/abs/2305.14325</a></p>
+
+<p id="ref-duval2000">Duval, S., &amp; Tweedie, R. (2000). Trim and fill: A simple funnel-plot-based method of testing and adjusting for publication bias in meta-analysis. <em>Biometrics, 56</em>(2), 455&ndash;463. <a href="https://doi.org/10.1111/j.0006-341X.2000.00455.x">https://doi.org/10.1111/j.0006-341X.2000.00455.x</a></p>
+
+<p id="ref-egger1997">Egger, M., Smith, G. D., Schneider, M., &amp; Minder, C. (1997). Bias in meta-analysis detected by a simple, graphical test. <em>BMJ, 315</em>(7109), 629&ndash;634. <a href="https://doi.org/10.1136/bmj.315.7109.629">https://doi.org/10.1136/bmj.315.7109.629</a></p>
+
+<p id="ref-hartung2001">Hartung, J., &amp; Knapp, G. (2001). On tests of the overall treatment effect in meta-analysis with normally distributed responses. <em>Statistics in Medicine, 20</em>(12), 1771&ndash;1782. <a href="https://doi.org/10.1002/sim.791">https://doi.org/10.1002/sim.791</a></p>
+
+<p id="ref-hedges2010">Hedges, L. V., Tipton, E., &amp; Johnson, M. C. (2010). Robust variance estimation in meta-regression with dependent effect size estimates. <em>Research Synthesis Methods, 1</em>(1), 39&ndash;65. <a href="https://doi.org/10.1002/jrsm.5">https://doi.org/10.1002/jrsm.5</a></p>
+
+<p id="ref-hong2023">Hong, S., Zhuge, M., Chen, J., Zheng, X., Cheng, Y., Zhang, C., ... &amp; Wu, Y. (2023). MetaGPT: Meta programming for a multi-agent collaborative framework. <em>arXiv:2308.00352</em>. <a href="https://arxiv.org/abs/2308.00352">https://arxiv.org/abs/2308.00352</a></p>
+
+<p id="ref-inthout2014">IntHout, J., Ioannidis, J. P. A., &amp; Borm, G. F. (2014). The Hartung-Knapp-Sidik-Jonkman method for random effects meta-analysis is straightforward and considerably outperforms the standard DerSimonian-Laird method. <em>BMC Medical Research Methodology, 14</em>, 25. <a href="https://doi.org/10.1186/1471-2288-14-25">https://doi.org/10.1186/1471-2288-14-25</a></p>
+
+<p id="ref-inthout2016">IntHout, J., Ioannidis, J. P. A., Rovers, M. M., &amp; Goeman, J. J. (2016). Plea for routinely presenting prediction intervals in meta-analysis. <em>BMJ Open, 6</em>(7), e010247. <a href="https://doi.org/10.1136/bmjopen-2015-010247">https://doi.org/10.1136/bmjopen-2015-010247</a></p>
+
+<p id="ref-liang2024">Liang, T., He, Z., Jiao, W., Wang, X., Wang, Y., Wang, R., ... &amp; Tu, Z. (2024). Encouraging divergent thinking in large language models through multi-agent debate. <em>arXiv:2305.19118</em>. <a href="https://arxiv.org/abs/2305.19118">https://arxiv.org/abs/2305.19118</a></p>
+
+<p id="ref-pustejovsky2022">Pustejovsky, J. E., &amp; Tipton, E. (2022). Meta-analysis with robust variance estimation: Expanding the range of working models. <em>Prevention Science, 23</em>(3), 425&ndash;438. <a href="https://doi.org/10.1007/s11121-021-01246-3">https://doi.org/10.1007/s11121-021-01246-3</a></p>
+
+<p id="ref-qian2024">Qian, C., Liu, W., Liu, H., Chen, N., Dang, Y., Li, J., ... &amp; Liu, Z. (2024). ChatDev: Communicative agents for software development. <em>ACL 2024</em>. <a href="https://arxiv.org/abs/2307.07924">https://arxiv.org/abs/2307.07924</a></p>
+
+<p id="ref-simonsohn2014">Simonsohn, U., Nelson, L. D., &amp; Simmons, J. P. (2014). P-curve: A key to the file-drawer. <em>Journal of Experimental Psychology: General, 143</em>(2), 534&ndash;547. <a href="https://doi.org/10.1037/a0033242">https://doi.org/10.1037/a0033242</a></p>
+
+<p id="ref-sprague2024">Sprague, Z., Yin, F., Rodriguez, J. D., Jiang, D., Wadhwa, M., Singhal, P., ... &amp; Durrett, G. (2024). To CoT or not to CoT? Chain-of-thought helps mainly on math and symbolic reasoning. <em>arXiv:2409.12183</em>. <a href="https://arxiv.org/abs/2409.12183">https://arxiv.org/abs/2409.12183</a></p>
+
+<p id="ref-sterne2019">Sterne, J. A. C., Savovic, J., Page, M. J., Elbers, R. G., Blencowe, N. S., Boutron, I., ... &amp; Higgins, J. P. T. (2019). RoB 2: A revised tool for assessing risk of bias in randomised trials. <em>BMJ, 366</em>, l4898. <a href="https://doi.org/10.1136/bmj.l4898">https://doi.org/10.1136/bmj.l4898</a></p>
+
+<p id="ref-sweeting2004">Sweeting, M. J., Sutton, A. J., &amp; Lambert, P. C. (2004). What to add to nothing? Use and avoidance of continuity corrections in meta-analysis of sparse data. <em>Statistics in Medicine, 23</em>(9), 1351&ndash;1375. <a href="https://doi.org/10.1002/sim.1761">https://doi.org/10.1002/sim.1761</a></p>
+
+<p id="ref-tang2024">Tang, X., Zou, A., Zhang, Z., Li, Z., Zhao, Y., Zhang, X., ... &amp; Gerstein, M. (2024). MedAgents: Large language models as collaborators for zero-shot medical reasoning. <em>arXiv:2311.10537</em>. <a href="https://arxiv.org/abs/2311.10537">https://arxiv.org/abs/2311.10537</a></p>
+
+<p id="ref-vandennoortgate2013">Van den Noortgate, W., Lopez-Lopez, J. A., Marin-Martinez, F., &amp; Sanchez-Meca, J. (2013). Three-level meta-analysis of dependent effect sizes. <em>Behavior Research Methods, 45</em>(2), 576&ndash;594. <a href="https://doi.org/10.3758/s13428-012-0261-6">https://doi.org/10.3758/s13428-012-0261-6</a></p>
+
+<p id="ref-viechtbauer2005">Viechtbauer, W. (2005). Bias and efficiency of meta-analytic variance estimators in the random-effects model. <em>Journal of Educational and Behavioral Statistics, 30</em>(3), 261&ndash;293. <a href="https://doi.org/10.3102/10769986030003261">https://doi.org/10.3102/10769986030003261</a></p>
+
+<p id="ref-viechtbauer2010">Viechtbauer, W. (2010). Conducting meta-analyses in R with the metafor package. <em>Journal of Statistical Software, 36</em>(3), 1&ndash;48. <a href="https://doi.org/10.18637/jss.v036.i03">https://doi.org/10.18637/jss.v036.i03</a></p>
+
+<p id="ref-wu2023">Wu, Q., Bansal, G., Zhang, J., Wu, Y., Li, B., Zhu, E., ... &amp; Wang, C. (2023). AutoGen: Enabling next-gen LLM applications via multi-agent conversation. <em>arXiv:2308.08155</em>. <a href="https://arxiv.org/abs/2308.08155">https://arxiv.org/abs/2308.08155</a></p>
+
+<p id="ref-zhang2024">Zhang, K., Li, J., Li, G., Shi, X., &amp; Jin, Z. (2024). CodeAgent: Enhancing code generation with tool-integrated agent systems for real-world repo-level coding challenges. <em>ACL 2024</em>. <a href="https://arxiv.org/abs/2401.07339">https://arxiv.org/abs/2401.07339</a></p>
+
+<p id="ref-zhang2025stop">Zhang, H., Du, Y., Tang, H., Chen, Y., &amp; Ma, T. (2025). Stop overvaluing multi-agent debate: The limits of LLM deliberation. <em>arXiv:2502.08788</em>. <a href="https://arxiv.org/abs/2502.08788">https://arxiv.org/abs/2502.08788</a></p>
+
+</div>
+
+<!-- ====== APPENDIX A ====== -->
+<div class="appendix">
+<h2>附录A：可复现性</h2>
+<p>
+所有分析使用通过<code>uv</code>管理的Python 3.12完成。完整流程——从数据加载到效应量计算、合并、异质性评估、亚组分析、元回归、发表偏倚诊断、敏感性分析和图形生成——通过单一入口点执行：
+</p>
+<pre style="background:#f6f8fa;padding:0.8rem;border-radius:4px;font-size:0.85rem;overflow-x:auto;">uv sync &amp;&amp; uv run python main.py</pre>
+<p>关键组件：</p>
+<ul>
+  <li><strong>入口点：</strong><code>main.py</code>端到端运行完整流程，从<code>data/</code>读取数据，通过<code>src/</code>中的模块执行所有分析，并将图形和摘要输出写入<code>report/assets/</code>。</li>
+  <li><strong>环境：</strong><code>pyproject.toml</code> + <code>uv.lock</code>用于确定性依赖解析。</li>
+  <li><strong>数据：</strong>原始检索结果位于<code>data/raw/</code>；提取和验证后的效应量表格位于<code>data/extracted/</code>和<code>data/verified/</code>。<code>n-items-estimated</code>标记列指示哪些研究的项目数为估算值而非直接提取。</li>
+  <li><strong>分析代码：</strong><code>src/</code>中的可复用模块（effect_sizes、pooling、heterogeneity、moderators、publication_bias、sensitivity、plots）。所有逻辑均可导入。</li>
+  <li><strong>图形：</strong>所有图形以稳定文件名导出至<code>report/assets/</code>。</li>
+  <li><strong>随机种子：</strong>验证抽样使用种子42。所有随机操作均已设定种子。</li>
+  <li><strong>输出验证：</strong><code>results-summary.json</code>和<code>report/assets/</code>中的CSV文件由<code>main.py</code>重新生成。本报告中的表格数值来源于这些文件。</li>
+</ul>
+</div>
+
+<!-- ====== APPENDIX B ====== -->
+<div class="appendix">
+<h2>附录B：AI使用声明（KU Leuven第84条）</h2>
+<p>
+根据KU Leuven关于教育中使用人工智能的政策（第84条），本研究在准备过程中使用了以下AI工具：
+</p>
+<ul>
+  <li><strong>文献检索：</strong>部署了六个Claude Code智能体并行检索arXiv、ACL Anthology和会议论文集。每个智能体覆盖一个不同的主题群组。所有检索记录均按PICOS标准进行了人工筛选。未计算评审者间筛选信度。</li>
+  <li><strong>数据提取与验证：</strong>Claude Code智能体辅助了对原始文献的初步数据提取。一个独立智能体对41项研究中的12项进行了第二编码者验证，分歧由作者裁决。12项已审核研究中有6项需要纠正（初始提取错误率50%）。其余29项研究未经审核。</li>
+  <li><strong>统计分析：</strong>所有统计计算（效应量、合并、元回归、发表偏倚检验）均使用开源库在Python中实现。代码可在<code>src/</code>中获取。</li>
+  <li><strong>报告撰写：</strong>Claude Code辅助了HTML报告的撰写和结构组织。所有统计解读、批判性评估和结论均由作者审阅和验证。</li>
+  <li><strong>修订：</strong>Claude Code辅助落实了同行评审的修改意见。v3解决了引用和统计审核中的50个问题；v4解决了最终审查轮中的7个小型展示问题。</li>
+  <li><strong>使用模型：</strong>Claude Opus 4.6，通过Claude Code（Anthropic）。</li>
+</ul>
+<p>
+作者对所有报告结果的准确性和本研究的学术内容承担全部责任。原始AI交互日志可应要求提供。
+</p>
+</div>
+
+<!-- ====== APPENDIX C ====== -->
+<div class="appendix" id="app-c">
+<h2>附录C：检索词</h2>
+<p>
+以下检索查询由六个并行检索智能体使用。这是便利样本，非具有预注册方案的系统检索。
+</p>
+<table>
+  <caption>表C1. 检索智能体查询。</caption>
+  <thead>
+    <tr><th>智能体</th><th>主题群组</th><th>代表性检索词</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td>多智能体辩论</td><td><code>"multi-agent debate" LLM accuracy benchmark</code>；<code>"LLM deliberation" "single agent" comparison</code></td></tr>
+    <tr><td>2</td><td>协作/层级</td><td><code>"multi-agent cooperation" OR "hierarchical agents" LLM benchmark</code>；<code>"agent orchestration" evaluation accuracy</code></td></tr>
+    <tr><td>3</td><td>软件工程/代码生成</td><td><code>"multi-agent" code generation benchmark SWE-bench OR HumanEval</code>；<code>"agent collaboration" software engineering</code></td></tr>
+    <tr><td>4</td><td>医学/科学</td><td><code>"multi-agent" medical reasoning OR clinical benchmark LLM</code>；<code>"collaborative LLM" scientific QA</code></td></tr>
+    <tr><td>5</td><td>批判性/零结果</td><td><code>"single agent" outperforms "multi-agent" LLM</code>；<code>"scaling single agent" vs debate OR collaboration</code></td></tr>
+    <tr><td>6</td><td>前沿模型</td><td><code>"frontier model" "multi-agent" diminishing returns OR compute parity</code>；<code>GPT-4 OR Claude "agent comparison"</code></td></tr>
+  </tbody>
+</table>
+<p class="fig-caption">检索涵盖arXiv、ACL Anthology、NeurIPS/ICML/ICLR会议论文集和Google Scholar。时间范围：2023年1月至2026年5月。该检索未经预注册，应理解为广泛的便利式搜索而非穷尽性的系统检索。在覆盖范围上可能存在缺口，特别是灰色文献、非英语出版物和可能未出现在目标平台的阴性结果研究。</p>
+</div>
+
+<!-- ====== APPENDIX D ====== -->
+<div class="appendix" id="app-d">
+<h2>附录D：排除表</h2>
+<p>
+在通过PICOS筛选的106条记录中，65条因缺乏可提取的多智能体与单智能体准确率计数而被排除。下表对这些排除进行了分类。被排除的记录可能并非随机缺失——报告阴性或零结果的研究可能不太会提供详细的准确率表格，从而引入潜在的选择偏倚。由于零结果研究不太可能报告详细的准确率计数，分析样本很可能过度代表了正面发现，这与显著的Egger检验结果一致。
+</p>
+<table>
+  <caption>表D1. 65条无可提取数据记录的排除原因。</caption>
+  <thead>
+    <tr><th>排除原因</th><th>数量</th><th>备注</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>仅报告聚合/综合指标（无分条件计数）</td><td>18</td><td>胜率、Elo评分或综合指数，无项目级别的分解数据</td></tr>
+    <tr><td>单智能体基线未单独报告</td><td>14</td><td>仅有多智能体结果；对照组为推断或缺失</td></tr>
+    <tr><td>仅含定性或案例研究评估</td><td>11</td><td>无定量基准数据</td></tr>
+    <tr><td>多智能体与单智能体条件使用不同骨干模型</td><td>8</td><td>不符合PICOS对照要求（同一骨干模型）</td></tr>
+    <tr><td>基准无法识别或为专有</td><td>6</td><td>自定义评估，无公开基准参照</td></tr>
+    <tr><td>详情不足以计算log-OR（缺乏分母）</td><td>5</td><td>报告了百分比但无项目数或基准总量</td></tr>
+    <tr><td>论文无法定位或访问受限</td><td>3</td><td>arXiv ID未找到或处于付费墙后且无预印本</td></tr>
+  </tbody>
+</table>
+<p class="fig-caption">这65条排除记录占PICOS合格记录的61%。高排除率反映了该领域在报告分条件准确率数据方面的不一致性，这本身可能与效应量相关（结果模糊或令人失望的研究可能报告的细节更少）。</p>
+</div>
+
+<!-- ====== APPENDIX E ====== -->
+<div class="appendix" id="app-e">
+<h2>附录E：Cohen's <em>h</em>作为辅助效应量</h2>
+<p>
+Cohen's <em>h</em> = 2 arcsin(&radic;<em>p</em><sub>MA</sub>) &minus; 2 arcsin(&radic;<em>p</em><sub>SA</sub>)提供了一个绝对量表的效应量，相比log-OR对基础率膨胀的敏感性更低。在高准确率区间（如两个条件均>90%准确率），较小的比例差异会产生较大的log-OR但较小的<em>h</em>。Cohen's <em>h</em>基准：0.20 = 小效应，0.50 = 中等效应，0.80 = 大效应（<a href="#ref-cohen1988">Cohen, 1988</a>）。
+</p>
+<table>
+  <caption>表E1. 关键分析的合并Cohen's <em>h</em>。</caption>
+  <thead>
+    <tr><th>分析</th><th>k</th><th>Cohen's <em>h</em></th><th>解读</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>全样本</td><td>41</td><td>0.08</td><td>微不足道（低于"小"效应阈值）</td></tr>
+    <tr><td>代码生成</td><td>11</td><td>0.14</td><td>微不足道至小效应</td></tr>
+    <tr><td>仅计算平等</td><td>9</td><td>&asymp; 0.05</td><td>可忽略不计</td></tr>
+    <tr><td>医学推理</td><td>7</td><td>0.09</td><td>微不足道</td></tr>
+    <tr><td>通用知识</td><td>3</td><td>0.00</td><td>无效应</td></tr>
+  </tbody>
+</table>
+<p>
+<strong>启示。</strong>看似令人鼓舞的log-OR（0.45，OR = 1.57）与微不足道的Cohen's h（0.08）之间的差异值得重视。log-OR在高准确率区间会被放大，在这些区间中两个条件均接近天花板。许多纳入的研究处于此类区间（如单智能体准确率>80%），这意味着57%的优势比增幅仅转化为每100题约3&ndash;5题的额外正确数。在计算平等条件下，这进一步缩小至每100题约2题（h &asymp; 0.05）。实践者在做出部署决策时，应基于绝对增益而非优势比来评估多智能体系统。
+</p>
+</div>
+
+</body>
+</html>

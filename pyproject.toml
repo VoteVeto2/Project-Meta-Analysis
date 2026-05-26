@@ -1,0 +1,31 @@
+[project]
+name = "proj-meta"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.12"
+dependencies = [
+    "beautifulsoup4>=4.14.3",
+    "ipykernel>=7.2.0",
+    "jinja2>=3.1.6",
+    "jupyter>=1.1.1",
+    "markdown>=3.10.2",
+    "matplotlib>=3.10.9",
+    "nbformat>=5.10.4",
+    "numpy>=2.4.6",
+    "openpyxl>=3.1.5",
+    "pandas>=3.0.3",
+    "plotly>=6.7.0",
+    "pymare>=0.0.10",
+    "scipy>=1.17.1",
+    "seaborn>=0.13.2",
+    "statsmodels>=0.14.6",
+    "tabulate>=0.10.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+]

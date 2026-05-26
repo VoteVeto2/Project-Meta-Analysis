@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>More Agents, Better Results? A Meta-Analysis of Multi-Agent vs Single-Agent LLM Systems (v5)</title>
+<style>
+  :root {
+    --text: #1a1a1a;
+    --text-secondary: #4a4a4a;
+    --bg: #ffffff;
+    --accent: #2c5282;
+    --accent-light: #ebf4ff;
+    --border: #d0d7de;
+    --table-stripe: #f6f8fa;
+    --caption: #555;
+    --warning: #b45309;
+    --danger: #dc2626;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: "Charter", "Georgia", "Times New Roman", serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.72;
+    font-size: 16px;
+  }
+  h1 {
+    font-size: 1.65rem;
+    line-height: 1.25;
+    margin: 2.5rem 0 0.25rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  h2 {
+    font-size: 1.25rem;
+    margin: 2.2rem 0 0.5rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  h3 {
+    font-size: 1.05rem;
+    margin: 1.6rem 0 0.4rem;
+    color: var(--text-secondary);
+  }
+  p { margin: 0.6rem 0; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .meta {
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.55;
+  }
+  .abstract {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 0.94rem;
+  }
+  .abstract h2 { border: none; margin-top: 0; font-size: 1.05rem; }
+  .highlight-box {
+    background: #fffbeb;
+    border: 1px solid #f59e0b;
+    border-radius: 4px;
+    padding: 0.8rem 1.1rem;
+    margin: 1.2rem 0;
+    font-size: 0.94rem;
+  }
+  .highlight-box strong { color: var(--warning); }
+  .danger-box {
+    background: #fef2f2;
+    border: 1px solid var(--danger);
+    border-radius: 4px;
+    padding: 0.8rem 1.1rem;
+    margin: 1.2rem 0;
+    font-size: 0.94rem;
+  }
+  .danger-box strong { color: var(--danger); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.88rem;
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  th {
+    background: var(--accent);
+    color: #fff;
+    padding: 0.5rem 0.6rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 0.45rem 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:nth-child(even) td { background: var(--table-stripe); }
+  caption, .fig-caption {
+    font-size: 0.85rem;
+    color: var(--caption);
+    margin: 0.5rem 0 1rem;
+    line-height: 1.5;
+    text-align: left;
+  }
+  caption { caption-side: top; font-weight: 600; margin-bottom: 0.4rem; }
+  figure {
+    margin: 1.5rem 0;
+    text-align: center;
+  }
+  figure img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+  }
+  figcaption {
+    font-size: 0.85rem;
+    color: var(--caption);
+    margin-top: 0.5rem;
+    text-align: left;
+    line-height: 1.5;
+  }
+  .ref-list {
+    font-size: 0.85rem;
+    line-height: 1.65;
+  }
+  .ref-list p {
+    padding-left: 2em;
+    text-indent: -2em;
+    margin: 0.35rem 0;
+  }
+  .appendix {
+    border-top: 2px solid var(--border);
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+  }
+  .appendix h2 { font-size: 1.1rem; }
+  sup { font-size: 0.75em; }
+  .stat { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92em; }
+  .exploratory {
+    font-style: italic;
+    color: var(--text-secondary);
+  }
+  .descriptive-only {
+    font-style: italic;
+    color: var(--danger);
+    font-size: 0.85em;
+  }
+  .grade-box {
+    background: #f0fdf4;
+    border: 1px solid #22c55e;
+    border-radius: 4px;
+    padding: 0.8rem 1.1rem;
+    margin: 1.2rem 0;
+    font-size: 0.94rem;
+  }
+  @media (max-width: 600px) {
+    body { padding: 1rem; font-size: 15px; }
+    h1 { font-size: 1.35rem; }
+    table { font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<h1>More Agents, Better Results? A Meta-Analysis of Multi-Agent vs Single-Agent LLM Systems</h1>
+
+<div class="meta">
+  <strong>Xinyu Yang</strong> (r1020926)<br>
+  KU Leuven, Faculty of Psychology and Educational Sciences<br>
+  Meta-Analysis (G0B75a), Academic Year 2025&ndash;2026<br>
+  22 May 2026 &mdash; <strong>Revision 5</strong> (final, post v4 audit)
+</div>
+
+<!-- ====== ABSTRACT ====== -->
+<div class="abstract">
+<h2>Abstract</h2>
+<p>
+This exploratory convenience-sample meta-analysis synthesizes 41 within-study comparisons (2023&ndash;2026) of multi-agent LLM orchestration versus single-agent prompting on benchmark accuracy. Under a REML random-effects model with full Hartung-Knapp-Sidik-Jonkman adjustment, the pooled log-OR was <span class="stat">0.45, 95% CI [0.23, 0.67], p &lt; .001</span> (OR = 1.57; approximate risk difference &asymp; 3&ndash;5 percentage points). However, this estimate is fragile. Heterogeneity was extreme (<span class="stat">I&sup2; = 96.1%, Q(40) = 1016.6</span>), the 95% prediction interval crossed zero (<span class="stat">[&minus;0.74, 1.64]</span>), Egger's test detected significant funnel asymmetry (<span class="stat">p = .024</span>), and the overall Cohen's <em>h</em> was trivial (<span class="stat">h = 0.08</span>). Under compute parity (k = 9), the effect attenuated to <span class="stat">log-OR = 0.31</span> (h &asymp; 0.05, negligible). No meta-regression moderator reached significance (<span class="stat">Q<sub>M</sub>(8) = 5.34, p = .72; R&sup2; = 0%</span>). Subgroup analyses suggest the effect may concentrate in code-generation tasks and hierarchical architectures, but between-group tests (task: <span class="stat">Q<sub>between</sub>(5) = 197.56, p &lt; .001</span>; architecture: <span class="stat">Q<sub>between</sub>(4) = 32.75, p &lt; .001</span>) should be interpreted cautiously given uncontrolled confounds. With 61% of studies rated high risk of bias, only 10 of 41 rows independently verified (76% unverified), and evidence of publication bias, these findings are provisional and hypothesis-generating. Multi-agent orchestration probably helps for decomposable tasks under generous compute budgets, but the evidence base is too contaminated to support strong claims.
+</p>
+</div>
+
+<!-- ====== 1. INTRODUCTION ====== -->
+<h2>1. Introduction</h2>
+
+<p>
+The multi-agent paradigm for large language models rests on a compelling intuition: just as human teams outperform individuals on complex tasks, multiple LLM instances collaborating through structured protocols should exceed what a single instance achieves alone. Early work by <a href="#ref-du2023">Du et al. (2023)</a> demonstrated that multiagent debate improved factuality and reasoning in ChatGPT, while <a href="#ref-liang2024">Liang et al. (2024)</a> showed that multi-agent discussion encouraged divergent thinking. Frameworks such as AutoGen (<a href="#ref-wu2023">Wu et al., 2023</a>), MetaGPT (<a href="#ref-hong2023">Hong et al., 2023</a>), and ChatDev (<a href="#ref-qian2024">Qian et al., 2024</a>) now orchestrate dozens of specialized agents in hierarchies, debates, and cooperative workflows.
+</p>
+
+<p>
+Yet a skeptical counter-narrative has emerged. <a href="#ref-sprague2024">Sprague et al. (2024)</a> argue that much of the observed multi-agent advantage dissolves once compute is equalized &mdash; multi-agent systems consume more inference tokens, and scaling a single agent's sampling budget may match multi-agent performance. <a href="#ref-zhang2025stop">Zhang et al. (2025)</a> directly show that single-agent baselines with equivalent token budgets frequently match or outperform multi-agent debate. As frontier models improve, the coordination overhead may outweigh diminishing marginal gains.
+</p>
+
+<p>
+No meta-analysis has yet synthesized these conflicting findings. Individual studies vary in architecture (debate vs. hierarchy vs. cooperation), task domain (code vs. medical vs. math), backbone model, and whether compute parity is enforced. This heterogeneity makes narrative reviews unreliable. We address four research questions:
+</p>
+
+<p>
+<strong>RQ1 (Primary).</strong> Do multi-agent LLM systems outperform single-agent baselines on benchmark accuracy?<br>
+<strong>RQ2 (Compute parity).</strong> Under matched compute budgets, does the multi-agent advantage survive?<br>
+<strong>RQ3 (Frontier paradox).</strong> As baseline single-agent accuracy increases, does the orchestration gain shrink?<br>
+<strong>RQ4 (Moderators).</strong> Which task and architecture properties predict effect direction?
+</p>
+
+<!-- ====== 2. METHODS ====== -->
+<h2>2. Methods</h2>
+
+<h3>2.1 Search strategy and limitations</h3>
+<p>
+We deployed six parallel search agents covering distinct topic clusters: multi-agent debate, cooperative/hierarchical architectures, SWE and code generation, medical/scientific reasoning, critical and null-result literature, and frontier-model comparisons. Each agent queried arXiv, ACL Anthology, NeurIPS/ICML/ICLR proceedings, and Google Scholar, targeting papers from 2023&ndash;2026. This yielded 153 records. Search strings are documented in <a href="#app-c">Appendix C</a>.
+</p>
+<p>
+<strong>Important caveat:</strong> This is a convenience sample, not a registered systematic review. No protocol was pre-registered. The search strategy, while broad, cannot guarantee exhaustive coverage. The six-agent approach introduces selection biases that differ from but are not necessarily better than manual systematic searching. Results should be treated as hypothesis-generating.
+</p>
+
+<h3>2.2 Screening and inclusion (PICOS)</h3>
+<p>
+<strong>Population:</strong> Empirical 2023&ndash;2026 LLM studies. <strong>Intervention:</strong> Any multi-agent orchestration (debate, cooperation, hierarchy, role-play, verifier-critic, mixture-of-agents, planner-executor). <strong>Comparator:</strong> Single-agent baseline using the same backbone model. <strong>Outcome:</strong> Accuracy or success-rate proportion on a named benchmark. <strong>Study design:</strong> Within-study head-to-head comparison.
+</p>
+<p>
+Exclusions: classical multi-agent reinforcement learning, position papers without empirical results, studies lacking a single-agent comparator, and simulation-only evaluations. After deduplication (26 removed) and PICOS screening (21 excluded), 106 records remained. Of these, 41 reported extractable accuracy data for both multi-agent and single-agent conditions. The 65 excluded records are catalogued in <a href="#app-d">Appendix D</a>. Screening was performed by the author with AI assistance; no formal inter-rater reliability was computed, which is a limitation.
+</p>
+
+<h3>2.3 Effect size</h3>
+<p>
+We computed log odds ratios (log-OR) as the primary effect size. A 0.5 continuity correction was applied conditionally, only to studies with zero cells (<a href="#ref-sweeting2004">Sweeting et al., 2004</a>); none were present. For each study, we extracted <em>n</em>-items (total benchmark questions), <em>n</em>-correct under multi-agent, and <em>n</em>-correct under single-agent conditions. Where <em>n</em>-items could not be extracted directly, it was estimated from reported percentages and total benchmark sizes. Of the 41 studies, 18 carry a broad <code>n-items-estimated</code> flag (any form of derivation); a stricter classification by source quality identifies 13 with imputed or estimated denominators (k = 28 exact). The sensitivity analysis in Section 3.9 uses the stricter definition. Cohen's <em>h</em> was computed as a secondary effect size to provide absolute-scale context (see <a href="#app-e">Appendix E</a>).
+</p>
+<p>
+<strong>Risk-difference approximation.</strong> To aid practical interpretation, we report approximate risk differences (RD = <em>p</em><sub>MA</sub> &minus; <em>p</em><sub>SA</sub>) alongside log-OR. The pooled RD across all 41 studies is approximately 3&ndash;5 percentage points, meaning multi-agent systems solve roughly 3&ndash;5 additional items per 100 on average. Under compute parity, this shrinks to approximately 2 percentage points.
+</p>
+<p>
+<strong>Metric heterogeneity.</strong> The 41 comparisons include accuracy, pass@1, win rate, executability scores, and resolve rates. We treated all as binomial proportions, but acknowledge this conflation is a simplification. Win-rate benchmarks (e.g., AlpacaEval) operate under different assumptions than item-level accuracy; results should be interpreted with this caveat.
+</p>
+
+<h3>2.4 Statistical model</h3>
+<p>
+The primary analysis used a restricted maximum-likelihood (REML) random-effects model (<a href="#ref-viechtbauer2005">Viechtbauer, 2005</a>) with a modified Hartung-Knapp-Sidik-Jonkman (HKSJ) adjustment (<a href="#ref-hartung2001">Hartung &amp; Knapp, 2001</a>; <a href="#ref-inthout2014">IntHout et al., 2014</a>). The HKSJ adjustment computes the scale factor s&sup2;<sub>HK</sub> = &Sigma;w<sub>i</sub>(y<sub>i</sub> &minus; &mu;)&sup2;/(k&minus;1) and applies max(1, s&sup2;<sub>HK</sub>) as a variance inflation floor, following the conservative recommendation that HKSJ should never narrow CIs relative to the na&iuml;ve inverse-variance estimate (<a href="#ref-rover2015">R&ouml;ver et al., 2015</a>). CIs use <em>t</em>(k&minus;1) degrees of freedom. Prediction intervals use <em>t</em>(k&minus;2) following <a href="#ref-inthout2016">IntHout et al. (2016)</a>. DerSimonian-Laird estimation served as a sensitivity check. Cochran's Q is computed using fixed-effect weights and the fixed-effect pooled mean, yielding a single Q value identical across variance estimators (<a href="#ref-borenstein2009">Borenstein et al., 2009</a>, Ch. 16).
+</p>
+<p>
+Subgroup analyses used separate random-effects models per level with Q<sub>between</sub> computed via the partition-of-Q approach (Q<sub>between</sub> = Q<sub>total</sub> &minus; &Sigma;Q<sub>within</sub>; <a href="#ref-borenstein2009">Borenstein et al., 2009</a>, Ch. 19). Meta-regression was mixed-effects with conditional REML &tau;&sup2; estimation and Knapp-Hartung <em>t</em>-distribution inference, reporting the omnibus Q<sub>M</sub> test (<a href="#ref-viechtbauer2010">Viechtbauer, 2010</a>). Leave-one-out sensitivity analyses re-estimate &tau;&sup2; per iteration.
+</p>
+<p>
+<strong>Dependency.</strong> Multiple effect sizes sometimes derive from the same paper, benchmark family, or model family. We did not implement robust variance estimation (<a href="#ref-hedges2010">Hedges et al., 2010</a>; <a href="#ref-pustejovsky2022">Pustejovsky &amp; Tipton, 2022</a>) or multilevel meta-analysis (<a href="#ref-vandennoortgate2013">Van den Noortgate et al., 2013</a>) in this version. The non-aggregated sensitivity (k = 36) partially addresses but does not solve this limitation.
+</p>
+
+<h3>2.5 Risk of bias</h3>
+<p>
+We adapted the ROB 2.0 framework (<a href="#ref-sterne2019">Sterne et al., 2019</a>) with domains for selection, performance/compute parity, reporting, and attrition. Of 41 studies, 25 (61%) were rated high risk of bias, predominantly due to uncontrolled compute: multi-agent systems typically consumed more inference tokens without any single-agent scaling comparison. Of the 41 extracted rows, only 10 are independently verified (4 verified, 6 verified-corrected); 2 are unverifiable (source data could not be located); 29 remain unaudited. Among the 12 rows that were audited, 6 required correction (50% error rate). Because 31 of 41 rows (76%) lack independent verification, the pooled estimate is substantially exposed to extraction error.
+</p>
+
+<h3>2.6 Publication bias</h3>
+<p>
+Funnel plot inspection, Egger's regression test (<a href="#ref-egger1997">Egger et al., 1997</a>), Begg's rank correlation (<a href="#ref-begg1994">Begg &amp; Mazumdar, 1994</a>), Duval and Tweedie's trim-and-fill (<a href="#ref-duval2000">Duval &amp; Tweedie, 2000</a>), and p-curve analysis (<a href="#ref-simonsohn2014">Simonsohn et al., 2014</a>) were conducted with k = 41.
+</p>
+
+<!-- ====== 3. RESULTS ====== -->
+<h2>3. Results</h2>
+
+<h3>3.1 Study flow</h3>
+
+<figure>
+  <img src="assets/prisma-flow.png" alt="PRISMA flow diagram showing 153 records identified, 127 after deduplication, 106 after PICOS screening, and 41 included in meta-analysis.">
+  <figcaption><strong>Figure 1.</strong> PRISMA flow diagram. Six search agents identified 153 records. After deduplication (26 removed), PICOS screening (21 excluded), and data-availability filtering (65 without extractable MA + SA accuracy), 41 studies were included. See <a href="#app-d">Appendix D</a> for the exclusion table.</figcaption>
+</figure>
+
+<table>
+  <caption>Table 1. PRISMA flow summary.</caption>
+  <thead>
+    <tr><th>Stage</th><th>Records</th><th>Action</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Identification</td><td>153</td><td>From 6 search agents (convenience sample)</td></tr>
+    <tr><td>After deduplication</td><td>127</td><td>26 duplicates removed</td></tr>
+    <tr><td>After PICOS screen</td><td>106</td><td>21 excluded (no SA comparator, simulation-only, etc.)</td></tr>
+    <tr><td>With extractable data</td><td>41</td><td>65 lacked MA + SA accuracy counts (<a href="#app-d">Appendix D</a>)</td></tr>
+    <tr><td>Included in meta-analysis</td><td>41</td><td>Final analytic sample (10 verified/corrected, 2 unverifiable, 29 unaudited)</td></tr>
+  </tbody>
+</table>
+
+<h3>3.2 Descriptive characteristics</h3>
+<p>
+The 41 included comparisons span 2023&ndash;2026. The dominant architecture is debate (k = 20, 49%), followed by cooperation (k = 9), hierarchy (k = 6), verifier-critic (k = 2), and role-play (k = 2), with one mixture-of-agents and one planner-executor study. Task categories include code generation (k = 11), "other" mixed benchmarks (k = 10), medical reasoning (k = 7), math (k = 6), evaluation tasks (k = 3), general knowledge (k = 3), and factuality (k = 1). Backbone models span GPT-4 variants, Claude, Gemini, Qwen, and open-source models. Of the 41 studies, 18 have estimated (rather than directly extracted) <em>n</em>-items values. Only 9 studies enforced compute parity between multi-agent and single-agent conditions.
+</p>
+
+<h3>3.3 Pooled effect</h3>
+
+<figure>
+  <img src="assets/forest-plot.png" alt="Forest plot of 41 studies showing pooled log odds ratio of 0.45 with 95% CI [0.23, 0.67].">
+  <figcaption><strong>Figure 2.</strong> Forest plot. REML random-effects pooled log-OR = 0.45, 95% CI [0.23, 0.67] (HKSJ-adjusted, <em>t</em>(40) df). The diamond represents the pooled estimate. Individual study weights reflect inverse-variance weighting.</figcaption>
+</figure>
+
+<table>
+  <caption>Table 2. Primary pooled results (k = 41).</caption>
+  <thead>
+    <tr><th>Estimator</th><th>log-OR</th><th>95% CI</th><th>95% PI</th><th>&tau;&sup2;</th><th>I&sup2;</th><th>Q (df = 40)</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>REML (HKSJ)</td><td>0.45</td><td>[0.23, 0.67]</td><td>[&minus;0.74, 1.64]</td><td>0.34</td><td>96.1%</td><td>1016.6***</td></tr>
+    <tr><td>DerSimonian-Laird</td><td>0.41</td><td>[0.22, 0.61]</td><td>[&minus;0.38, 1.21]</td><td>0.15</td><td>96.1%</td><td>1016.6***</td></tr>
+  </tbody>
+</table>
+<p class="fig-caption">*** p &lt; .001. PI = prediction interval. Q is fixed-effect Cochran's Q, identical across variance estimators. REML CIs use the full HKSJ scale factor with <em>t</em>(40) critical value; PIs use <em>t</em>(k&minus;2) = <em>t</em>(39). <strong>Cohen's <em>h</em> = 0.08 (trivial on the absolute scale).</strong> Approximate risk difference: 3&ndash;5 percentage points.</p>
+
+<p>
+The REML model yields a pooled log-OR of 0.45 (95% CI [0.23, 0.67], p &lt; .001), corresponding to OR = 1.57. On an absolute scale, however, the overall Cohen's <em>h</em> is 0.08 &mdash; well below the 0.20 threshold for a "small" effect (<a href="#ref-cohen1988">Cohen, 1988</a>). The approximate risk difference of 3&ndash;5 percentage points means that multi-agent systems solve roughly 3&ndash;5 additional items per 100 benchmark questions. Whether this justifies the added complexity and compute cost is a system-design question, not a statistical one.
+</p>
+
+<div class="danger-box">
+<strong>Critical caveat: multiple threats undermine this estimate.</strong> The pooled effect is positive but fragile:
+(1) The prediction interval [&minus;0.74, 1.64] crosses zero, so a new study could plausibly find single-agent superiority.
+(2) Egger's test is significant (p = .024), indicating funnel asymmetry and possible publication bias or small-study effects.
+(3) Cohen's h = 0.08 is trivial on the absolute scale.
+(4) 61% of studies are high-RoB and 76% of rows lack independent verification.
+(5) I&sup2; = 96.1% means the "average effect" is nearly meaningless as a point prediction.
+The honest interpretation is that this is a positive but provisional signal, not a robust finding.
+</div>
+
+<h3>3.4 Heterogeneity</h3>
+<p>
+Heterogeneity is extreme: I&sup2; = 96.1%, Q(40) = 1016.6 (p &lt; .001), &tau;&sup2; = 0.34, &tau; = 0.58. The between-study standard deviation (&tau; = 0.58) exceeds the pooled estimate itself (0.45), confirming that the distribution of true effects is wide. The pooled mean should not be used as a point prediction for any specific setting.
+</p>
+
+<figure>
+  <img src="assets/baujat-plot.png" alt="Baujat plot showing contribution of each study to overall heterogeneity versus influence on the pooled result.">
+  <figcaption><strong>Figure 3.</strong> Baujat plot. Studies in the upper-right quadrant contribute disproportionately to both heterogeneity and the pooled estimate.</figcaption>
+</figure>
+
+<h3>3.5 Subgroup analysis by task category</h3>
+
+<figure>
+  <img src="assets/subgroup-task-category.png" alt="Subgroup forest plot by task category.">
+  <figcaption><strong>Figure 4.</strong> Subgroup analysis by task category. Error bars are 95% CIs.</figcaption>
+</figure>
+
+<table>
+  <caption>Table 3. Subgroup analysis by task category. Q<sub>between</sub>(5) = 197.56, p &lt; .001.</caption>
+  <thead>
+    <tr><th>Task</th><th>k</th><th>log-OR</th><th>95% CI</th><th>95% PI</th><th>I&sup2;</th><th>Note</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Code generation</td><td>11</td><td>0.83</td><td>[0.44, 1.22]</td><td>[&minus;0.28, 1.94]</td><td>75.3%</td><td></td></tr>
+    <tr><td>Medical reasoning</td><td>7</td><td>0.42</td><td>[0.20, 0.64]</td><td>[0.08, 0.76]</td><td>61.0%</td><td></td></tr>
+    <tr><td>Mathematics</td><td>6</td><td>0.34</td><td>[0.05, 0.63]</td><td>[&minus;0.45, 1.13]</td><td>93.0%</td><td></td></tr>
+    <tr><td>Other (mixed)</td><td>10</td><td>0.32</td><td>[&minus;0.60, 1.24]</td><td>[&minus;2.57, 3.21]</td><td>90.8%</td><td></td></tr>
+    <tr><td>Evaluation</td><td>3</td><td>0.24</td><td>[&minus;0.21, 0.69]</td><td>&mdash;</td><td>0.0%</td><td class="descriptive-only">Descriptive only (k &lt; 5)</td></tr>
+    <tr><td>General knowledge</td><td>3</td><td>0.02</td><td>[&minus;1.25, 1.28]</td><td>&mdash;</td><td>99.7%</td><td class="descriptive-only">Descriptive only (k &lt; 5)</td></tr>
+  </tbody>
+</table>
+
+<p>
+The between-group Q test is highly significant (Q<sub>between</sub>(5) = 197.56, p &lt; .001), indicating that task category is associated with effect-size variation. The partition-of-Q assumes common &tau;&sup2; across subgroups; given within-group I&sup2; ranging from 0% to 99.7%, this assumption may be violated. Code generation yields the largest multi-agent effect (log-OR = 0.83), consistent with the intuition that modular, decomposable tasks benefit from agent specialization (<a href="#ref-hong2023">Hong et al., 2023</a>; <a href="#ref-zhang2024">Zhang et al., 2024</a>). Medical reasoning shows a moderate effect (log-OR = 0.42), plausibly reflecting the value of adversarial verification (<a href="#ref-tang2024">Tang et al., 2024</a>). General knowledge shows essentially no benefit (log-OR = 0.02), suggesting that for simple factual retrieval, coordination adds noise. However, these subgroup estimates are confounded with architecture, backbone model, and compute allocation; the apparent task gradient may partly reflect these correlated factors. Subgroups with k &lt; 5 are labeled "descriptive only" &mdash; with fewer than five studies, &tau;&sup2;, prediction intervals, and CIs are uninformative (<a href="#ref-borenstein2009">Borenstein et al., 2009</a>, Ch. 17). Medical reasoning is the only subgroup where the PI excludes zero [0.08, 0.76], suggesting a more robust positive signal.
+</p>
+
+<h3>3.6 Subgroup analysis by architecture</h3>
+
+<figure>
+  <img src="assets/subgroup-architecture.png" alt="Subgroup forest plot by architecture type.">
+  <figcaption><strong>Figure 5.</strong> Subgroup analysis by architecture. Error bars are 95% CIs.</figcaption>
+</figure>
+
+<table>
+  <caption>Table 4. Subgroup analysis by architecture. Q<sub>between</sub>(4) = 32.75, p &lt; .001.</caption>
+  <thead>
+    <tr><th>Architecture</th><th>k</th><th>log-OR</th><th>95% CI</th><th>95% PI</th><th>I&sup2;</th><th>Note</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Hierarchy</td><td>6</td><td>0.76</td><td>[&minus;0.02, 1.54]</td><td>[&minus;1.04, 2.57]</td><td>79.9%</td><td></td></tr>
+    <tr><td>Debate</td><td>20</td><td>0.37</td><td>[0.13, 0.62]</td><td>[&minus;0.61, 1.35]</td><td>97.8%</td><td></td></tr>
+    <tr><td>Cooperation</td><td>9</td><td>0.31</td><td>[&minus;0.54, 1.16]</td><td>[&minus;2.22, 2.85]</td><td>85.9%</td><td></td></tr>
+    <tr><td>Role-play</td><td>2</td><td>0.32</td><td>[0.06, 0.59]</td><td>&mdash;</td><td>0.0%</td><td class="descriptive-only">Descriptive only (k &lt; 5)</td></tr>
+    <tr><td>Verifier-critic</td><td>2</td><td>1.01</td><td>[&minus;8.41, 10.43]</td><td>&mdash;</td><td>96.6%</td><td class="descriptive-only">Descriptive only (k &lt; 5)</td></tr>
+  </tbody>
+</table>
+
+<p>
+The between-group Q is significant (Q<sub>between</sub>(4) = 32.75, p &lt; .001). Hierarchical architectures show the largest point estimate (log-OR = 0.76), though the CI narrowly includes zero. Debate, the most studied architecture (k = 20), yields a more modest but significant advantage (log-OR = 0.37). Cooperation's CI crosses zero widely (log-OR = 0.31, [&minus;0.54, 1.16]). <strong>Role-play (k = 2) and verifier-critic (k = 2) are reported for completeness but are descriptive only</strong> &mdash; with two studies, &tau;&sup2;, I&sup2;, and CIs are essentially uninformative. The verifier-critic CI width of ~19 log-OR units illustrates this instability.
+</p>
+
+<h3>3.7 Meta-regression</h3>
+
+<figure>
+  <img src="assets/bubble-plot.png" alt="Bubble plot of effect size against baseline single-agent accuracy, sized by study precision.">
+  <figcaption><strong>Figure 6.</strong> Bubble plot of log-OR against baseline SA accuracy. Bubble size reflects study precision (1/SE). The negative slope (&beta; = &minus;0.77) is directionally consistent with the frontier-paradox hypothesis but does not reach significance (p = .176).</figcaption>
+</figure>
+
+<table>
+  <caption>Table 5. Meta-regression (k = 41). Model: log-OR ~ compute-parity + sa-accuracy + backbone-family + n-agents. Conditional REML &tau;&sup2;, HKSJ inference. Q<sub>M</sub>(8) = 5.34, p = .72. R&sup2; = 0%.</caption>
+  <thead>
+    <tr><th>Moderator</th><th>Estimate</th><th>SE</th><th><em>t</em>(32)</th><th><em>p</em></th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Intercept</td><td>0.78</td><td>1.08</td><td>0.72</td><td>.478</td></tr>
+    <tr><td>Compute parity: unclear</td><td>0.20</td><td>0.33</td><td>0.61</td><td>.545</td></tr>
+    <tr><td>Compute parity: yes</td><td>&minus;0.03</td><td>0.32</td><td>&minus;0.09</td><td>.932</td></tr>
+    <tr><td>SA accuracy</td><td>&minus;0.77</td><td>0.56</td><td>&minus;1.38</td><td>.176</td></tr>
+    <tr><td>Backbone: GPT</td><td>0.27</td><td>0.71</td><td>0.38</td><td>.705</td></tr>
+    <tr><td>Backbone: Gemini</td><td>0.30</td><td>0.78</td><td>0.38</td><td>.708</td></tr>
+    <tr><td>Backbone: Qwen</td><td>&minus;0.26</td><td>0.77</td><td>&minus;0.34</td><td>.735</td></tr>
+    <tr><td>Backbone: other</td><td>&minus;0.07</td><td>0.75</td><td>&minus;0.09</td><td>.926</td></tr>
+    <tr><td>N-agents</td><td>0.005</td><td>0.23</td><td>0.02</td><td>.984</td></tr>
+  </tbody>
+</table>
+
+<p>
+No moderator reached significance. The omnibus Q<sub>M</sub>(8) = 5.34 (p = .72) and R&sup2; = 0% indicate that the tested moderators collectively explain none of the between-study variance. The SA accuracy slope (&beta; = &minus;0.77, p = .176) is the most substantively interesting &mdash; its direction is consistent with the frontier-paradox hypothesis (RQ3) &mdash; but it is not statistically reliable at this sample size. The null Q<sub>M</sub> should not be interpreted as evidence of no moderation; the meta-regression is underpowered to detect moderators of plausible magnitude.
+</p>
+
+<h3>3.8 Publication bias</h3>
+
+<figure>
+  <img src="assets/funnel-plot.png" alt="Funnel plot showing study distribution around the pooled estimate.">
+  <figcaption><strong>Figure 7.</strong> Funnel plot. Egger's test detects significant asymmetry (p = .024), suggesting small-study effects or publication bias.</figcaption>
+</figure>
+
+<table>
+  <caption>Table 6. Publication bias diagnostics.</caption>
+  <thead>
+    <tr><th>Test</th><th>Statistic</th><th>p</th><th>Interpretation</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Egger's regression</td><td>intercept = 2.53, t(39) = 2.34</td><td><strong>.024</strong></td><td>Significant funnel asymmetry detected</td></tr>
+    <tr><td>Begg's rank correlation</td><td>&tau; = 0.06</td><td>.61</td><td>No evidence of bias</td></tr>
+    <tr><td>Trim-and-fill</td><td>0 studies imputed</td><td>&mdash;</td><td>No adjustment (may lack sensitivity)</td></tr>
+    <tr><td>P-curve</td><td>89% right-skewed (25/28 sig.)</td><td>&lt; .001</td><td>Suggests evidential value, but inputs are heterogeneous and partly dependent</td></tr>
+  </tbody>
+</table>
+
+<div class="danger-box">
+<strong>Publication bias is now a concern.</strong> Egger's regression test, computed against the intercept, is significant (intercept = 2.53, t(39) = 2.34, p = .024). This indicates funnel asymmetry consistent with small-study effects &mdash; smaller studies in the sample tend to show larger positive effects. This pattern is characteristic of publication bias (small positive-result studies are published while small null-result studies are not) or genuine heterogeneity correlated with study size. The Begg test and trim-and-fill are non-significant, but these methods have lower sensitivity than Egger's test with continuous outcomes. The p-curve shows right-skewness (25/28 significant results), but p-curve assumes independent, homogeneous hypothesis tests &mdash; conditions that are only approximately met here. <strong>Overall, the positive pooled estimate may be inflated by selective reporting, and this substantially weakens the main finding.</strong>
+</div>
+
+<h3>3.9 Sensitivity analyses</h3>
+
+<table>
+  <caption>Table 7. Sensitivity analyses (9 subset specifications + leave-one-out). REML with HKSJ adjustment. CIs use <em>t</em>(k&minus;1).</caption>
+  <thead>
+    <tr><th>Analysis</th><th>k</th><th>log-OR</th><th>95% CI</th><th>&tau;&sup2;</th><th>Cohen's <em>h</em></th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Full sample (REML)</td><td>41</td><td>0.45</td><td>[0.23, 0.67]</td><td>0.34</td><td>0.08</td></tr>
+    <tr><td>Compute-parity only</td><td>9</td><td>0.31</td><td>[0.006, 0.61]</td><td>0.08</td><td>&asymp; 0.05</td></tr>
+    <tr><td>2025+ publications only</td><td>29</td><td>0.41</td><td>[0.10, 0.71]</td><td>0.47</td><td>&mdash;</td></tr>
+    <tr><td>High-RoB removed</td><td>16</td><td>0.42</td><td>[0.13, 0.72]</td><td>0.21</td><td>&mdash;</td></tr>
+    <tr><td>Verified studies only</td><td>10</td><td>0.35</td><td>[0.19, 0.51]</td><td>0.01</td><td>&mdash;</td></tr>
+    <tr><td>Unverifiable removed</td><td>39</td><td>0.43</td><td>[0.20, 0.65]</td><td>0.34</td><td>&mdash;</td></tr>
+    <tr><td>Non-aggregated benchmarks</td><td>36</td><td>0.48</td><td>[0.23, 0.74]</td><td>0.42</td><td>&mdash;</td></tr>
+    <tr><td>Accuracy metrics only</td><td>37</td><td>0.46</td><td>[0.22, 0.71]</td><td>0.40</td><td>&mdash;</td></tr>
+    <tr><td>Exact n-items only</td><td>28</td><td>0.40</td><td>[0.13, 0.67]</td><td>0.32</td><td>&mdash;</td></tr>
+    <tr><td colspan="6" style="font-style:italic;border-top:2px solid var(--border)">Leave-one-out (re-estimates &tau;&sup2; per iteration): pooled log-OR range [0.40, 0.48]; most influential omission Wu2025 &rarr; 0.40 (&tau;&sup2; = 0.23)</td></tr>
+  </tbody>
+</table>
+
+<p>
+The most consequential sensitivity is <strong>compute parity</strong> (k = 9): restricting to studies that equalized inference tokens reduces the pooled log-OR from 0.45 to 0.31 (a ~31% attenuation). The CI lower bound barely escapes zero (unrounded: [0.006, 0.607]), and the corresponding Cohen's h is approximately 0.05 &mdash; negligible by conventional benchmarks. This means multi-agent systems under fair compute comparisons gain roughly 2 additional correct items per 100 benchmark questions, an effect that is statistically borderline and practically trivial.
+</p>
+<p>
+The <strong>verified-only</strong> subset (k = 10) is notably lower than the full-sample estimate: log-OR = 0.35 [0.19, 0.51], with sharply reduced heterogeneity (&tau;&sup2; = 0.01 vs. 0.34). The lower point estimate is a warning: the 31 unverified studies may contain extraction errors that inflate the pooled effect. The reduced &tau;&sup2; suggests some apparent heterogeneity in the full sample arises from extraction noise. Removing only the 2 unverifiable studies (S013, S027) barely changes the estimate (k = 39, log-OR = 0.43 [0.20, 0.65]), confirming these two rows are not individually problematic but leaving the broader data-quality concern intact.
+</p>
+<p>
+The <strong>exact n-items</strong> subset (k = 28) excludes 13 studies whose denominators were imputed or estimated from benchmark metadata, yielding log-OR = 0.40 [0.13, 0.67] &mdash; somewhat attenuated from the full sample. The <strong>accuracy-only</strong> subset (k = 37) excludes non-accuracy metrics (win rates, resolve rates), yielding 0.46 [0.22, 0.71], similar to the full sample. <strong>Leave-one-out</strong> analysis shows the pooled estimate ranges from 0.40 (omitting Wu2025, a high-influence outlier) to 0.48; no single study reversal changes the sign of the pooled effect.
+</p>
+
+<h3>3.10 Quality of evidence assessment</h3>
+
+<div class="grade-box">
+<p><strong>GRADE-like assessment for the main conclusion</strong> (multi-agent systems outperform single-agent baselines):</p>
+<table>
+  <thead>
+    <tr><th>Domain</th><th>Rating</th><th>Rationale</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Risk of bias</td><td>Serious</td><td>61% high-RoB (uncontrolled compute); 76% unverified data (10/41 verified); 50% correction rate in audited subset</td></tr>
+    <tr><td>Inconsistency</td><td>Serious</td><td>I&sup2; = 96.1%; PI crosses zero; effects range from &minus;2.25 to +3.14</td></tr>
+    <tr><td>Indirectness</td><td>Some concerns</td><td>Metric heterogeneity: accuracy, pass@1, win rate, resolve rate conflated as binomial outcomes</td></tr>
+    <tr><td>Imprecision</td><td>Some concerns</td><td>CI excludes zero for the pooled estimate, but the compute-parity subset &mdash; the most policy-relevant analysis &mdash; has CI [0.006, 0.61] that barely escapes zero; the conclusion reverses under a trivially different sample</td></tr>
+    <tr><td>Publication bias</td><td>Serious</td><td>Egger p = .024; significant funnel asymmetry; small-study effects detected</td></tr>
+  </tbody>
+</table>
+<p><strong>Overall certainty: Very Low.</strong> Three domains rated "serious" and two rated "some concerns." The positive pooled effect may be partly or wholly an artifact of publication bias, compute confounding, and extraction errors. These findings are hypothesis-generating only.</p>
+</div>
+
+<!-- ====== 4. DISCUSSION ====== -->
+<h2>4. Discussion</h2>
+
+<h3>4.1 Principal findings</h3>
+<p>
+Multi-agent LLM systems appear to outperform single-agent baselines on average (RQ1: log-OR = 0.45), but this statement requires heavy qualification. The prediction interval [&minus;0.74, 1.64] is arguably the more important result: it crosses zero, meaning multi-agent superiority is not guaranteed for any new setting. The Cohen's h of 0.08 provides essential context &mdash; on the absolute scale, the "advantage" amounts to roughly 3&ndash;5 additional correct answers per 100 benchmark items. For many applications, this may not justify the added infrastructure complexity and inference cost.
+</p>
+<p>
+The Egger test (p = .024) indicates that this estimate is likely inflated by small-study effects or publication bias. Small studies showing positive results for multi-agent systems are more likely to appear in our sample than small studies showing null results. This asymmetry is a standard threat in meta-analysis and, combined with the other weaknesses, means the true average effect may be smaller than 0.45 &mdash; possibly substantially so.
+</p>
+
+<h3>4.2 When might multi-agent work?</h3>
+<p>
+The subgroup analyses suggest a pattern, though not a causal conclusion. Code generation (log-OR = 0.83) may benefit because software engineering is inherently modular: generating code, writing tests, reviewing, and debugging map onto distinct agent roles (<a href="#ref-hong2023">Hong et al., 2023</a>; <a href="#ref-zhang2024">Zhang et al., 2024</a>). Medical reasoning (log-OR = 0.42) may benefit from adversarial verification, where a second agent challenges the first's diagnosis (<a href="#ref-tang2024">Tang et al., 2024</a>). General knowledge shows no benefit (log-OR = 0.02). However, these subgroup differences are confounded with compute allocation, backbone model, and study quality. The significant Q<sub>between</sub> values (task: 197.56; architecture: 32.75) indicate heterogeneity across subgroups but do not establish that task type or architecture type causally moderates the effect.
+</p>
+
+<h3>4.3 The compute confound</h3>
+<p>
+Under compute parity, the effect shrinks by ~31% (from 0.45 to 0.31), and the Cohen's h becomes negligible (~0.05). This is the most practically important finding. A multi-agent debate consuming 5x the tokens of a single agent should be compared against a single agent given the same token budget via chain-of-thought, self-consistency, or repeated sampling (<a href="#ref-sprague2024">Sprague et al., 2024</a>; <a href="#ref-zhang2025stop">Zhang et al., 2025</a>). That the multi-agent advantage barely survives after compute equalization, with a CI nearly touching zero ([0.006, 0.61]) and trivial absolute effect size, substantially weakens the practical case for multi-agent orchestration as a general strategy. It may still be justified for specific decomposable tasks where structured inter-agent communication adds genuine informational value beyond what compute scaling alone provides.
+</p>
+
+<h3>4.4 Limitations</h3>
+<p>
+<em>Data-quality limitations.</em> First, this is an exploratory convenience-sample meta-analysis, not a registered systematic review. The 65 excluded records without extractable data may not be missing at random (<a href="#app-d">Appendix D</a>). Second, Egger's test is significant (p = .024), indicating publication bias or small-study effects that likely inflate the pooled estimate. Third, 61% of studies are high risk of bias (primarily uncontrolled compute), and only 10 of 41 rows are independently verified (76% unverified), with a 50% correction rate among the 12 audited rows. Fourth, I&sup2; = 96.1% is extreme; the pooled mean is nearly meaningless as a point prediction. Fifth, metric heterogeneity (accuracy, pass@1, win rate, resolve rate) means the log-OR model assumes more homogeneity than the underlying data provide.
+</p>
+<p>
+<em>Analytical limitations.</em> Sixth, dependency among effect sizes is not formally modeled; robust variance estimation (<a href="#ref-hedges2010">Hedges et al., 2010</a>) or multilevel modeling (<a href="#ref-vandennoortgate2013">Van den Noortgate et al., 2013</a>) would be needed for rigorous inference. Seventh, all subgroup analyses are exploratory and uncorrected for multiplicity. Eighth, no moderator is significant in meta-regression, but the regression is underpowered. Ninth, the actual compute ratios between multi-agent and single-agent conditions are rarely reported, limiting our ability to quantify the confound precisely.
+</p>
+
+<!-- ====== 5. CONCLUSION ====== -->
+<h2>5. Conclusion</h2>
+<p>
+This exploratory meta-analysis finds a positive but fragile signal that multi-agent LLM orchestration may outperform single-agent baselines (pooled log-OR = 0.45, 95% CI [0.23, 0.67]; Cohen's h = 0.08; approximate RD = 3&ndash;5 percentage points). However, the evidence is substantially undermined by: (1) significant publication bias (Egger p = .024), (2) extreme heterogeneity (I&sup2; = 96.1%, PI crossing zero), (3) a trivial absolute effect size, (4) pervasive compute confounding, and (5) weak data provenance (76% unverified, 50% correction rate among audited rows).
+</p>
+<p>
+The most honest reading is that multi-agent orchestration <em>probably</em> helps for decomposable, verifiable tasks (code generation, medical reasoning) when generous compute budgets are available, but the evidence base is too contaminated by publication bias, compute confounding, and data-quality concerns to make strong claims. Under compute parity, the effect is borderline significant and negligible in absolute terms (h &asymp; 0.05). The field urgently needs: (a) compute-controlled comparisons (only 9 of 41 enforced parity), (b) independent extraction audits, and (c) registered meta-analyses with pre-specified moderators. Until then, practitioners should benchmark any multi-agent system against a properly scaled single-agent baseline before assuming orchestration adds value.
+</p>
+
+<!-- ====== REFERENCES ====== -->
+<h2>References</h2>
+<div class="ref-list">
+
+<p id="ref-begg1994">Begg, C. B., &amp; Mazumdar, M. (1994). Operating characteristics of a rank correlation test for publication bias. <em>Biometrics, 50</em>(4), 1088&ndash;1101. <a href="https://doi.org/10.2307/2533446">https://doi.org/10.2307/2533446</a></p>
+
+<p id="ref-borenstein2009">Borenstein, M., Hedges, L. V., Higgins, J. P. T., &amp; Rothstein, H. R. (2009). <em>Introduction to meta-analysis</em>. Wiley. <a href="https://doi.org/10.1002/9780470743386">https://doi.org/10.1002/9780470743386</a></p>
+
+<p id="ref-cohen1988">Cohen, J. (1988). <em>Statistical power analysis for the behavioral sciences</em> (2nd ed.). Lawrence Erlbaum Associates.</p>
+
+<p id="ref-du2023">Du, Y., Li, S., Torralba, A., Tenenbaum, J. B., &amp; Mordatch, I. (2023). Improving factuality and reasoning in language models through multiagent debate. <em>arXiv:2305.14325</em>. <a href="https://arxiv.org/abs/2305.14325">https://arxiv.org/abs/2305.14325</a></p>
+
+<p id="ref-duval2000">Duval, S., &amp; Tweedie, R. (2000). Trim and fill: A simple funnel-plot-based method of testing and adjusting for publication bias in meta-analysis. <em>Biometrics, 56</em>(2), 455&ndash;463. <a href="https://doi.org/10.1111/j.0006-341X.2000.00455.x">https://doi.org/10.1111/j.0006-341X.2000.00455.x</a></p>
+
+<p id="ref-egger1997">Egger, M., Smith, G. D., Schneider, M., &amp; Minder, C. (1997). Bias in meta-analysis detected by a simple, graphical test. <em>BMJ, 315</em>(7109), 629&ndash;634. <a href="https://doi.org/10.1136/bmj.315.7109.629">https://doi.org/10.1136/bmj.315.7109.629</a></p>
+
+<p id="ref-hartung2001">Hartung, J., &amp; Knapp, G. (2001). On tests of the overall treatment effect in meta-analysis with normally distributed responses. <em>Statistics in Medicine, 20</em>(12), 1771&ndash;1782. <a href="https://doi.org/10.1002/sim.791">https://doi.org/10.1002/sim.791</a></p>
+
+<p id="ref-hedges2010">Hedges, L. V., Tipton, E., &amp; Johnson, M. C. (2010). Robust variance estimation in meta-regression with dependent effect size estimates. <em>Research Synthesis Methods, 1</em>(1), 39&ndash;65. <a href="https://doi.org/10.1002/jrsm.5">https://doi.org/10.1002/jrsm.5</a></p>
+
+<p id="ref-hong2023">Hong, S., Zhuge, M., Chen, J., Zheng, X., Cheng, Y., Zhang, C., ... &amp; Wu, Y. (2023). MetaGPT: Meta programming for a multi-agent collaborative framework. <em>arXiv:2308.00352</em>. <a href="https://arxiv.org/abs/2308.00352">https://arxiv.org/abs/2308.00352</a></p>
+
+<p id="ref-inthout2014">IntHout, J., Ioannidis, J. P. A., &amp; Borm, G. F. (2014). The Hartung-Knapp-Sidik-Jonkman method for random effects meta-analysis is straightforward and considerably outperforms the standard DerSimonian-Laird method. <em>BMC Medical Research Methodology, 14</em>, 25. <a href="https://doi.org/10.1186/1471-2288-14-25">https://doi.org/10.1186/1471-2288-14-25</a></p>
+
+<p id="ref-inthout2016">IntHout, J., Ioannidis, J. P. A., Rovers, M. M., &amp; Goeman, J. J. (2016). Plea for routinely presenting prediction intervals in meta-analysis. <em>BMJ Open, 6</em>(7), e010247. <a href="https://doi.org/10.1136/bmjopen-2015-010247">https://doi.org/10.1136/bmjopen-2015-010247</a></p>
+
+<p id="ref-liang2024">Liang, T., He, Z., Jiao, W., Wang, X., Wang, Y., Wang, R., ... &amp; Tu, Z. (2024). Encouraging divergent thinking in large language models through multi-agent debate. <em>arXiv:2305.19118</em>. <a href="https://arxiv.org/abs/2305.19118">https://arxiv.org/abs/2305.19118</a></p>
+
+<p id="ref-pustejovsky2022">Pustejovsky, J. E., &amp; Tipton, E. (2022). Meta-analysis with robust variance estimation: Expanding the range of working models. <em>Prevention Science, 23</em>(3), 425&ndash;438. <a href="https://doi.org/10.1007/s11121-021-01246-3">https://doi.org/10.1007/s11121-021-01246-3</a></p>
+
+<p id="ref-qian2024">Qian, C., Liu, W., Liu, H., Chen, N., Dang, Y., Li, J., ... &amp; Liu, Z. (2024). ChatDev: Communicative agents for software development. <em>ACL 2024</em>. <a href="https://arxiv.org/abs/2307.07924">https://arxiv.org/abs/2307.07924</a></p>
+
+<p id="ref-rover2015">R&ouml;ver, C., Knapp, G., &amp; Friede, T. (2015). Hartung-Knapp-Sidik-Jonkman approach and its modification for random-effects meta-analysis with few studies. <em>BMC Medical Research Methodology, 15</em>, 99. <a href="https://doi.org/10.1186/s12874-015-0091-1">https://doi.org/10.1186/s12874-015-0091-1</a></p>
+
+<p id="ref-simonsohn2014">Simonsohn, U., Nelson, L. D., &amp; Simmons, J. P. (2014). P-curve: A key to the file-drawer. <em>Journal of Experimental Psychology: General, 143</em>(2), 534&ndash;547. <a href="https://doi.org/10.1037/a0033242">https://doi.org/10.1037/a0033242</a></p>
+
+<p id="ref-sprague2024">Sprague, Z., Yin, F., Rodriguez, J. D., Jiang, D., Wadhwa, M., Singhal, P., ... &amp; Durrett, G. (2024). To CoT or not to CoT? Chain-of-thought helps mainly on math and symbolic reasoning. <em>arXiv:2409.12183</em>. <a href="https://arxiv.org/abs/2409.12183">https://arxiv.org/abs/2409.12183</a></p>
+
+<p id="ref-sterne2019">Sterne, J. A. C., Savovic, J., Page, M. J., Elbers, R. G., Blencowe, N. S., Boutron, I., ... &amp; Higgins, J. P. T. (2019). RoB 2: A revised tool for assessing risk of bias in randomised trials. <em>BMJ, 366</em>, l4898. <a href="https://doi.org/10.1136/bmj.l4898">https://doi.org/10.1136/bmj.l4898</a></p>
+
+<p id="ref-sweeting2004">Sweeting, M. J., Sutton, A. J., &amp; Lambert, P. C. (2004). What to add to nothing? Use and avoidance of continuity corrections in meta-analysis of sparse data. <em>Statistics in Medicine, 23</em>(9), 1351&ndash;1375. <a href="https://doi.org/10.1002/sim.1761">https://doi.org/10.1002/sim.1761</a></p>
+
+<p id="ref-tang2024">Tang, X., Zou, A., Zhang, Z., Li, Z., Zhao, Y., Zhang, X., ... &amp; Gerstein, M. (2024). MedAgents: Large language models as collaborators for zero-shot medical reasoning. <em>arXiv:2311.10537</em>. <a href="https://arxiv.org/abs/2311.10537">https://arxiv.org/abs/2311.10537</a></p>
+
+<p id="ref-vandennoortgate2013">Van den Noortgate, W., Lopez-Lopez, J. A., Marin-Martinez, F., &amp; Sanchez-Meca, J. (2013). Three-level meta-analysis of dependent effect sizes. <em>Behavior Research Methods, 45</em>(2), 576&ndash;594. <a href="https://doi.org/10.3758/s13428-012-0261-6">https://doi.org/10.3758/s13428-012-0261-6</a></p>
+
+<p id="ref-viechtbauer2005">Viechtbauer, W. (2005). Bias and efficiency of meta-analytic variance estimators in the random-effects model. <em>Journal of Educational and Behavioral Statistics, 30</em>(3), 261&ndash;293. <a href="https://doi.org/10.3102/10769986030003261">https://doi.org/10.3102/10769986030003261</a></p>
+
+<p id="ref-viechtbauer2010">Viechtbauer, W. (2010). Conducting meta-analyses in R with the metafor package. <em>Journal of Statistical Software, 36</em>(3), 1&ndash;48. <a href="https://doi.org/10.18637/jss.v036.i03">https://doi.org/10.18637/jss.v036.i03</a></p>
+
+<p id="ref-wu2023">Wu, Q., Bansal, G., Zhang, J., Wu, Y., Li, B., Zhu, E., ... &amp; Wang, C. (2023). AutoGen: Enabling next-gen LLM applications via multi-agent conversation. <em>arXiv:2308.08155</em>. <a href="https://arxiv.org/abs/2308.08155">https://arxiv.org/abs/2308.08155</a></p>
+
+<p id="ref-zhang2024">Zhang, K., Li, J., Li, G., Shi, X., &amp; Jin, Z. (2024). CodeAgent: Enhancing code generation with tool-integrated agent systems for real-world repo-level coding challenges. <em>ACL 2024</em>. <a href="https://arxiv.org/abs/2401.07339">https://arxiv.org/abs/2401.07339</a></p>
+
+<p id="ref-zhang2025stop">Zhang, H., Cui, Z., Chen, J., Wang, X., Zhang, Q., Wang, Z., Wu, D., &amp; Hu, S. (2025). Stop overvaluing multi-agent debate &mdash; We must rethink evaluation and embrace model heterogeneity. <em>arXiv:2502.08788</em>. <a href="https://arxiv.org/abs/2502.08788">https://arxiv.org/abs/2502.08788</a></p>
+
+</div>
+
+<!-- ====== APPENDIX A ====== -->
+<div class="appendix">
+<h2>Appendix A: Reproducibility</h2>
+<p>
+All analyses were conducted using Python 3.12 managed via <code>uv</code>. The full pipeline &mdash; from data loading through effect-size computation, pooling, heterogeneity assessment, subgroup analysis, meta-regression, publication bias diagnostics, sensitivity analyses, and figure generation &mdash; is executed by a single entry point:
+</p>
+<pre style="background:#f6f8fa;padding:0.8rem;border-radius:4px;font-size:0.85rem;overflow-x:auto;">uv sync &amp;&amp; uv run python main.py</pre>
+<p>Key components:</p>
+<ul>
+  <li><strong>Entry point:</strong> <code>main.py</code> runs the full pipeline end-to-end, reading data from <code>data/</code>, executing all analyses via modules in <code>src/</code>, and writing figures and summary outputs to <code>report/assets/</code>.</li>
+  <li><strong>Environment:</strong> <code>pyproject.toml</code> + <code>uv.lock</code> for deterministic dependency resolution.</li>
+  <li><strong>Data:</strong> Raw search results in <code>data/raw/</code>; extracted and verified effect-size tables in <code>data/extracted/</code> and <code>data/verified/</code>. The <code>n-items-estimated</code> flag column indicates which studies have estimated rather than directly extracted item counts.</li>
+  <li><strong>Analysis code:</strong> Reusable modules in <code>src/</code> (effect_sizes, pooling, heterogeneity, moderators, publication_bias, sensitivity, plots). All logic is importable.</li>
+  <li><strong>Figures:</strong> All figures exported to <code>report/assets/</code> with stable filenames.</li>
+  <li><strong>Random seeds:</strong> Verification sampling used seed 42. All stochastic operations are seeded.</li>
+  <li><strong>Output validation:</strong> <code>main.py</code> includes runtime validation checks (k = 41, df = 40, Q &gt; 0, CI/PI bracket the pooled estimate, Egger df = 39). <code>results-summary.json</code> and CSV files in <code>report/assets/</code> are regenerated by each pipeline run. Table values in this report are sourced from those files.</li>
+  <li><strong>Tests:</strong> 18 unit tests in <code>tests/test_stats.py</code> verify DL/REML estimators, HKSJ properties, effect-size computations, Egger's intercept test, and project-specific data constraints. Run via <code>uv run pytest tests/</code>.</li>
+</ul>
+</div>
+
+<!-- ====== APPENDIX B ====== -->
+<div class="appendix">
+<h2>Appendix B: AI-Use Declaration (KU Leuven Article 84)</h2>
+<p>
+In accordance with KU Leuven's policy on the use of artificial intelligence in education (Article 84), the following AI tools were used in the preparation of this work:
+</p>
+<ul>
+  <li><strong>Literature search:</strong> Six Claude Code agents were deployed in parallel to search arXiv, ACL Anthology, and conference proceedings. Each agent covered a distinct topic cluster. All retrieved records were manually screened against PICOS criteria. No inter-rater screening reliability was computed.</li>
+  <li><strong>Data extraction and verification:</strong> Claude Code agents assisted with initial data extraction from primary sources. A second-coder verification pass was performed by an independent agent on 12 of 41 studies: 4 were verified, 6 required correction (50% error rate), and 2 were unverifiable. The remaining 29 studies are unaudited; in total, 31 of 41 rows (76%) lack independent verification.</li>
+  <li><strong>Statistical analysis:</strong> All statistical computations (effect sizes, pooling, meta-regression, publication bias tests) were implemented in Python using open-source libraries. Code is available in <code>src/</code>.</li>
+  <li><strong>Report drafting:</strong> Claude Code assisted with drafting and structuring the HTML report. All statistical interpretations, critical assessments, and conclusions were reviewed and validated by the author.</li>
+  <li><strong>Revision:</strong> Claude Code assisted with implementing fixes in response to peer review. v3 addressed 50 issues from a citation and statistical audit; v4 addressed 7 minor presentational issues; v5 addressed 20 issues from a cohesion and auditability review (see <code>report/review/</code>).</li>
+  <li><strong>Model used:</strong> Claude Opus 4.6, via Claude Code (Anthropic).</li>
+</ul>
+<p>
+The author takes full responsibility for the accuracy of all reported results and the intellectual content of this work. Raw AI interaction logs are available upon request.
+</p>
+</div>
+
+<!-- ====== APPENDIX C ====== -->
+<div class="appendix" id="app-c">
+<h2>Appendix C: Search Strings</h2>
+<p>
+The following search queries were used across six parallel search agents. This is a convenience sample, not a systematic search with a registered protocol.
+</p>
+<table>
+  <caption>Table C1. Search agent queries.</caption>
+  <thead>
+    <tr><th>Agent</th><th>Cluster</th><th>Representative search strings</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td>Multi-agent debate</td><td><code>"multi-agent debate" LLM accuracy benchmark</code>; <code>"LLM deliberation" "single agent" comparison</code></td></tr>
+    <tr><td>2</td><td>Cooperative / hierarchical</td><td><code>"multi-agent cooperation" OR "hierarchical agents" LLM benchmark</code>; <code>"agent orchestration" evaluation accuracy</code></td></tr>
+    <tr><td>3</td><td>SWE / code generation</td><td><code>"multi-agent" code generation benchmark SWE-bench OR HumanEval</code>; <code>"agent collaboration" software engineering</code></td></tr>
+    <tr><td>4</td><td>Medical / scientific</td><td><code>"multi-agent" medical reasoning OR clinical benchmark LLM</code>; <code>"collaborative LLM" scientific QA</code></td></tr>
+    <tr><td>5</td><td>Critical / null results</td><td><code>"single agent" outperforms "multi-agent" LLM</code>; <code>"scaling single agent" vs debate OR collaboration</code></td></tr>
+    <tr><td>6</td><td>Frontier models</td><td><code>"frontier model" "multi-agent" diminishing returns OR compute parity</code>; <code>GPT-4 OR Claude "agent comparison"</code></td></tr>
+  </tbody>
+</table>
+<p class="fig-caption">Searches were conducted across arXiv, ACL Anthology, NeurIPS/ICML/ICLR proceedings, and Google Scholar. Date range: January 2023 to May 2026. The search was not pre-registered and should be understood as a broad convenience trawl, not an exhaustive systematic search. Coverage gaps are likely, particularly for grey literature, non-English publications, and negative-result studies that may not appear in the targeted venues.</p>
+</div>
+
+<!-- ====== APPENDIX D ====== -->
+<div class="appendix" id="app-d">
+<h2>Appendix D: Exclusion Table</h2>
+<p>
+Of 106 records passing PICOS screening, 65 were excluded because they lacked extractable multi-agent vs. single-agent accuracy counts. The table below categorizes these exclusions. The excluded records may not be missing at random &mdash; studies reporting negative or null results may be less likely to provide detailed accuracy tables, introducing potential selection bias. <strong>The logical consequence is that the 41 included studies likely overrepresent positive results:</strong> if a study found multi-agent systems performed no better (or worse), it was less likely to report the granular accuracy data required for inclusion. This directional bias is consistent with the significant Egger test (p = .024) and reinforces the GRADE downgrade for publication bias.
+</p>
+<table>
+  <caption>Table D1. Reasons for exclusion of 65 records without extractable data.</caption>
+  <thead>
+    <tr><th>Exclusion reason</th><th>Count</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Only aggregate/composite metrics reported (no per-condition counts)</td><td>18</td><td>Win rates, Elo scores, or composite indices without item-level breakdown</td></tr>
+    <tr><td>Single-agent baseline not reported separately</td><td>14</td><td>Multi-agent results only; comparator inferred or absent</td></tr>
+    <tr><td>Qualitative or case-study evaluation only</td><td>11</td><td>No quantitative benchmark data</td></tr>
+    <tr><td>Different backbone models between MA and SA conditions</td><td>8</td><td>Fails PICOS comparator requirement (same backbone)</td></tr>
+    <tr><td>Benchmark not identifiable or proprietary</td><td>6</td><td>Custom evaluations without public benchmark reference</td></tr>
+    <tr><td>Insufficient detail to compute log-OR (missing denominators)</td><td>5</td><td>Percentages reported but no item counts or benchmark size</td></tr>
+    <tr><td>Paper not locatable or access restricted</td><td>3</td><td>arXiv IDs not found or behind paywall without preprint</td></tr>
+  </tbody>
+</table>
+<p class="fig-caption">These 65 exclusions represent 61% of PICOS-eligible records. The high exclusion rate reflects the field's inconsistent reporting of per-condition accuracy data, which itself may be correlated with effect size (studies with ambiguous or disappointing results may report less detail).</p>
+</div>
+
+<!-- ====== APPENDIX E ====== -->
+<div class="appendix" id="app-e">
+<h2>Appendix E: Cohen's <em>h</em> as Secondary Effect Size</h2>
+<p>
+Cohen's <em>h</em> = 2 arcsin(&radic;<em>p</em><sub>MA</sub>) &minus; 2 arcsin(&radic;<em>p</em><sub>SA</sub>) provides an absolute-scale effect size that is less sensitive to base-rate inflation than log-OR. In high-accuracy regimes (e.g., >90% accuracy for both conditions), a small proportion difference produces a large log-OR but a small <em>h</em>. Cohen's <em>h</em> benchmarks: 0.20 = small, 0.50 = medium, 0.80 = large (<a href="#ref-cohen1988">Cohen, 1988</a>).
+</p>
+<table>
+  <caption>Table E1. Pooled Cohen's <em>h</em> for key analyses.</caption>
+  <thead>
+    <tr><th>Analysis</th><th>k</th><th>Cohen's <em>h</em></th><th>Interpretation</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Full sample</td><td>41</td><td>0.08</td><td>Trivial (below "small" threshold)</td></tr>
+    <tr><td>Code generation</td><td>11</td><td>0.14</td><td>Trivial to small</td></tr>
+    <tr><td>Compute-parity only</td><td>9</td><td>&asymp; 0.05</td><td>Negligible</td></tr>
+    <tr><td>Medical reasoning</td><td>7</td><td>0.09</td><td>Trivial</td></tr>
+    <tr><td>General knowledge</td><td>3</td><td>0.00</td><td>No effect</td></tr>
+  </tbody>
+</table>
+<p>
+<strong>Implications.</strong> The disconnect between the seemingly encouraging log-OR (0.45, OR = 1.57) and the trivial Cohen's h (0.08) is important. Log-OR is inflated in high-accuracy regimes where both conditions approach ceiling. Many included studies operate in such regimes (e.g., single-agent accuracy >80%), meaning the 57% odds-ratio increase translates to only ~3&ndash;5 additional correct items per 100. Under compute parity, this shrinks to ~2 items per 100 (h &asymp; 0.05). Practitioners should evaluate multi-agent systems on absolute gains, not odds ratios, when making deployment decisions.
+</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+
+Student name: 	Xinyu Yang	Student number: r1020926…………………………………………..	
+
+Please indicate with "X" whether it relates to a course assignment or to the Bachelor’s or Master’s thesis: 
+
+X This form is related to a course assignment. 
+	Course name: 	Meta Analysis                                       Course number: G0B75a
+This form is related to my O Bachelor’s or O Master’s thesis. 
+Title Bachelor’s or Master’s thesis: 		      Supervisor:  ……………………..…	
+	Daily supervisor: 		
+ Please indicate with "X": 
+
+O I did not use any GenAI assistance tool.
+X I did use GenAI Assistance. In this case specify which ones (e.g. ChatGPT, M365 Copilot,...): Claude Code; Claude Cowork
+
+
+GenAI assistance used as/for:
+Name of the GenAI tool(s) used. 
+If helpful, also describe in which way you were using GenAI related to what is specified as code of conduct.
+Code of conduct:
+
+
+For each of the categories below, always take into account the important guidelines and remarks mentioned above (e.g. copyrighted data, sensitive or personal data,…).
+As a language assistant for reviewing or improving texts I wrote myself
+
+This use is similar to using spelling and grammar check tools. In general, you do not have to refer to such kind of GenAI use in the text. 
+However, be careful: 
+	•	When using GenAI tools on texts you did not write yourself to improve the text, you have to refer to the original source or author, otherwise you are committing plagiarism and thus an irregularity.
+As a paraphrasing tool
+
+This use is allowed except when it is prohibited by the teacher or the program of study. You may paraphrase your own text or texts by an author other than yourself and take inspiration from what a GenAI tool or another tool suggests (unless it is not allowed). In general, you do not have to refer to such kind of GenAI use or other paraphrasing tools in the text. 
+However, be careful: 
+	•	If it entails text by an author other than yourself, you are not allowed to include that paraphrased text without reference to the original source or author. Without such reference, you would be committing plagiarism and thus an irregularity.
+
+For translation aid to improve texts I wrote myself or to better understand text from others
+
+This use is allowed except when it is prohibited by the teacher or the program of study. It is similar to using translation tools (Google translate, DeepL, …). In general, you do not have to refer to such kind of GenAI use in the text. 
+However, be careful: 
+	•	You are not allowed to include that translated text without reference to the original source or author. Without such reference, you would be committing plagiarism and thus an irregularity.
+
+	•	Always check the translated text for correctness and meaning.
+As a search engine to get information on a topic or to search for existing research on the topic
+
+This use is similar to e.g. a Google search or checking Wikipedia. If you write your own text based on this information, you do not have to refer to the use of GenAI in the text. You only have to refer to the existing research and references you have checked and used (without such references you would be committing plagiarism and thus committing an irregularity).
+However, be careful:
+	•	Be aware that the output of the GenAI tool cannot be guaranteed as a 100% reliable source of information. The output may not be entirely correct and/or be limited due to the databases it uses. Moreover, knowledge evolves and may change over time; therefore, the database of the GenAI tool may not be up to date. Therefore, verify the information and do not just copy-paste it as you should understand and critically process everything you are writing. 
+For literature search
+
+This use is comparable to e.g. a Google Scholar search. You do not have to refer to such kind of GenAI use; you only have to refer to the literature references you have checked and used (without such references you would be committing plagiarism and thus committing an irregularity)..
+However, be careful:
+	•	Be aware that the search output is restricted to the database the GenAI tool is built on. After this initial search, look for scientific sources and conduct your own analysis of the source documents. Interpret, analyse and process the information you obtained; verify it and do not just copy-paste it as you should understand and critically process everything you are writing. 
+	•	Be aware that some GenAI tools may output no or wrong references. As a student you are responsible for further checking and verifying the absence or correctness of references; do not just copy-paste it.
+For generating programming code 
+
+Use of GenAI for coding is allowed except when it is prohibited by the teacher or the program of study. If used for coding, correctly mention the use of GenAI assistance in accordance with the instructions on the page on being transparant about the use of GenAI.
+For generating new (research) ideas
+
+This use of GenAI is allowed except when it is prohibited by the teacher or the program of study. Correctly mention the use of GenAI assistance in accordance with the instructions on the page on being transparant about the use of GenAI.
+Be careful:
+	•	Further verify in this case whether the idea is novel or not. It is likely that it is related to existing work. If so, that existing work should be correctly referenced in the text (without such reference you would be committing plagiarism and thus committing an irregularity).
+	•	
+For generating synthetic data
+
+Use of GenAI for generating synthetic data is allowed, provided that it is methodologically and ethically justifiable, except when it is prohibited by the teacher or the program of study. Always correctly mention the use of GenAI assistance in accordance with the instructions on the page on being transparant about the use of GenAI.
+Be careful:
+	•	Always carefully evaluate the generated synthetic data for quality and possible bias since the output is highly dependent on the quality of the data on which the models are trained.
+For generating blocks of text
+(other than the allowed use without referencing mentioned above)
+
+According to Article 84 of the Regulations on Education and Examinations your text should allow to correctly and properly assess your own knowledge, understanding and skills. Therefore, inserting blocks of text without quotes and a reference to GenAI assistance in your work is not allowed.
+Be careful:
+	•	If it is really needed to insert a block of text from a GenAI tool, for instance because of the nature of your assignment, mention it as a citation by using quotes and correctly mention the use of GenAI assistance in accordance with the instructions page on being transparant about the use of GenAI. 
+	•	However, in general, such GenAI use should be kept to an absolute minimum; you should always check the original sources. 
+For generating visuals, video or audio
+
+Use of GenAI for generating visuals, audio or video is allowed except when it is prohibited by the teacher or the program of study. 
+Be careful:
+	•	If used, refer to GenAI for visuals according to the usual referencing style, following the instructions on the page on referencing GenAI. 
+	•	If you work with existing visuals, audio or video, that existing work should be correctly referenced in the text (without such reference you would be committing plagiarism and thus an irregularity). 
+	•	Explain the usage in the methods section (if there is one) and optionally attach (or link to) the prompts with the full output (or history).
+Other use (specify here; this may also include a combination of types of use mentioned above):
+
+To make sure other use of GenAI is allowed within the course or thesis, and if so, the conditions that may apply, contact the teaching staff of the course or the supervisor of the thesis beforehand and explain the intended GenAI use.  Also inform the programme director. 
+Motivate how you would comply with Article 84 of the exam regulations. Explain the use and the added value of the AI tool you consider to use and how it is in accordance with the assignment or thesis and the KU Leuven guidelines on responsible use of Generative AI tools. 
+Depending on the kind of GenAI use, it may be needed to properly reference it in the text, in accordance with the instructions page on being transparant about the use of GenAI.
+
+

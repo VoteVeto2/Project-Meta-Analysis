@@ -1,0 +1,85 @@
+Meta-analysis
+Guidelines for the paper:
+
+Topic of the paper:
+
+Prepare a paper, preferably together with another student who has the oral exam on the same day. You can choose the topic of your paper yourself. There are three kinds of topics you can tackle:
+
+	•	First, you can perform a meta-analysis yourself, by choosing a research question in which you are interested, performing a small literature search, retrieving the relevant data, combining effect sizes in a statistical way, and critically interpreting the results. Note that the search for studies and the information retrieval is often very time-consuming. Therefore, I do not expect that you aim at retrieving all relevant literature. You can show that you reached the attainment targets of the course by doing a meta-analysis on a convenience sample of studies (for instance 5-10 studies), but explaining what additional steps should have been taken in order to make it a systematic review.
+	•	Second, instead of retrieving the data yourself, you can start from an existing meta-analysis and/or meta-analytical datasets. Some meta-analyses and datasets are made available on Toledo, but also on the internet you can find datasets as supplementary materials or on open science repositories like OSF. Your contribution can be a critical discussion of what the authors have done, a reanalysis of the data using another approach, the use of additional graphs or analyses, ... Note that merely describing or summarizing an existing meta-analysis is not sufficient. To avoid plagiarism, it is important that you make explicit what exactly is your work, and what you merely copied from the original meta-analysis. Also refer clearly to the original work (and where the data can be found), so that I can easily retrieve it myself. 
+	•	Third, you can choose a methodological or statistical topic regarding meta-analysis, and elaborate this topic. This topic may be a topic that was not or only shortly discussed during the lectures. Possible topics are for instance: the statistical power of meta-analyses, publication bias, Bayesian meta-analyses, converting effect size measures, network meta-analysis, MASEM, …. This can be a review of techniques proposed in the literature, a critical discussion of one or more techniques, a reconstruction of the theoretical debate in the literature about the topic, a comparison of the results of multiple approaches, ... You can of course include information from the lectures or the textbook, but your paper should include additional information as well.
+
+Language:
+
+In principle, the paper and exam are in English, but students who want to make the paper and/or do the oral exam in Dutch may do so.
+
+Extent of the paper:
+
+The paper includes about 2000-3000 words of text (which is about 4-6 pages) besides tables, graphs, the reference list and appendices.
+
+You should show that you are able to perform a meta-analysis and that you have a deep understanding of possibilities, strengths and limitations of meta-analysis. I expect a well-elaborated paper, but at the same time: be modest in your research, do not put too much time in the paper. Four ECTS study points are assigned to this course, which is expected to correspond with about 100-120 hours of work (including lectures, reading, paper, studying, …). I therefore do not expect that you perform a meta-analysis that is ready to be published (since such a meta-analysis can easily ask 6 months of full time work for an experienced researcher). 
+It is for instance possible that in your meta-analysis you combine the results of only 5-10 studies, although you know that this small amount of studies may hamper the validity of the results, or that the statistical power of such an analysis may be low. It is also possible that you restrict your research to published literature in one language, although you know that his may induce systematic bias in the conclusions.
+Similarly, it is not necessary that if you make a paper regarding a statistical/methodological topic you will include all literature that is available on this topic. Yet, you should use at least a few sources of information and make a clear synthesis with a critical look of these sources. 
+
+Citing:
+
+It is important that you clearly cite the work you use! 
+
+Note that all papers will be automatically checked for plagiarism! Overlap with journal articles, books, master dissertations and papers from previous years will be studied. Of course, there is nothing wrong about using ideas from others that you find in the literature. You should however clearly cite this literature to avoid plagiarism (see https://www.kuleuven.be/english/education/plagiarism).
+
+You can cite literature using the guidelines of for instance the American Psychological Association, or other guidelines. At the end of the paper, you make an alphabetical list of references. According to the American Psychological Association guidelines, this looks as follows (the first is an article in a journal, the second a chapter in a book, the third a book, and the fourth a web site):
+
+Becker, B.J. (2003). Introduction to the special section on metric in meta-analysis. Psychological Methods, 8, 403-405.
+Begg, C. B. (1994). Publication bias. In H. Cooper, & L. V. Hedges (Eds.), The handbook of research synthesis (pp. 399-409). New York: Russell Sage Foundation.
+Cohen, J. (1969). Statistical power analysis for the behavioural sciences. New York: Academic Press.
+Goldstein, H., & Woodhouse, G. (1997). Efficient estimation with missing data in multilevel models. Retrieved on http://www.ioe.ac.uk/multilevel/workpap.html#missdata.
+In the text, you refer to these references in the following way:
+‘In 1969, Cohen discussed …’ or ‘Cohen (1969) discussed …’
+Use of AI:
+
+If you decide to use AI for preparing your paper, you have to be transparent about how you used it. To that end:
+	•	fill in the form on the use of AI (on Toledo)
+	•	if you made use of AI: describe in a separate section in more detail how you used AI (for instance, by describing what prompts you gave, what came out, and how you used this (or not)).
+	•	Add the form and (if applicable) the more elaborated description as appendices to your paper.
+
+Use AI only in a smart way: make sure that you do not simply copy what AI suggests, but that you deeply understand and can explain what you write in your paper! This will be checked during the oral exam. If wrote down correct or interesting ideas, but you are not able to explain these during the oral exam, I cannot give you credits for these ideas … 
+
+
+Timing:
+
+Hand in via Toledo by May 31, 23:59 PM. Of course you are free to hand in your work earlier. Use the following name for your paper: MA2026_name_givenname. Note that papers cannot be uploaded after that deadline, and will also not be accepted by mail. Do not wait until the last minute to upload your paper, to avoid that due to technical problems you will not able to hand in the paper in time. Make sure you receive an automatic confirmation that your paper was uploaded, and keep this confirmation as a proof. If you do not receive a confirmation, then let me know and send me the paper by mail (but not later than May 31!).
+
+Feedback:
+
+Video lectures will be made available via Toledo. 
+In addition, four (online) sessions will be organized. Dates are communicated via Toledo.
+	•	In a first session, I will give some more information on the course. In addition, you can ask questions regarding the introduction in meta-analysis (eight video lectures). Please send me your questions in beforehand (2 days in advance, so that I can better prepare the session and help you with your questions).
+	•	In the second session, we will make exercises on using R for meta-analysis (cfr. ninth video lecture + R-scripts).
+	•	The third session is a collective feedback session. During that meeting, we can discuss issues and questions on the theory (especially the last eight video lectures) and exercises, as well as  problems you may have encountered while working on your paper. Again please send me your questions in advance.
+	•	The fourth and final session is an (optional) individual feedback session, during which we can discuss questions you have on the course or paper. 
+
+In between, you are free to contact me if you are stuck with your paper.  
+
+Criteria for the evaluation of the paper:
+
+One global score will be given on the paper, based on the following criteria: 
+
+When performing a meta-analysis:
+	•	accuracy of your work (e.g., the correctness of your analysis, the correct interpretation of the results…),
+	•	the clarity of the rapport (e.g., the way insight is given in the results using graphs or other tools),
+	•	the complexity of the analyses (e.g., a mixed model meta-analysis is more complex than a fixed model analysis or than a combination of p-values),
+	•	the amount of work (e.g., the thoroughness of the literature search), and
+	•	the way the value of the meta-analysis is critically discussed (e.g., a discussion of the limitations and strengths of your own meta-analysis).
+
+When elaborating a statistical/methodological topic:
+	•	accuracy of your work (e.g., the correctness of your discussion…),
+	•	the clarity of the rapport (e.g., the way the topic is discussed in a didactical way),
+	•	the complexity of the topic (e.g., topics may be more complex if less information was given on it during the course, or since the literature is very technical),
+	•	the amount of work (e.g., the amount of literature that is looked at), and
+	•	the way the topic is critically discussed (e.g., not a mere summary of literature, but also a discussion of what problems or questions remain, which contradictions are found in the literature, own comments on proposals given in the literature, …).
+
+Second exam period:
+
+Students that have to redo the exam in August/September can prepare a paper with a new topic, or improve the paper they prepared before. You can ask me what score you obtained on the paper and the oral part of the exam.
+The paper should start by specifying whether the paper is a revision of the previous paper, and if so, with a very clear description of the most important changes. It is expected that the paper is revised thoroughly: making very small improvements does not necessarily imply a higher score.  
+The paper should be handed in one week before the exam (or earlier). You can send me the paper by mail.
