@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 from src.data_io import load_verified, DATA_VERIFIED, REPORT_ASSETS
-from src.effect_sizes import compute_effect_sizes
+from src.effect_sizes import compute_effect_sizes, pooled_absolute_effect, n_items_provenance
 from src.pooling import random_effects
 from src.heterogeneity import baujat, cooks_distance, hat_values, leave_one_out
 from src.moderators import subgroup_analysis, meta_regression
@@ -53,8 +53,9 @@ def main():
     mr_df["backbone-family"] = mr_df["backbone-model"].str.extract(
         r"(GPT|Claude|Llama|Gemini|Qwen|DeepSeek)", expand=False
     ).fillna("other")
-    mr_df["n-agents"] = pd.to_numeric(mr_df["n-agents"], errors="coerce").fillna(3)
-    mr_results = meta_regression(mr_df, ["compute-parity-flag", "sa-accuracy", "backbone-family", "n-agents"])
+    # v7 (review m3): n-agents dropped as a moderator — §2.3 and the verification
+    # report disown it ("defaulted to 3, unreliable"). QM/R² are unchanged.
+    mr_results = meta_regression(mr_df, ["compute-parity-flag", "sa-accuracy", "backbone-family"])
 
     df["sa-accuracy"] = df["n-correct-sa"] / df["n-items"]
     bubble_plot(df, "sa-accuracy")
@@ -65,10 +66,21 @@ def main():
 
     sens = run_all_sensitivity(df, rob)
 
+    # v7 (review M1): pooled absolute-scale effects, computed in-pipeline so the
+    # report's RD / Cohen's h trace to code (v6 hand-entered numbers the code
+    # never produced). Reported for the full sample and the compute-parity subset.
+    cp = df["compute-parity-flag"] == "yes"
+    acc = df["metric-type"] == "accuracy"
+    absolute = {
+        "full": pooled_absolute_effect(df["n-correct-ma"], df["n-correct-sa"], df["n-items"]),
+        "accuracy-only": pooled_absolute_effect(df.loc[acc, "n-correct-ma"], df.loc[acc, "n-correct-sa"], df.loc[acc, "n-items"]),
+        "compute-parity": pooled_absolute_effect(df.loc[cp, "n-correct-ma"], df.loc[cp, "n-correct-sa"], df.loc[cp, "n-items"]),
+    }
     results = {
         "reml": res_reml, "dl": res_dl,
         "egger": egger, "begg": begg,
         "trim-and-fill": tf,
+        "absolute": absolute,
     }
     with open(REPORT_ASSETS / "results-summary.json", "w") as f:
         json.dump(results, f, indent=2, default=float)
@@ -79,7 +91,11 @@ def main():
     sg_arch.to_csv(REPORT_ASSETS / "subgroup-arch.csv", index=False)
     mr_results.to_csv(REPORT_ASSETS / "meta-regression.csv", index=False)
 
+    df["n-items-provenance"] = [
+        n_items_provenance(a, s) for a, s in zip(df["audit-status"], df["n-items-source"])
+    ]
     ext_table = extraction_table(df, rob)
+    ext_table["n-items-provenance"] = df["n-items-provenance"].values
     ext_table.to_csv(REPORT_ASSETS / "extraction-table.csv", index=False)
 
     validate(res_reml, egger, sg_task, sg_arch)

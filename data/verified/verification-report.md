@@ -8,9 +8,10 @@
 
 ## 1. Per-Study Verification
 
-### S005 -- Xue2025
+### S005 -- Tian2025 (renamed from "Xue2025" in v7)
 
-- **Paper found:** "Beyond the Strongest LLM: Multi-Turn Multi-Agent Orchestration vs. Single LLMs on Benchmarks" (arXiv:2509.23537). Lead author not named Xue, but Xueqian Li is a co-author. Models confirmed: Gemini 2.5 Pro, GPT-5, Grok 4, Claude Sonnet 4.
+- **Paper found:** "Beyond the Strongest LLM: Multi-Turn Multi-Agent Orchestration vs. Single LLMs on Benchmarks" (arXiv:2509.23537). **Lead author is Aaron Xuxiang Tian** (Xueqian Li is co-author #5); the original key "Xue2025" misattributed authorship and has been corrected to **Tian2025** in v7. Note: the same arXiv id was logged under two keys during extraction (agent-2 "Xue2025", agent-6 "Xiao2025"). Models confirmed: Gemini 2.5 Pro, GPT-5, Grok 4, Claude Sonnet 4.
+- **Denominator note (v7):** n-items was normalized 100 → 198 (GPQA-Diamond standard size) post-audit; the per-study proportions (~87%/86%) are preserved. This row's denominator provenance is therefore "benchmark-imputed," even though the source was located — see the v7 provenance reconciliation in §2b.
 - **Benchmark:** GPQA-Diamond -- AGREE
 - **Architecture:** Extracted as "cooperation"; paper describes "multi-turn multi-agent orchestration" with iterative voting/consensus. Cooperation is a reasonable classification -- AGREE (borderline)
 - **n-items:** Extracted as 100; GPQA-Diamond standard set has 198 items. Could not confirm exact subset used from abstract alone. Flagged but not corrected due to insufficient detail.
@@ -169,6 +170,38 @@
 
 ---
 
+## 2b. Full extracted → verified diff (regenerated in v7, review V1)
+
+The §2 table above logs only the field-level changes from the **blind 12-row audit**. A separate, non-blind **denominator-normalization pass** replaced the extraction-stage `n=100` placeholder with true benchmark sizes for many other rows. The two processes were previously conflated; the complete row-by-row diff of `data/extracted/` vs `data/verified/` (21 rows, regenerated programmatically) is below. **All edits preserve the per-study proportion and effect-size direction except S002 (flips to a tie) and S023 (proportion not preserved, 0.870 → 0.850), both flagged for manual re-extraction.** The pooled estimate reproduces regardless.
+
+| Study | audit-status | n-items | n-correct-ma | n-correct-sa | other |
+|-------|--------------|---------|--------------|--------------|-------|
+| S002 | unaudited | 100→70 | 2→1 | — | proportion flips to tie ⚠ |
+| S003 | unaudited | 100→200 | 37→74 | 28→56 | preserved |
+| S005 | verified→(denom-normalized) | 100→198 | 87→172 | 86→170 | preserved |
+| S007 | verified-corrected | — | — | 138→145 | n-agents 3→4 |
+| S009 | verified-corrected | 100→300 | 34→103 | 27→82 | preserved |
+| S010 | unaudited | 100→500 | 72→360 | 65→325 | preserved |
+| S016 | unaudited | 100→581 | 34→198 | 28→163 | preserved |
+| S018 | unaudited | 1273→1000 | 983→772 | 928→729 | preserved |
+| S020 | verified-corrected | 100→200 | 96→192 | 86→172 | compute yes→no; n-agents 3→4 |
+| S021 | unaudited | 100→570 | 42→239 | 31→177 | preserved |
+| S023 | unaudited | 100→20 | 87→17 | 30→6 | proportion not preserved ⚠ |
+| S024 | unaudited | 100→302 | 50→151 | 48→145 | preserved |
+| S025 | verified-corrected | 100→300 | 28→85 | 19→54 | n-agents 3→5 |
+| S026 | verified→(denom-normalized) | 100→4488 | 82→3680 | 74→3321 | preserved |
+| S030 | verified→(denom-normalized) | 100→1221 | 87→1062 | 86→1050 | preserved |
+| S033 | unaudited | 100→198 | 48→95 | 43→85 | preserved |
+| S035 | unaudited | 100→824 | 22→181 | 25→206 | preserved |
+| S037 | unaudited | 100→419 | 82→344 | 77→323 | preserved |
+| S039 | unaudited | 100→65 | 30→20 | 81→53 | preserved |
+| S040 | verified-corrected | 100→805 | 65→524 | 57→463 | preserved |
+| S041 | verified-corrected | 100→500 | 76→380 | 71→355 | n-agents 3→2 |
+
+**Provenance note (v7):** `audit-status` certifies only that the *source was located and the proportions cross-checked*; it does **not** mean the denominator was paper-confirmed. The orthogonal **`n-items-provenance`** axis (computed in `src/effect_sizes.n_items_provenance`) records that only 10 rows are `paper-audited`, 30 are `benchmark-imputed` (denominator = canonical size, not per-paper confirmed), and 1 is `percent-estimated`. Rows tagged `verified`/`verified-corrected` whose denominator was normalized to a standard size (S005, S026, S030, S041, …) are `benchmark-imputed` on this axis.
+
+---
+
 ## 3. Inter-Rater Reliability
 
 ### 3.1 Binary Fields
@@ -219,6 +252,8 @@ For the 9 studies where counts could be compared (excluding S013, S027 which cou
 
 ## 4. Key Findings
 
+> **Note (refreshed 2026-05-29, v7):** the per-study audit in §1 reflects the 12-row seed-42 sample as of 2026-05-22; the aggregate RoB and compute-parity counts below were recomputed against the final `data/verified/` files (which incorporate the S020 compute-parity yes→no reclassification and the n-items corrections). The authoritative counts are **25/41 high RoB (61.0%)** and **9** compute-parity "yes". See §2b for the full edit log.
+
 1. **Systematic n-items error for SWE-bench Lite studies:** S009 (Zhang2024b) and S025 (Chen2024) both used n-items=100 when SWE-bench Lite contains 300 instances. The percentages were correct, but counts were computed on the wrong denominator.
 
 2. **AlpacaEval 2.0 n-items error:** S040 (Wang2024) used n-items=100 when AlpacaEval 2.0 has 805 items. Same pattern as above.
@@ -231,7 +266,7 @@ For the 9 studies where counts could be compared (excluding S013, S027 which cou
 
 6. **Effect direction preserved:** Despite the corrections, no study changed direction (MA > SA or MA < SA). The corrections primarily affect the precision of the effect-size estimates, not their sign.
 
-7. **Risk of bias:** 22/41 studies (53.7%) received an overall "high" ROB rating, primarily driven by lack of compute parity. Only 8 studies explicitly controlled for compute parity ("yes" flag). This is a major systematic concern for the meta-analysis.
+7. **Risk of bias:** 25/41 studies (61.0%) received an overall "high" ROB rating, primarily driven by lack of compute parity. Only 9 studies explicitly controlled for compute parity ("yes" flag). This is a major systematic concern for the meta-analysis.
 
 ---
 

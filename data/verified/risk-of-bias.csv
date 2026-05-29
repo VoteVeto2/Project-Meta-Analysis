@@ -3,7 +3,7 @@ S001,Du2023,low,high,low,some,high,GSM8K is standard benchmark; no compute parit
 S002,Qian2024,some,high,some,some,high,Custom SoftwareDev benchmark; no compute parity; limited subset of results; unclear run handling
 S003,Liang2024,some,high,some,some,high,Custom Counter-Intuitive AR benchmark; no compute parity; partial reporting; unclear run handling
 S004,Huang2024,low,high,low,some,high,HumanEval is standard; no compute parity; full results; unclear run handling
-S005,Xue2025,low,high,low,some,high,GPQA-Diamond is standard; no compute parity; full results; unclear run handling
+S005,Tian2025,low,high,low,some,high,GPQA-Diamond is standard; no compute parity; full results; unclear run handling
 S006,Yang2025,low,some,low,some,some,HumanEval is standard; compute parity unclear; full results; unclear run handling
 S007,Islam2024,low,high,low,low,high,HumanEval is standard; no compute parity (4 agents vs 1); full results reported across benchmarks; all runs reported
 S008,Hong2024,low,high,low,some,high,HumanEval is standard; no compute parity; full results; unclear run handling

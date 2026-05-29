@@ -3,7 +3,7 @@ S001,Du2023,2023,ChatGPT (GPT-3.5),debate,3,math,GSM8K,1319,1121,1016,no,NR,Tabl
 S002,Qian2024,2024,GPT-3.5-Turbo,role-play,3,code,SoftwareDev,70,1,1,no,NR,Table/Fig from Qian2024,unaudited,True,accuracy,imputed
 S003,Liang2024,2024,GPT-3.5-Turbo,cooperation,3,evaluation,Counter-Intuitive AR,200,74,56,no,NR,Table/Fig from Liang2024,unaudited,True,accuracy,imputed
 S004,Huang2024,2024,GPT-4,cooperation,3,code,HumanEval,164,158,148,no,NR,Table/Fig from Huang2024,unaudited,False,accuracy,exact
-S005,Xue2025,2025,Gemini 2.5 Pro / GPT-5 / Grok 4 / Claude Sonnet 4,cooperation,3,other,GPQA-Diamond,198,172,170,no,NR,Table/Fig from Xue2025,verified,False,accuracy,exact
+S005,Tian2025,2025,Gemini 2.5 Pro / GPT-5 / Grok 4 / Claude Sonnet 4,cooperation,3,other,GPQA-Diamond,198,172,170,no,NR,Table/Fig from Tian2025,verified,False,accuracy,exact
 S006,Yang2025,2025,GPT-3.5-Turbo,cooperation,3,code,HumanEval,164,135,125,unclear,NR,Table/Fig from Yang2025,unaudited,False,accuracy,exact
 S007,Islam2024,2024,GPT-4,planner-executor,4,code,HumanEval,164,154,145,no,NR,Table/Fig from Islam2024,verified-corrected,False,accuracy,exact
 S008,Hong2024,2024,GPT-4,hierarchy,3,code,HumanEval,164,141,110,no,NR,Table/Fig from Hong2024,unaudited,False,accuracy,exact
