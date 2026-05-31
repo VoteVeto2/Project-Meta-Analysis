@@ -8,3 +8,19 @@ wheels/
 
 # Virtual environments
 .venv
+
+# report dump 
+report/*.html 
+report/review/
+report/latex/
+
+# notebook dump 
+notebook/meta-analysis-v1.ipynb
+notebook/meta-analysis-v2.ipynb
+notebook/meta-analysis-v3.ipynb
+notebook/meta-analysis-v4.ipynb
+notebook/meta-analysis-v5.ipynb
+notebook/meta-analysis-v6.ipynb
+notebook/meta-analysis-v7.ipynb
+
+#  
