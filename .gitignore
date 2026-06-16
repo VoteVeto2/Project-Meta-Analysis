@@ -5,6 +5,7 @@ build/
 dist/
 wheels/
 *.egg-info
+main.py
 
 # Virtual environments
 .venv
@@ -23,4 +24,11 @@ notebook/meta-analysis-v5.ipynb
 notebook/meta-analysis-v6.ipynb
 notebook/meta-analysis-v7.ipynb
 
-#  
+# plan
+plan/ 
+
+# test
+tests/
+
+# defense
+defense/
