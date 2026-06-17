@@ -1,5 +1,6 @@
-"""Random-effects meta-analysis pooling.
-HKSJ variant: uses max(1, s²_HK) floor per Röver et al. (2015) recommendation."""
+"""
+Random-effects meta-analysis pooling.
+"""
 
 import numpy as np
 from scipy import stats

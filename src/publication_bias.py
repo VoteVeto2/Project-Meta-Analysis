@@ -1,4 +1,6 @@
-"""Publication bias tests: funnel, Egger, Begg, trim-and-fill, p-curve."""
+"""
+Publication bias tests: funnel, Egger, Begg, trim-and-fill, p-curve.
+"""
 
 import numpy as np
 from scipy import stats

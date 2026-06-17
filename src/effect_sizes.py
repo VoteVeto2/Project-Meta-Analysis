@@ -1,5 +1,6 @@
-"""Effect size computation: log odds ratio + Cohen's h.
-C3 fix: continuity correction only applied when zero cells exist."""
+"""
+Effect size computation: log odds ratio + Cohen h.
+"""
 
 import numpy as np
 import pandas as pd

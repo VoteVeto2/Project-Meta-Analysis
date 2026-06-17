@@ -1,8 +1,6 @@
-"""Subgroup analysis and meta-regression.
-C5 fix: conditional REML for meta-regression.
-C6 fix: Knapp-Hartung adjustment for meta-regression inference.
-C9 fix: between-group Q via partition-of-Q (Borenstein 2009 Ch 19).
-C10 fix: proper between-group Q computation."""
+"""
+Subgroup analysis and meta-regression.
+"""
 
 import numpy as np
 import pandas as pd

@@ -1,4 +1,6 @@
-"""Sensitivity analyses for the meta-analysis."""
+"""
+Sensitivity analyses for the meta-analysis.
+"""
 
 import numpy as np
 import pandas as pd
