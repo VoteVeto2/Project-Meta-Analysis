@@ -1,4 +1,6 @@
-"""Plotting functions: forest, funnel, Baujat, subgroup forest, bubble."""
+"""
+Plotting functions: forest, funnel, Baujat, subgroup forest, bubble.
+"""
 
 from pathlib import Path
 
@@ -23,7 +25,9 @@ def _ensure_assets():
 
 
 def forest_plot(df: pd.DataFrame, pooled: dict, save: bool = True):
-    """Static forest plot (matplotlib)."""
+    """
+    Static forest plot (matplotlib).
+    """
     _ensure_assets()
     k = len(df)
     fig, ax = plt.subplots(figsize=(10, max(6, k * 0.35)))
@@ -49,7 +53,9 @@ def forest_plot(df: pd.DataFrame, pooled: dict, save: bool = True):
 
 
 def forest_plot_interactive(df: pd.DataFrame, pooled: dict, save: bool = True):
-    """Interactive forest plot (plotly)."""
+    """
+    Interactive forest plot (plotly).
+    """
     _ensure_assets()
     fig = go.Figure()
     fig.add_trace(go.Scatter(

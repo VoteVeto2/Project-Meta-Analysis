@@ -8,8 +8,10 @@ from scipy import stats
 def reml_estimate(yi: np.ndarray, vi: np.ndarray,
                   X: np.ndarray | None = None,
                   max_iter: int = 200, tol: float = 1e-8) -> float:
-    """REML estimator of tau-squared via Fisher scoring (Viechtbauer 2005).
-    If X is provided, estimates tau2 conditional on the moderator matrix."""
+    """
+    REML estimator of tau-squared via Fisher scoring (Viechtbauer 2005).
+    If X is provided, estimates tau2 conditional on the moderator matrix.
+    """
     k = len(yi)
     tau2 = dl_estimate(yi, vi)
     for _ in range(max_iter):
@@ -35,7 +37,9 @@ def reml_estimate(yi: np.ndarray, vi: np.ndarray,
 
 
 def dl_estimate(yi: np.ndarray, vi: np.ndarray) -> float:
-    """DerSimonian-Laird estimator of tau-squared."""
+    """
+    DerSimonian-Laird estimator of tau-squared.
+    """
     k = len(yi)
     wi = 1.0 / vi
     mu_fe = np.sum(wi * yi) / np.sum(wi)
@@ -89,7 +93,9 @@ def pool(yi: np.ndarray, vi: np.ndarray, tau2: float):
 
 
 def random_effects(yi: np.ndarray, vi: np.ndarray, method: str = "reml"):
-    """Full random-effects pooling."""
+    """
+    Full random-effects pooling.
+    """
     yi, vi = np.asarray(yi, float), np.asarray(vi, float)
     if method == "reml":
         tau2 = reml_estimate(yi, vi)

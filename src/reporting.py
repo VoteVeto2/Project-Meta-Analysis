@@ -1,11 +1,15 @@
-"""Report generation utilities."""
+"""
+Report generation utilities.
+"""
 
 import numpy as np
 import pandas as pd
 
 
 def format_pooled(res: dict) -> str:
-    """Format pooled result for inline reporting."""
+    """
+    Format pooled result for inline reporting.
+    """
     return (f"LOR = {res['pooled-lor']:.2f}, 95% CI [{res['ci-lo']:.2f}, {res['ci-hi']:.2f}], "
             f"95% PI [{res['pi-lo']:.2f}, {res['pi-hi']:.2f}], "
             f"τ² = {res['tau2']:.3f}, I² = {res['i2']:.0f}%, "
